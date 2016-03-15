@@ -14,21 +14,26 @@ namespace feitir {
         sift = cv::xfeatures2d::SIFT::create();
     }
 
-    const std::shared_ptr<Image> ImageFactory::createImage(const std::string &fullPath) const {
+    const ImagePtr ImageFactory::createImage(const std::string &fullPath) const {
+        if (!boost::filesystem::exists(fullPath) || !boost::filesystem::is_regular_file(fullPath))
+            return nullptr;
+
         std::string fileName = extractFileName(fullPath);
         std::string path = extractPath(fullPath);
         return createImage(fullPath, path, fileName);
     }
 
-    const std::shared_ptr<Image> ImageFactory::createImage(const std::string &fullPath,
-                                                           const std::string &path,
-                                                           const std::string &fileName) const {
+    const ImagePtr ImageFactory::createImage(const std::string &fullPath,
+                                             const std::string &path,
+                                             const std::string &fileName) const {
         Extension extension = extractFileExtension(fullPath);
+        if (extension == Extension::UNKNOWN)
+            return nullptr;
+
         std::vector<cv::KeyPoint> keyPoints;
         cv::Mat descriptors;
         loadImageData(path, fileName, keyPoints, descriptors);
-        return std::make_shared<Image>(fileName, fullPath, path, extension,
-                                       std::forward<std::vector<cv::KeyPoint>>(keyPoints), descriptors);
+        return std::make_shared<Image>(fileName, fullPath, path, extension, std::move(keyPoints), descriptors);
     }
 
     void ImageFactory::loadImageData(const std::string& path, const std::string& fileName,
@@ -45,7 +50,7 @@ namespace feitir {
         }
     }
 
-    std::string ImageFactory::extractFileName(const std::string &path) const {
+    std::string ImageFactory::extractFileName(const std::string &path) const noexcept {
         std::smatch smatch;
         std::regex_search(path, smatch, fileNameRegex);
         if (smatch.empty()) {
@@ -55,24 +60,29 @@ namespace feitir {
         }
     }
 
-    Extension ImageFactory::extractFileExtension(const std::string &path) const {
+    Extension ImageFactory::extractFileExtension(const std::string &path) const noexcept {
         std::string extension = boost::filesystem::extension(path);
         if (extension.empty()) {
             return Extension::UNKNOWN;
         } else {
-            if (extension.compare(".png") || extension.compare(".PNG")) {
+            std::transform(std::begin(extension), std::end(extension), std::begin(extension), ::tolower);
+            if (!extension.compare(".png")) {
                 return Extension::PNG;
-            } else if (extension.compare(".tiff") || extension.compare(".TIFF")) {
+            } else if (!extension.compare(".tiff")) {
                 return Extension::TIFF;
-            } else if (extension.compare(".jpeg") || extension.compare(".JPEG")) {
+            } else if (!extension.compare(".jpeg") || !extension.compare(".jp2")) {
                 return Extension::JPEG;
+            } else if (!extension.compare(".bmp") || !extension.compare(".dib")) {
+                return Extension::BITMAP;
+            } else if (!extension.compare(".webp")) {
+                return Extension::WEBP;
             } else {
                 return Extension::UNKNOWN;
             }
         }
     }
 
-    std::string ImageFactory::extractPath(const std::string &fullPath) const {
+    std::string ImageFactory::extractPath(const std::string &fullPath) const noexcept {
         u_long lastIndex = fullPath.find_last_of("/");
         std::string path = fullPath.substr(0, lastIndex + 1);
         return path;
@@ -88,7 +98,7 @@ namespace feitir {
         }
     }
 
-    inline const std::string ImageFactory::imageDataFile(const std::string &path, const std::string &fileName) const {
+    inline const std::string ImageFactory::imageDataFile(const std::string &path, const std::string &fileName) const noexcept {
         return path + IMAGE_DATA_FILE_INFIX + fileName;
     }
 

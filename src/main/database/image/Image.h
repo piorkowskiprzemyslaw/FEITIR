@@ -13,7 +13,7 @@
 
 namespace feitir {
 
-    enum class Extension {PNG, JPEG, TIFF, UNKNOWN};
+    enum class Extension {PNG, JPEG, TIFF, BITMAP, WEBP, UNKNOWN};
 
     class Image {
 
@@ -48,6 +48,8 @@ namespace feitir {
         const cv::Mat &getDescriptors() const;
         const std::string &getPath() const;
     };
+
+    typedef std::shared_ptr<Image> ImagePtr;
 
 }
 

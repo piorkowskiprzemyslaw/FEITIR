@@ -12,7 +12,7 @@ namespace feitir {
                  const Extension extension,
                  const std::vector<cv::KeyPoint> && keyPoints,
                  const cv::Mat descriptors)
-            : fullPath{fullPath}, name{name}, path{path}, keyPoints{keyPoints},
+            : fullPath{fullPath}, name{name}, path{path}, keyPoints{std::move(keyPoints)},
               extension{extension}, descriptors{descriptors} { }
 
     const std::vector<cv::KeyPoint> & Image::getKeyPoints() const {

@@ -27,22 +27,21 @@ namespace feitir {
 
 
     protected:
-        std::string extractFileName(const std::string& path) const;
-        Extension extractFileExtension(const std::string& path) const;
-        std::string extractPath(const std::string &fullPath) const;
-        const std::string imageDataFile(const std::string &path, const std::string &fileName) const;
+        std::string extractFileName(const std::string& path) const noexcept;
+        Extension extractFileExtension(const std::string& path) const noexcept;
+        std::string extractPath(const std::string &fullPath) const noexcept;
+        const std::string imageDataFile(const std::string &path, const std::string &fileName) const noexcept;
         void loadImageData(const std::string &path, const std::string &fileName,
                            std::vector<cv::KeyPoint> &keyPoints, cv::Mat& descriptors) const;
     public:
         static const std::string IMAGE_DATA_FILE_INFIX;
 
         explicit ImageFactory();
-        const std::shared_ptr<Image> createImage(const std::string &fullPath) const;
-        const std::shared_ptr<Image> createImage(const std::string &fullPath,
-                                                 const std::string &path,
-                                                 const std::string &fileName) const;
-        void saveImageData(const std::shared_ptr<Image> img) const;
-        bool deleteImageData(const std::shared_ptr<Image> img) const;
+        const ImagePtr createImage(const std::string &fullPath) const;
+        const ImagePtr createImage(const std::string &fullPath, const std::string &path,
+                                   const std::string &fileName) const;
+        void saveImageData(const ImagePtr img) const;
+        bool deleteImageData(const ImagePtr img) const;
     };
 
 }
