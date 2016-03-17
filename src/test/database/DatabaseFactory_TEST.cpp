@@ -31,36 +31,54 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
     {
         auto database = databaseFactory.createDatabase(databaseRes + firstRoot);
         BOOST_REQUIRE(database != nullptr);
+        BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + firstRoot);
+        BOOST_CHECK_EQUAL(database->getCategories().size(), 0);
+        BOOST_CHECK_EQUAL(database->getImages().size(), 3);
     }
 
     BOOST_AUTO_TEST_CASE(FirstRootDatabaseNestedCategories)
     {
         auto database = databaseFactory.createDatabase(databaseRes + firstRoot, true);
         BOOST_REQUIRE(database != nullptr);
+        BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + firstRoot);
+        BOOST_CHECK_EQUAL(database->getCategories().size(), 0);
+        BOOST_CHECK_EQUAL(database->getImages().size(), 3);
     }
 
     BOOST_AUTO_TEST_CASE(SecondRootDatabase)
     {
         auto database = databaseFactory.createDatabase(databaseRes + secondRoot);
         BOOST_REQUIRE(database != nullptr);
+        BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + secondRoot);
+        BOOST_CHECK_EQUAL(database->getCategories().size(), 2);
+        BOOST_CHECK_EQUAL(database->getImages().size(), 1);
     }
 
     BOOST_AUTO_TEST_CASE(SecondRootDatabaseNestedCategories)
     {
         auto database = databaseFactory.createDatabase(databaseRes + secondRoot, true);
         BOOST_REQUIRE(database != nullptr);
+        BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + secondRoot);
+        BOOST_CHECK_EQUAL(database->getCategories().size(), 2);
+        BOOST_CHECK_EQUAL(database->getImages().size(), 1);
     }
 
     BOOST_AUTO_TEST_CASE(ThirdRootDatabase)
     {
         auto database = databaseFactory.createDatabase(databaseRes + thirdRoot);
         BOOST_REQUIRE(database != nullptr);
+        BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + thirdRoot);
+        BOOST_CHECK_EQUAL(database->getCategories().size(), 2);
+        BOOST_CHECK_EQUAL(database->getImages().size(), 1);
     }
 
     BOOST_AUTO_TEST_CASE(ThridRootDatabaseNestedCategories)
     {
         auto database = databaseFactory.createDatabase(databaseRes + thirdRoot, true);
         BOOST_REQUIRE(database != nullptr);
+        BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + thirdRoot);
+        BOOST_CHECK_EQUAL(database->getCategories().size(), 4);
+        BOOST_CHECK_EQUAL(database->getImages().size(), 1);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
