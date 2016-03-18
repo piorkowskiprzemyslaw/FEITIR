@@ -9,8 +9,8 @@
 #include <list>
 #include <tuple>
 #include <functional>
-#include <boost/filesystem.hpp>
-#include <src/main/database/image/ImageFactory.h>
+#include "src/main/util/Util.h"
+#include "src/main/database/image/ImageFactory.h"
 #include "src/main/database/Database.h"
 #include "src/main/database/category/CategoryFactory.h"
 
@@ -20,10 +20,9 @@ namespace feitir {
     private:
         const CategoryFactory categoryFactory;
         const ImageFactory imageFactory;
+        const Util util;
 
     protected:
-        template <class Predicate>
-        std::list<std::string> findInDirectory(const std::string &root, bool findRecursive, Predicate pred) const;
         std::list<std::string> findCategoriesRoots(const std::string &root, bool nestedCategories) const;
         std::list<std::string> findRootImages(const std::string &root) const;
 

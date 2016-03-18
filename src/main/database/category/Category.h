@@ -16,12 +16,16 @@ namespace feitir {
     class Category {
     private:
         const std::string name;
+        const std::string path;
         const std::vector<ImagePtr> images;
 
     protected:
 
     public:
-        Category(const std::string &name, const std::vector<ImagePtr>&& images);
+        Category(const std::string &name, const std::string &path, const std::vector<ImagePtr>&& images);
+        const std::string & getName() const;
+        const std::string & getPath() const;
+        const std::vector<ImagePtr> & getImages() const;
     };
 
     typedef std::shared_ptr<Category> CategoryPtr;
