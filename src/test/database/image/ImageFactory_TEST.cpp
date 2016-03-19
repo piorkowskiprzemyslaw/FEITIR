@@ -25,7 +25,7 @@ struct ImageFixture {
     ImageFixture() : imgPath{"/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/database/image/"},
                      imgName{"Lenna.png"},
                      keyPointsFilePath{"/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/database/image/" +
-                                               ImageFactory::IMAGE_DATA_FILE_INFIX + "Lenna.png"},
+                                       ImageFactory::IMAGE_DATA_FILE_PREFIX + "Lenna.png" + ImageFactory::IMAGE_DATA_FILE_POSTFIX},
                      image{cv::imread(imgPath + imgName, CV_LOAD_IMAGE_UNCHANGED)} {
         cv::Ptr<SIFT> sift = SIFT::create();
         sift->detectAndCompute(image, cv::noArray(), keyPoints, descriptors);

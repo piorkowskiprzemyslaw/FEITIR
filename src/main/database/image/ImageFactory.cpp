@@ -6,7 +6,8 @@
 
 namespace feitir {
 
-    const std::string ImageFactory::IMAGE_DATA_FILE_INFIX = ".IMAGE_DATA_";
+    const std::string ImageFactory::IMAGE_DATA_FILE_POSTFIX = ".imgdata";
+    const std::string ImageFactory::IMAGE_DATA_FILE_PREFIX = ".";
 
     ImageFactory::ImageFactory() : fileNameRegex{"(([^\\/\\.]+).([^\\/\\.]+))$"},
                                    KEYPOINTS_FILE_NODE_NAME{"keypoints"},
@@ -33,7 +34,9 @@ namespace feitir {
         std::vector<cv::KeyPoint> keyPoints;
         cv::Mat descriptors;
         loadImageData(path, fileName, keyPoints, descriptors);
-        return std::make_shared<Image>(fileName, fullPath, path, extension, std::move(keyPoints), descriptors);
+        auto imgPtr = std::make_shared<Image>(fileName, fullPath, path, extension, std::move(keyPoints), descriptors);
+        saveImageData(imgPtr);
+        return imgPtr;
     }
 
     void ImageFactory::loadImageData(const std::string& path, const std::string& fileName,
@@ -99,7 +102,7 @@ namespace feitir {
     }
 
     inline const std::string ImageFactory::imageDataFile(const std::string &path, const std::string &fileName) const noexcept {
-        return path + IMAGE_DATA_FILE_INFIX + fileName;
+        return path + IMAGE_DATA_FILE_PREFIX + fileName + IMAGE_DATA_FILE_POSTFIX;
     }
 
     bool ImageFactory::deleteImageData(const std::shared_ptr<Image> img) const {

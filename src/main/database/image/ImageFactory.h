@@ -34,7 +34,8 @@ namespace feitir {
         void loadImageData(const std::string &path, const std::string &fileName,
                            std::vector<cv::KeyPoint> &keyPoints, cv::Mat& descriptors) const;
     public:
-        static const std::string IMAGE_DATA_FILE_INFIX;
+        static const std::string IMAGE_DATA_FILE_PREFIX;
+        static const std::string IMAGE_DATA_FILE_POSTFIX;
 
         explicit ImageFactory();
         const ImagePtr createImage(const std::string &fullPath) const;
