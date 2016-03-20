@@ -14,6 +14,7 @@ using namespace feitir;
 
 struct CategoryFixture {
     const CategoryFactory categoryFactory;
+    const ImageFactory imageFactory;
     const std::string resourcesPath;
     const std::string firstRoot;
     const std::string secondRoot;
@@ -22,6 +23,12 @@ struct CategoryFixture {
     CategoryFixture() : resourcesPath{"/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/database/"},
                         firstRoot{"dir1"}, secondRoot{"dir2"}, thirdRoot{"dir3"} {
 
+    }
+
+    void imagesDataClear(const CategoryPtr& category) {
+        for (auto& img : category->getImages()) {
+            imageFactory.deleteImageData(img);
+        }
     }
 };
 
@@ -34,6 +41,7 @@ BOOST_FIXTURE_TEST_SUITE(CategoryFactory_TEST, CategoryFixture)
         BOOST_CHECK_EQUAL(category->getPath(), resourcesPath + firstRoot);
         BOOST_CHECK_EQUAL(category->getName(), firstRoot);
         BOOST_CHECK_EQUAL(category->getImages().size(), 3);
+        imagesDataClear(category);
     }
 
     BOOST_AUTO_TEST_CASE(FirstRootCategoryRecursive)
@@ -43,6 +51,7 @@ BOOST_FIXTURE_TEST_SUITE(CategoryFactory_TEST, CategoryFixture)
         BOOST_CHECK_EQUAL(category->getPath(), resourcesPath + firstRoot);
         BOOST_CHECK_EQUAL(category->getName(), firstRoot);
         BOOST_CHECK_EQUAL(category->getImages().size(), 3);
+        imagesDataClear(category);
     }
 
     BOOST_AUTO_TEST_CASE(SecondRootCategory)
@@ -52,6 +61,7 @@ BOOST_FIXTURE_TEST_SUITE(CategoryFactory_TEST, CategoryFixture)
         BOOST_CHECK_EQUAL(category->getPath(), resourcesPath + secondRoot);
         BOOST_CHECK_EQUAL(category->getName(), secondRoot);
         BOOST_CHECK_EQUAL(category->getImages().size(), 7);
+        imagesDataClear(category);
     }
 
     BOOST_AUTO_TEST_CASE(SecondRootCategoryRecursive)
@@ -61,6 +71,7 @@ BOOST_FIXTURE_TEST_SUITE(CategoryFactory_TEST, CategoryFixture)
         BOOST_CHECK_EQUAL(category->getPath(), resourcesPath + secondRoot);
         BOOST_CHECK_EQUAL(category->getName(), secondRoot);
         BOOST_CHECK_EQUAL(category->getImages().size(), 1);
+        imagesDataClear(category);
     }
 
     BOOST_AUTO_TEST_CASE(ThirdRootCategory)
@@ -70,6 +81,7 @@ BOOST_FIXTURE_TEST_SUITE(CategoryFactory_TEST, CategoryFixture)
         BOOST_CHECK_EQUAL(category->getPath(), resourcesPath + thirdRoot);
         BOOST_CHECK_EQUAL(category->getName(), thirdRoot);
         BOOST_CHECK_EQUAL(category->getImages().size(), 11);
+        imagesDataClear(category);
     }
 
     BOOST_AUTO_TEST_CASE(ThirdRootCategoryRecursive)
@@ -79,6 +91,7 @@ BOOST_FIXTURE_TEST_SUITE(CategoryFactory_TEST, CategoryFixture)
         BOOST_CHECK_EQUAL(category->getPath(), resourcesPath + thirdRoot);
         BOOST_CHECK_EQUAL(category->getName(), thirdRoot);
         BOOST_CHECK_EQUAL(category->getImages().size(), 1);
+        imagesDataClear(category);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

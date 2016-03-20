@@ -14,6 +14,7 @@ using namespace feitir;
 
 struct DatabaseFixture {
     const DatabaseFactory databaseFactory;
+    const ImageFactory imageFactory;
     const std::string databaseRes;
     const std::string firstRoot;
     const std::string secondRoot;
@@ -22,6 +23,18 @@ struct DatabaseFixture {
     DatabaseFixture() : databaseRes{"/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/database/"},
                         firstRoot{"dir1"}, secondRoot{"dir2"}, thirdRoot{"dir3"} {
 
+    }
+
+    void imagesDataClear(const DatabasePtr& db) {
+        for(auto& c : db->getCategories()) {
+            for (auto& img : c->getImages()) {
+                imageFactory.deleteImageData(img);
+            }
+        }
+
+        for(auto& img : db->getImages()) {
+            imageFactory.deleteImageData(img);
+        }
     }
 };
 
@@ -34,6 +47,7 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + firstRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 0);
         BOOST_CHECK_EQUAL(database->getImages().size(), 3);
+        imagesDataClear(database);
     }
 
     BOOST_AUTO_TEST_CASE(FirstRootDatabaseNestedCategories)
@@ -43,6 +57,7 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + firstRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 0);
         BOOST_CHECK_EQUAL(database->getImages().size(), 3);
+        imagesDataClear(database);
     }
 
     BOOST_AUTO_TEST_CASE(SecondRootDatabase)
@@ -52,6 +67,7 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + secondRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 2);
         BOOST_CHECK_EQUAL(database->getImages().size(), 1);
+        imagesDataClear(database);
     }
 
     BOOST_AUTO_TEST_CASE(SecondRootDatabaseNestedCategories)
@@ -61,6 +77,7 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + secondRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 2);
         BOOST_CHECK_EQUAL(database->getImages().size(), 1);
+        imagesDataClear(database);
     }
 
     BOOST_AUTO_TEST_CASE(ThirdRootDatabase)
@@ -70,6 +87,7 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + thirdRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 2);
         BOOST_CHECK_EQUAL(database->getImages().size(), 1);
+        imagesDataClear(database);
     }
 
     BOOST_AUTO_TEST_CASE(ThridRootDatabaseNestedCategories)
@@ -79,6 +97,7 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + thirdRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 4);
         BOOST_CHECK_EQUAL(database->getImages().size(), 1);
+        imagesDataClear(database);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
