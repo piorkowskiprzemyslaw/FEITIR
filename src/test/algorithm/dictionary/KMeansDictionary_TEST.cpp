@@ -6,8 +6,9 @@
 #define BOOST_TEST_MODULE FEITR_KMeansDictionary_test
 
 #include <iostream>
+#include "test_config_global.h"
 #include <boost/test/unit_test.hpp>
-#include "src/main/algorithm/dictionary/KMeansDictionary.h"
+#include "src/main/algorithm/vocabulary/KMeansVocabulary.h"
 #include "src/main/database/image/ImageFactory.h"
 
 using namespace feitir;
@@ -16,9 +17,11 @@ struct KMeansFixture {
     const ImageFactory imageFactory;
     const std::string resourcesPath;
     const std::string imageName;
+    const int means;
 
-    KMeansFixture() : resourcesPath{"/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/database/image/"},
-                        imageName{"Lenna.png"} {
+    KMeansFixture() : resourcesPath{resourcesRootDir() + "database/image/"},
+                      imageName{"Lenna.png"},
+                      means{5} {
 
     }
 
@@ -31,12 +34,10 @@ BOOST_FIXTURE_TEST_SUITE(KMeansDictionary_TEST, KMeansFixture)
 
     BOOST_AUTO_TEST_CASE(FirstTestCase)
     {
-        ImageFactory imageFactory;
         auto img = imageFactory.createImage(resourcesPath + imageName);
-        int MEANS = 5;
-        KMeansDictionary dictionary;
-        cv::Mat centers = dictionary.create(img->getDescriptors(), MEANS);
-        BOOST_REQUIRE_EQUAL(centers.rows, MEANS);
+        KMeansVocabulary kMeans;
+        cv::Mat vocabulary = kMeans.create(img->getDescriptors(), means);
+        BOOST_REQUIRE_EQUAL(vocabulary.rows, means);
         imagesDataClear(img);
     }
 

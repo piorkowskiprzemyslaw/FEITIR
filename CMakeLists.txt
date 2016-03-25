@@ -10,6 +10,8 @@ find_package(OpenCV 3.1.0 REQUIRED)
 #find_package(Qt5Widgets REQUIRED )
 #find_package(Qt5Gui REQUIRED )
 
+set(PROJECT_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${Boost_INCLUDE_DIR}
                     ${OpenCV_INCLUDE_DIR})

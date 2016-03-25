@@ -1,0 +1,17 @@
+//
+// Created by Przemek Piórkowski on 25.03.2016.
+//
+
+#ifndef FEITIR_TEST_CONFIG_GLOBAL_H
+#define FEITIR_TEST_CONFIG_GLOBAL_H
+
+#include <string>
+
+#define PROJECT_ROOT_PATH @PROJECT_ROOT@
+
+std::string resourcesRootDir() {
+    std::string path("@PROJECT_ROOT@");
+    return path + "/src/test/resources/";
+}
+
+#endif //FEITIR_TEST_CONFIG_GLOBAL_H

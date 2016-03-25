@@ -6,6 +6,7 @@
 #define BOOST_TEST_MODULE FEITR_DatabaseFactory test
 
 #include <iostream>
+#include "test_config_global.h"
 #include <list>
 #include <boost/test/unit_test.hpp>
 #include "src/main/database/DatabaseFactory.h"
@@ -20,12 +21,13 @@ struct DatabaseFixture {
     const std::string secondRoot;
     const std::string thirdRoot;
 
-    DatabaseFixture() : databaseRes{"/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/database/"},
+    DatabaseFixture() : databaseRes{resourcesRootDir() + "database/"},
                         firstRoot{"dir1"}, secondRoot{"dir2"}, thirdRoot{"dir3"} {
 
     }
 
     void imagesDataClear(const DatabasePtr& db) {
+#if TEST_HOUSEKEEPING
         for(auto& c : db->getCategories()) {
             for (auto& img : c->getImages()) {
                 imageFactory.deleteImageData(img);
@@ -35,6 +37,7 @@ struct DatabaseFixture {
         for(auto& img : db->getImages()) {
             imageFactory.deleteImageData(img);
         }
+#endif
     }
 };
 

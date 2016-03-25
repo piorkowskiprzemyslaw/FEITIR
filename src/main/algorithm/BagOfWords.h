@@ -11,7 +11,6 @@ namespace feitir {
     private:
     protected:
     public:
-
         BagOfWords();
     };
 

@@ -8,6 +8,8 @@
 #include <iostream>
 #include <vector>
 
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/core/mat.hpp>
 
@@ -18,6 +20,8 @@ namespace feitir {
     class Image {
 
     private:
+        // unified resource identifier
+        const boost::uuids::uuid uuid;
         // Full filename (including file extension)
         const std::string name;
         // Full path to file

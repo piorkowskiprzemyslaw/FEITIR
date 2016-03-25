@@ -6,6 +6,7 @@
 #define BOOST_TEST_MODULE FEITR_CategoryFactory test
 
 #include <iostream>
+#include "test_config_global.h"
 #include <list>
 #include <boost/test/unit_test.hpp>
 #include "src/main/database/category/CategoryFactory.h"
@@ -20,15 +21,17 @@ struct CategoryFixture {
     const std::string secondRoot;
     const std::string thirdRoot;
 
-    CategoryFixture() : resourcesPath{"/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/database/"},
+    CategoryFixture() : resourcesPath{resourcesRootDir() + "database/"},
                         firstRoot{"dir1"}, secondRoot{"dir2"}, thirdRoot{"dir3"} {
 
     }
 
     void imagesDataClear(const CategoryPtr& category) {
+#if TEST_HOUSEKEEPING
         for (auto& img : category->getImages()) {
             imageFactory.deleteImageData(img);
         }
+#endif
     }
 };
 

@@ -1,7 +1,8 @@
 set(ALGORITHM_SOURCE_FILES
         BagOfWords.cpp)
 
-add_subdirectory(dictionary)
+add_subdirectory(vocabulary)
+#add_subdirectory(BSIFT)
 
 add_library(algorithm STATIC ${ALGORITHM_SOURCE_FILES})
 
