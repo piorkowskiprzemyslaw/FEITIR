@@ -22,7 +22,10 @@ function clean() {
 }
 
 function clear() {
-    rm -rf $BUILD_DIR
+    if [ -d "$BUILD_DIR" ]; then
+        printf '%s\n' "Removing directory ($BUILD_DIR)"
+        rm -rf $BUILD_DIR
+    fi
     mkdir -p $BUILD_DIR
     cd $BUILD_DIR
     cmake $SRC_DIR

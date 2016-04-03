@@ -39,6 +39,10 @@ namespace feitir {
         return imgPtr;
     }
 
+    const ImagePtr ImageFactory::createImage(const ImagePtr img) const {
+        return std::make_shared<Image>(img);
+    }
+
     void ImageFactory::loadImageData(const std::string& path, const std::string& fileName,
                                      std::vector<cv::KeyPoint> &keyPoints, cv::Mat& descriptors) const {
         std::string imageDataFileName = this->imageDataFile(path, fileName);
@@ -107,12 +111,6 @@ namespace feitir {
 
     bool ImageFactory::deleteImageData(const std::shared_ptr<Image> img) const {
         return boost::filesystem::remove(imageDataFile(img->getPath(), img->getFileName()));
-    }
-
-    const ImagePtr ImageFactory::representAsVocabulary(const ImagePtr img, const cv::Mat vocabulary) const {
-        std::vector<cv::DMatch> matches;
-        matcher.match(img->getDescriptors(), vocabulary, matches);
-        return nullptr;
     }
 
 }

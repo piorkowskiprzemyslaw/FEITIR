@@ -20,7 +20,6 @@ namespace feitir {
 
     class ImageFactory {
     private:
-        cv::BFMatcher matcher;
         const std::regex fileNameRegex;
         const std::string KEYPOINTS_FILE_NODE_NAME;
         const std::string DESCRIPTORS_FILE_NODE_NAME;
@@ -42,8 +41,7 @@ namespace feitir {
         const ImagePtr createImage(const std::string &fullPath) const;
         const ImagePtr createImage(const std::string &fullPath, const std::string &path,
                                    const std::string &fileName) const;
-        void setDictionary(const cv::Mat dictionary);
-        const ImagePtr representAsVocabulary(const ImagePtr img, const cv::Mat vocabulary) const;
+        const ImagePtr createImage(const ImagePtr img) const;
         void saveImageData(const ImagePtr img) const;
         bool deleteImageData(const ImagePtr img) const;
     };

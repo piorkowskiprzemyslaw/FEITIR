@@ -119,14 +119,22 @@ BOOST_FIXTURE_TEST_SUITE(ImageFactory_TEST, ImageFixture)
         BOOST_REQUIRE(img == nullptr);
     }
 
-    BOOST_AUTO_TEST_CASE(representAsVocabulary)
+    BOOST_AUTO_TEST_CASE(copyConstruction)
     {
-        auto vocabulary = vocabularyBuilder.readFromFile(resourcePath + vocabularyFileName);
         auto img = imageFactory.createImage(resourcePath + imgName);
-        BOOST_REQUIRE(img != nullptr);
-        auto vocImage = imageFactory.representAsVocabulary(img, vocabulary);
-        std::cout << resourcesRootDir() << std::endl;
-        BOOST_REQUIRE(vocImage != nullptr);
+        auto cpyImg = imageFactory.createImage(img);
+
+        BOOST_CHECK_EQUAL(img->getFullPath(), cpyImg->getFullPath());
+        BOOST_CHECK_EQUAL(img->getFileName(), cpyImg->getFileName());
+        BOOST_CHECK_EQUAL(img->getPath(), cpyImg->getPath());
+        BOOST_CHECK(img->getExtension() == cpyImg->getExtension());
+        BOOST_REQUIRE_EQUAL(img->getKeyPoints().size(), cpyImg->getKeyPoints().size());
+
+        for (int i = 0; i < img->getKeyPoints().size(); ++i) {
+            BOOST_CHECK(keyPointsEqual(cpyImg->getKeyPoints()[i], img->getKeyPoints()[i]));
+        }
+
+        BOOST_CHECK(cv::countNonZero(cpyImg->getDescriptors() != img->getDescriptors()) == 0);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

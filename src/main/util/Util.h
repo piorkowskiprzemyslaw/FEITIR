@@ -5,8 +5,8 @@
 #ifndef FEITIR_UTIL_H
 #define FEITIR_UTIL_H
 
-#include <iostream>
 #include <list>
+#include <vector>
 #include <boost/filesystem.hpp>
 
 namespace feitir {
@@ -40,6 +40,30 @@ namespace feitir {
                 }
             }
             return result;
+        }
+
+        template <class T, class RT = T>
+        RT median(std::vector<T>& v) {
+            return median(v, std::greater<T>());
+        }
+
+        template <class T, class Compare, class RT = T>
+        RT median(std::vector<T>& v, Compare compare) {
+            typename std::vector<T>::size_type s = v.size();
+            if (s & 0x1) {
+                std::nth_element(v.begin(), v.begin() + s/2, v.end(), compare);
+                return static_cast<RT>(v[s/2]);
+            } else {
+                std::nth_element(v.begin(), v.begin() + s/2, v.end(), compare);
+                std::nth_element(v.begin(), v.begin() + s/2 - 1, v.begin() + s/2, compare);
+                return (static_cast<RT>(v[s/2]) + static_cast<RT>(v[s/2 - 1]))/2;
+            }
+        }
+
+        template <class T, class RT = T>
+        RT median(const std::vector<T>& v) {
+            std::vector<T> localCopy{v};
+            return median<T, RT>(localCopy);
         }
     };
 

@@ -15,6 +15,16 @@ namespace feitir {
             : uuid{boost::uuids::random_generator()()}, fullPath{fullPath}, name{name}, path{path},
               keyPoints{std::move(keyPoints)}, extension{extension}, descriptors{descriptors} { }
 
+    Image::Image(const std::shared_ptr<Image> img) : uuid{boost::uuids::random_generator()()},
+                                                     fullPath{img->getFullPath()},
+                                                     name{img->getFileName()},
+                                                     path{img->getPath()},
+                                                     keyPoints{img->getKeyPoints()},
+                                                     extension{img->getExtension()},
+                                                     descriptors{img->getDescriptors()} {
+
+    }
+
     const std::vector<cv::KeyPoint> & Image::getKeyPoints() const {
         return keyPoints;
     }

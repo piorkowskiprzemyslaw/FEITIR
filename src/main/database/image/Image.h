@@ -32,7 +32,7 @@ namespace feitir {
         const Extension extension;
         // vector of keypoints locations
         const std::vector<cv::KeyPoint> keyPoints;
-        // each row of descriptors matrix represents SIFT descriptor value in respectively choosen keyPoint
+        // each row of descriptors matrix represents SIFT descriptor value in respectively chosen keyPoint
         const cv::Mat descriptors;
 
     protected:
@@ -44,6 +44,8 @@ namespace feitir {
               const Extension extension,
               const std::vector<cv::KeyPoint> && keyPoints,
               const cv::Mat descriptors);
+
+        Image(const std::shared_ptr<Image> img);
 
         const std::vector<cv::KeyPoint>& getKeyPoints() const;
         const std::string &getFullPath() const;

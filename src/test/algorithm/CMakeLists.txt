@@ -1,1 +1,2 @@
 add_subdirectory(dictionary)
+add_subdirectory(BSIFT)
