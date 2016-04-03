@@ -1,0 +1,5 @@
+add_executable(InvertedFileIndexer_TEST InvertedFileIndexer_TEST.cpp)
+
+target_link_libraries(InvertedFileIndexer_TEST algorithm ${Boost_LIBRARIES})
+
+add_test(src/test/algorithm/indexer/InvertedFileIndexer_TEST InvertedFileIndexer_TEST)

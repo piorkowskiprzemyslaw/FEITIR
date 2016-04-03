@@ -5,6 +5,8 @@
 #ifndef FEITIR_BAGOFWORDS_H
 #define FEITIR_BAGOFWORDS_H
 
+#include "src/main/algorithm/indexer/inverted_file/InvertedFileIndexer.h"
+
 namespace feitir {
 
     class BagOfWords {
