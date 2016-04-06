@@ -33,6 +33,11 @@ namespace feitir {
         return nullptr;
     }
 
+    const CategoryPtr CategoryFactory::createCategory(const CategoryPtr category,
+                                                      const std::vector<ImagePtr> &&images) const {
+        return std::make_shared<Category>(category->getName(), category->getPath(), std::move(images));
+    }
+
     const std::string CategoryFactory::categoryName(const std::string &rootPath,
                                                     const std::string &categoryPath) const {
         std::string name = categoryPath;

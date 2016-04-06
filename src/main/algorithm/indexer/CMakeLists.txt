@@ -1,10 +1,7 @@
 set(INDEXER_SOURCE_FILES
-        Parameters.cpp
-        Query.cpp
-        Result.cpp
         inverted_file/InvertedFileIndexer.cpp
         inverted_file/IFConfig.cpp)
 
 add_library(indexer STATIC ${INDEXER_SOURCE_FILES})
 
-target_link_libraries(indexer database)
+target_link_libraries(indexer database ${OpenCV_LIBRARIES})

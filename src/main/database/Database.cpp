@@ -7,8 +7,8 @@
 namespace feitir {
 
     Database::Database(const std::string &rootPath,
-                               const std::vector<CategoryPtr> &&categories,
-                               const std::vector<ImagePtr> &&images)
+                       const std::vector<CategoryPtr> &&categories,
+                       const std::vector<ImagePtr> &&images)
             : rootPath{rootPath}, categories{std::move(categories)}, images{std::move(images)} { }
 
     const std::string &Database::getRootPath() const {

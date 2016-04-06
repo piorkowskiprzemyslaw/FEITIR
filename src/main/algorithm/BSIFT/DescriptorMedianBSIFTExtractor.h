@@ -22,7 +22,8 @@ namespace feitir {
     protected:
         BSIFT processRow(cv::Mat row);
     public:
-        virtual ImageBSIFTPtr extractBSIFT(const ImagePtr image);
+        virtual ImageBSIFTPtr extractImageBSIFT(const ImagePtr image);
+
     };
 
 }

@@ -17,9 +17,9 @@ namespace feitir {
     class BSIFTExtractor {
     public:
         virtual ~BSIFTExtractor();
-        virtual ImageBSIFTPtr extractBSIFT(const ImagePtr image) = 0;
-        virtual CategoryPtr extractBSIFT(const CategoryPtr category);
-        virtual DatabasePtr extractBSIFT(const DatabasePtr database);
+        virtual ImageBSIFTPtr extractImageBSIFT(const ImagePtr image) = 0;
+        virtual CategoryPtr extractCategoryBSIFT(const CategoryPtr category);
+        virtual DatabasePtr extractDatabaseBSIFT(const DatabasePtr database);
     };
 
 }

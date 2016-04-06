@@ -30,29 +30,39 @@ namespace feitir {
         const std::string path;
         // Enum representing file extension
         const Extension extension;
-        // vector of keypoints locations
-        const std::vector<cv::KeyPoint> keyPoints;
         // each row of descriptors matrix represents SIFT descriptor value in respectively chosen keyPoint
         const cv::Mat descriptors;
+        // mapping from original descriptor value to mapped
+        const std::vector<cv::DMatch> matches;
 
     protected:
 
     public:
-        Image(const std::string & name,
-              const std::string & fullPath,
-              const std::string & path,
+        Image(const std::string &name,
+              const std::string &fullPath,
+              const std::string &path,
               const Extension extension,
-              const std::vector<cv::KeyPoint> && keyPoints,
               const cv::Mat descriptors);
+
+        Image(const std::string &name,
+              const std::string &fullPath,
+              const std::string &path,
+              const Extension extension,
+              const std::vector<cv::DMatch>&& matches);
 
         Image(const std::shared_ptr<Image> img);
 
-        const std::vector<cv::KeyPoint>& getKeyPoints() const;
+        Image(const std::shared_ptr<Image> img,
+              const std::vector<cv::DMatch>&& matches);
+
+        virtual ~Image();
+
         const std::string &getFullPath() const;
         const std::string &getFileName() const;
         const Extension &getExtension() const;
-        const cv::Mat &getDescriptors() const;
+        const cv::Mat getDescriptors() const;
         const std::string &getPath() const;
+        const std::vector<cv::DMatch> & getMatches() const;
     };
 
     typedef std::shared_ptr<Image> ImagePtr;

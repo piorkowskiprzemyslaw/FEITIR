@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <vector>
+#include <src/main/algorithm/vocabulary/VocabularyConfig.h>
 #include "src/main/database/Database.h"
 
 namespace feitir {
@@ -14,9 +15,12 @@ namespace feitir {
     class IFParameters {
     private:
         DatabasePtr database;
+        VocabularyTypePtr vocabulary;
+
     public:
-        IFParameters(const DatabasePtr &database);
+        IFParameters(const DatabasePtr &database, const VocabularyTypePtr vocabulary);
         const DatabasePtr & getDatabase() const;
+        const VocabularyTypePtr getVocabulary() const;
     };
 
     class IFQuery {
@@ -24,7 +28,7 @@ namespace feitir {
         ImagePtr img;
     public:
         IFQuery(const ImagePtr &img);
-        const ImagePtr & getImg() const;
+        const ImagePtr getImg() const;
     };
 
     class IFResult {

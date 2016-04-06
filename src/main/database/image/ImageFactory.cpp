@@ -10,7 +10,6 @@ namespace feitir {
     const std::string ImageFactory::IMAGE_DATA_FILE_PREFIX = ".";
 
     ImageFactory::ImageFactory() : fileNameRegex{"(([^\\/\\.]+).([^\\/\\.]+))$"},
-                                   KEYPOINTS_FILE_NODE_NAME{"keypoints"},
                                    DESCRIPTORS_FILE_NODE_NAME{"descriptors"} {
         sift = cv::xfeatures2d::SIFT::create();
     }
@@ -31,10 +30,9 @@ namespace feitir {
         if (extension == Extension::UNKNOWN)
             return nullptr;
 
-        std::vector<cv::KeyPoint> keyPoints;
         cv::Mat descriptors;
-        loadImageData(path, fileName, keyPoints, descriptors);
-        auto imgPtr = std::make_shared<Image>(fileName, fullPath, path, extension, std::move(keyPoints), descriptors);
+        loadImageData(path, fileName, descriptors);
+        auto imgPtr = std::make_shared<Image>(fileName, fullPath, path, extension, descriptors);
         saveImageData(imgPtr);
         return imgPtr;
     }
@@ -43,15 +41,14 @@ namespace feitir {
         return std::make_shared<Image>(img);
     }
 
-    void ImageFactory::loadImageData(const std::string& path, const std::string& fileName,
-                                     std::vector<cv::KeyPoint> &keyPoints, cv::Mat& descriptors) const {
+    void ImageFactory::loadImageData(const std::string& path, const std::string& fileName, cv::Mat& descriptors) const {
+        std::vector<cv::KeyPoint> keyPoints;
         std::string imageDataFileName = this->imageDataFile(path, fileName);
         if (!boost::filesystem::exists(imageDataFileName)) {
             cv::Mat image = cv::imread(path + fileName);
             sift->detectAndCompute(image, cv::noArray(), keyPoints, descriptors);
         } else {
             cv::FileStorage fs(imageDataFileName.c_str(), cv::FileStorage::READ);
-            cv::read(fs[KEYPOINTS_FILE_NODE_NAME], keyPoints);
             cv::read(fs[DESCRIPTORS_FILE_NODE_NAME], descriptors);
             fs.release();
         }
@@ -99,7 +96,6 @@ namespace feitir {
         std::string imageDataFile = this->imageDataFile(img->getPath(), img->getFileName());
         if (!boost::filesystem::exists(imageDataFile)) {
             cv::FileStorage fs(imageDataFile.c_str(), cv::FileStorage::WRITE);
-            cv::write(fs, KEYPOINTS_FILE_NODE_NAME, img->getKeyPoints());
             cv::write(fs, DESCRIPTORS_FILE_NODE_NAME, img->getDescriptors());
             fs.release();
         }
@@ -111,6 +107,10 @@ namespace feitir {
 
     bool ImageFactory::deleteImageData(const std::shared_ptr<Image> img) const {
         return boost::filesystem::remove(imageDataFile(img->getPath(), img->getFileName()));
+    }
+
+    const ImagePtr ImageFactory::createImage(const ImagePtr img, const std::vector<cv::DMatch> &&matches) const {
+        return std::make_shared<Image>(img, std::move(matches));
     }
 
 }

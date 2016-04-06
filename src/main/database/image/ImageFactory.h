@@ -21,7 +21,6 @@ namespace feitir {
     class ImageFactory {
     private:
         const std::regex fileNameRegex;
-        const std::string KEYPOINTS_FILE_NODE_NAME;
         const std::string DESCRIPTORS_FILE_NODE_NAME;
         cv::Ptr<cv::xfeatures2d::SIFT> sift;
 
@@ -31,17 +30,19 @@ namespace feitir {
         Extension extractFileExtension(const std::string& path) const noexcept;
         std::string extractPath(const std::string &fullPath) const noexcept;
         const std::string imageDataFile(const std::string &path, const std::string &fileName) const noexcept;
-        void loadImageData(const std::string &path, const std::string &fileName,
-                           std::vector<cv::KeyPoint> &keyPoints, cv::Mat& descriptors) const;
+        void loadImageData(const std::string &path, const std::string &fileName, cv::Mat& descriptors) const;
     public:
         static const std::string IMAGE_DATA_FILE_PREFIX;
         static const std::string IMAGE_DATA_FILE_POSTFIX;
 
         explicit ImageFactory();
         const ImagePtr createImage(const std::string &fullPath) const;
-        const ImagePtr createImage(const std::string &fullPath, const std::string &path,
+        const ImagePtr createImage(const std::string &fullPath,
+                                   const std::string &path,
                                    const std::string &fileName) const;
         const ImagePtr createImage(const ImagePtr img) const;
+        const ImagePtr createImage(const ImagePtr img,
+                                   const std::vector<cv::DMatch>&& matches) const;
         void saveImageData(const ImagePtr img) const;
         bool deleteImageData(const ImagePtr img) const;
     };

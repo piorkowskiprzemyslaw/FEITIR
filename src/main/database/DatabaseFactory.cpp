@@ -31,6 +31,12 @@ namespace feitir {
         return std::make_shared<Database>(rootDir, std::move(categories), std::move(images));
     }
 
+    const DatabasePtr DatabaseFactory::createDatabase(const DatabasePtr database,
+                                                      const std::vector<CategoryPtr> &&categories,
+                                                      const std::vector<ImagePtr> &&images) const {
+        return std::make_shared<Database>(database->getRootPath(), std::move(categories), std::move(images));
+    }
+
     std::list<std::string> DatabaseFactory::findCategoriesRoots(const std::string &root, bool nestedCategories) const {
         return util.findInDirectory(root, nestedCategories, [] (const boost::filesystem::path &path) {
             return boost::filesystem::is_directory(path);

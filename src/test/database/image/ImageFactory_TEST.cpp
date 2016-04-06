@@ -6,17 +6,17 @@
 #define BOOST_TEST_MODULE FEITR_ImageFactory test
 
 #include <iostream>
-#include "test_config_global.h"
+#include "test_global.h"
 #include <boost/test/unit_test.hpp>
 #include <src/main/database/image/ImageFactory.h>
 #include <opencv2/opencv.hpp>
-#include <src/main/algorithm/vocabulary/KMeansVocabulary.h>
+#include <src/main/algorithm/vocabulary/kmeans/KMeansVocabularyBuilder.h>
 
 typedef cv::xfeatures2d::SIFT SIFT;
 using namespace feitir;
 
 struct ImageFixture {
-    const KMeansVocabulary vocabularyBuilder;
+    const KMeansVocabularyBuilder vocabularyBuilder;
     const ImageFactory imageFactory;
     const std::string imgName;
     const std::string resourcePath;
@@ -28,7 +28,7 @@ struct ImageFixture {
 
     ImageFixture() : resourcePath{resourcesRootDir() + "database/image/"},
                      imgName{"Lenna.png"},
-                     vocabularyFileName{"vocabulary.yml"},
+                     vocabularyFileName{"vocabularyMatrix.yml"},
                      keyPointsFilePath{resourcePath + ImageFactory::IMAGE_DATA_FILE_PREFIX
                                        + "Lenna.png" + ImageFactory::IMAGE_DATA_FILE_POSTFIX},
                      image{cv::imread(resourcePath + imgName, CV_LOAD_IMAGE_UNCHANGED)} {
@@ -59,12 +59,6 @@ BOOST_FIXTURE_TEST_SUITE(ImageFactory_TEST, ImageFixture)
         BOOST_CHECK_EQUAL(img->getFileName(), imgName);
         BOOST_CHECK_EQUAL(img->getPath(), resourcePath);
         BOOST_CHECK(img->getExtension() == Extension::PNG);
-        BOOST_REQUIRE_GT(img->getKeyPoints().size(), 0);
-        BOOST_CHECK_EQUAL(img->getKeyPoints().size(), keyPoints.size());
-
-        for (int i = 0; i < keyPoints.size(); ++i) {
-            BOOST_CHECK(keyPointsEqual(img->getKeyPoints()[i], keyPoints[i]));
-        }
 
         BOOST_CHECK(cv::countNonZero(descriptors != img->getDescriptors()) == 0);
     }
@@ -81,12 +75,6 @@ BOOST_FIXTURE_TEST_SUITE(ImageFactory_TEST, ImageFixture)
         BOOST_CHECK_EQUAL(imgFromFile->getFileName(), imgName);
         BOOST_CHECK_EQUAL(imgFromFile->getPath(), resourcePath);
         BOOST_CHECK(imgFromFile->getExtension() == Extension::PNG);
-        BOOST_REQUIRE_GT(imgFromFile->getKeyPoints().size(), 0);
-        BOOST_CHECK_EQUAL(imgFromFile->getKeyPoints().size(), keyPoints.size());
-
-        for (int i = 0; i < keyPoints.size(); ++i) {
-            BOOST_CHECK(keyPointsEqual(imgFromFile->getKeyPoints()[i], keyPoints[i]));
-        }
 
         BOOST_CHECK(cv::countNonZero(descriptors != imgFromFile->getDescriptors()) == 0);
         BOOST_CHECK(imageFactory.deleteImageData(img));
@@ -128,11 +116,6 @@ BOOST_FIXTURE_TEST_SUITE(ImageFactory_TEST, ImageFixture)
         BOOST_CHECK_EQUAL(img->getFileName(), cpyImg->getFileName());
         BOOST_CHECK_EQUAL(img->getPath(), cpyImg->getPath());
         BOOST_CHECK(img->getExtension() == cpyImg->getExtension());
-        BOOST_REQUIRE_EQUAL(img->getKeyPoints().size(), cpyImg->getKeyPoints().size());
-
-        for (int i = 0; i < img->getKeyPoints().size(); ++i) {
-            BOOST_CHECK(keyPointsEqual(cpyImg->getKeyPoints()[i], img->getKeyPoints()[i]));
-        }
 
         BOOST_CHECK(cv::countNonZero(cpyImg->getDescriptors() != img->getDescriptors()) == 0);
     }

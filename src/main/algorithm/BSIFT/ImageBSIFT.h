@@ -19,10 +19,13 @@ namespace feitir {
     protected:
     public:
         ImageBSIFT(const std::string &name, const std::string &fullPath, const std::string &path,
-                   const Extension extension, const std::vector<cv::KeyPoint> &&keyPoints,
-                   const cv::Mat &descriptors, const std::vector<BSIFT> &&bsift);
+                   const Extension extension, const cv::Mat &descriptors, const std::vector<BSIFT> &&bsift);
 
         ImageBSIFT(const ImagePtr image, const std::vector<BSIFT>&& bsift);
+
+        ImageBSIFT(const std::shared_ptr<ImageBSIFT> imageBSIFTPtr, const std::vector<cv::DMatch>&& matches);
+
+        virtual ~ImageBSIFT();
 
         const std::vector<BSIFT> & getBsift() const;
     };

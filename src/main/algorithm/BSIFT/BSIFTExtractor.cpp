@@ -10,26 +10,26 @@ namespace feitir {
 
     }
 
-    CategoryPtr BSIFTExtractor::extractBSIFT(const CategoryPtr category) {
+    CategoryPtr BSIFTExtractor::extractCategoryBSIFT(const CategoryPtr category) {
         std::vector<ImagePtr> bsiftImages(category->getImages().size());
 
         for (auto& img : category->getImages()) {
-            bsiftImages.push_back(extractBSIFT(img));
+            bsiftImages.push_back(extractImageBSIFT(img));
         }
 
         return std::make_shared<Category>(category->getName(), category->getPath(), std::move(bsiftImages));
     }
 
-    DatabasePtr BSIFTExtractor::extractBSIFT(const DatabasePtr database) {
-        std::vector<ImagePtr> bsiftImages(database->getImages().size());
-        std::vector<CategoryPtr> bsiftCategories(database->getCategories().size());
+    DatabasePtr BSIFTExtractor::extractDatabaseBSIFT(const DatabasePtr database) {
+        std::vector<ImagePtr> bsiftImages;
+        std::vector<CategoryPtr> bsiftCategories;
 
         for (auto& img : database->getImages()) {
-            bsiftImages.push_back(extractBSIFT(img));
+            bsiftImages.push_back(extractImageBSIFT(img));
         }
 
         for (auto& cat : database->getCategories()) {
-            bsiftCategories.push_back(extractBSIFT(cat));
+            bsiftCategories.push_back(extractCategoryBSIFT(cat));
         }
 
         return std::make_shared<Database>(database->getRootPath(), std::move(bsiftCategories), std::move(bsiftImages));

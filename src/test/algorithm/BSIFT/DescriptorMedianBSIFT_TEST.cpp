@@ -6,7 +6,7 @@
 #define BOOST_TEST_MODULE FEITR_DescriptorMedianBSIFTExtractor_test
 
 #include <iostream>
-#include "test_config_global.h"
+#include "test_global.h"
 #include <boost/test/unit_test.hpp>
 #include "src/main/algorithm/BSIFT/DescriptorMedianBSIFTExtractor.h"
 #include "src/main/database/image/ImageFactory.h"
@@ -58,15 +58,6 @@ struct DescriptorMedianBSIFTExtractorFixture {
 
         return binaryDescriptor;
     }
-
-    void printMatrixInternals(cv::Mat mat) {
-        for(int i = 0; i < 4; ++i) {
-            for(int j = 0; j < mat.cols; ++j) {
-                std::cout << mat.at<float>(i,j) << " ";
-            }
-            std::cout << std::endl;
-        }
-    }
 };
 
 BOOST_FIXTURE_TEST_SUITE(DescriptorMedianBSIFTExtractor_TEST, DescriptorMedianBSIFTExtractorFixture)
@@ -75,7 +66,7 @@ BOOST_FIXTURE_TEST_SUITE(DescriptorMedianBSIFTExtractor_TEST, DescriptorMedianBS
     {
         auto img = imageFactory.createImage(resourcePath + imagePath + lennaImage);
         BOOST_REQUIRE(img != nullptr);
-        auto bsiftImg = descriptorMedianBSIFT.extractBSIFT(img);
+        auto bsiftImg = descriptorMedianBSIFT.extractImageBSIFT(img);
         BOOST_REQUIRE(bsiftImg != nullptr);
 
         for (int i = 0; i < bsiftImg->getDescriptors().rows; ++i) {

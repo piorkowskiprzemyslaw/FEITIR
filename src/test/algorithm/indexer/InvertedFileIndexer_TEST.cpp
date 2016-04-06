@@ -6,7 +6,7 @@
 #define BOOST_TEST_MODULE FEITR_InvertedFileIndexer_test
 
 #include <iostream>
-#include "test_config_global.h"
+#include "test_global.h"
 #include <boost/test/unit_test.hpp>
 #include "src/main/algorithm/indexer/inverted_file/InvertedFileIndexer.h"
 

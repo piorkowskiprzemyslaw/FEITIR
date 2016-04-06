@@ -1,3 +1,3 @@
-add_subdirectory(dictionary)
+add_subdirectory(vocabulary)
 add_subdirectory(BSIFT)
 add_subdirectory(indexer)

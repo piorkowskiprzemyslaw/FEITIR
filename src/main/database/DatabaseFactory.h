@@ -30,7 +30,9 @@ namespace feitir {
         explicit DatabaseFactory();
         const DatabasePtr createDatabase(const std::string& rootDir, bool nestedCategories) const;
         const DatabasePtr createDatabase(const std::string& rootDir) const;
-
+        const DatabasePtr createDatabase(const DatabasePtr database,
+                                         const std::vector<CategoryPtr> &&categories,
+                                         const std::vector<ImagePtr> &&images) const;
     };
 }
 

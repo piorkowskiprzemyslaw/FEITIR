@@ -1,5 +1,0 @@
-add_executable(KMeansDictionary_TEST KMeansDictionary_TEST.cpp)
-
-target_link_libraries(KMeansDictionary_TEST vocabulary image ${Boost_LIBRARIES})
-
-add_test(src/test/algorithm/vocabulary/KMeansDictionary_TEST KMeansDictionary_TEST)

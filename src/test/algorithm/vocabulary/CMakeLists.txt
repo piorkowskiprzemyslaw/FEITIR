@@ -1,0 +1,5 @@
+add_executable(KMeansVocabulary_TEST KMeansVocabulary_TEST.cpp)
+
+target_link_libraries(KMeansVocabulary_TEST vocabulary database ${Boost_LIBRARIES})
+
+add_test(src/test/algorithm/vocabularyMatrix/KMeansVocabulary_TEST KMeansVocabulary_TEST)

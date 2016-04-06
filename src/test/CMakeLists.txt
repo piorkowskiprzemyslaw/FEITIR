@@ -1,4 +1,4 @@
-configure_file(test_config_global.h.in ${CMAKE_BINARY_DIR}/generated/test_config_global.h)
+configure_file(test_global.h.in ${CMAKE_BINARY_DIR}/generated/test_global.h)
 include_directories(${CMAKE_BINARY_DIR}/generated/)
 
 add_subdirectory(database)

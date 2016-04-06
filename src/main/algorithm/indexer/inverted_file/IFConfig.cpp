@@ -6,7 +6,8 @@
 
 namespace feitir {
 
-    IFParameters::IFParameters(const DatabasePtr &database) : database{database} {
+    IFParameters::IFParameters(const DatabasePtr &database, const VocabularyTypePtr vocabulary)
+            : database{database}, vocabulary{vocabulary} {
 
     }
 
@@ -16,7 +17,7 @@ namespace feitir {
 
     IFQuery::IFQuery(const ImagePtr &img) : img(img) { }
 
-    const ImagePtr &IFQuery::getImg() const {
+    const ImagePtr IFQuery::getImg() const {
         return img;
     }
 
@@ -30,4 +31,7 @@ namespace feitir {
         this->images.push_back(std::move(element));
     }
 
+    const VocabularyTypePtr IFParameters::getVocabulary() const {
+        return vocabulary;
+    }
 }
