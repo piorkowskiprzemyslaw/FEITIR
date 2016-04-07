@@ -18,7 +18,7 @@ namespace feitir {
     private:
         const VocabularyTypePtr vocabulary;
         cv::BFMatcher matcher;
-        std::unordered_map<int, ImagePtr> invertedFile;
+        std::unordered_multimap<int, ImagePtr> invertedFile;
 
     protected:
         void processImage(const ImagePtr img);

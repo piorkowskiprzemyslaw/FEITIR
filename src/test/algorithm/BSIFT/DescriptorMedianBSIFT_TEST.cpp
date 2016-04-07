@@ -8,7 +8,9 @@
 #include <iostream>
 #include "test_global.h"
 #include <boost/test/unit_test.hpp>
-#include "src/main/algorithm/BSIFT/DescriptorMedianBSIFTExtractor.h"
+#include "src/main/algorithm/BSIFT/descriptor_median/DescriptorMedianBSIFTExtractor.h"
+#include "src/main/algorithm/vocabulary/kmeans/KMeansVocabularyBuilder.h"
+#include "src/main/database/DatabaseFactory.h"
 #include "src/main/database/image/ImageFactory.h"
 
 using namespace feitir;
@@ -17,20 +19,15 @@ struct DescriptorMedianBSIFTExtractorFixture {
     const std::string resourcePath;
     const std::string imagePath;
     const std::string lennaImage;
-    const std::string firstDirPath;
-    const std::string secondDirPath;
-    const std::string thirdDirPath;
     ImageFactory imageFactory;
+    DatabaseFactory databaseFactory;
+    int means;
     DescriptorMedianBSIFTExtractor descriptorMedianBSIFT;
 
     DescriptorMedianBSIFTExtractorFixture() : resourcePath{resourcesRootDir() + "database/"},
                                               imagePath{"image/"},
                                               lennaImage{"Lenna.png"},
-                                              firstDirPath{"dir1/"},
-                                              secondDirPath{"dir2/"},
-                                              thirdDirPath{"dir3/"} {
-
-    }
+                                              means{5} { }
 
     float dummyMedianFind(const std::vector<float>& val) {
         std::vector<float> localCopy(val);
@@ -43,14 +40,14 @@ struct DescriptorMedianBSIFTExtractorFixture {
         }
     }
 
-    std::vector<bool> medianBinaryDescriptor(cv::Mat row) {
+    std::bitset<128> medianBinaryDescriptor(cv::Mat row) {
         std::vector<float> vec(row.cols);
         for (int i = 0; i < row.cols; ++i) {
             vec[i] = row.at<float>(0, i);
         }
 
         float median = dummyMedianFind(vec);
-        std::vector<bool> binaryDescriptor(row.cols);
+        std::bitset<128> binaryDescriptor;
 
         for (int i = 0; i < row.cols; ++i) {
             binaryDescriptor[i] = vec[i] > median;
@@ -62,7 +59,7 @@ struct DescriptorMedianBSIFTExtractorFixture {
 
 BOOST_FIXTURE_TEST_SUITE(DescriptorMedianBSIFTExtractor_TEST, DescriptorMedianBSIFTExtractorFixture)
 
-    BOOST_AUTO_TEST_CASE(FirstTestCase)
+    BOOST_AUTO_TEST_CASE(BasicTestCase)
     {
         auto img = imageFactory.createImage(resourcePath + imagePath + lennaImage);
         BOOST_REQUIRE(img != nullptr);
@@ -70,9 +67,8 @@ BOOST_FIXTURE_TEST_SUITE(DescriptorMedianBSIFTExtractor_TEST, DescriptorMedianBS
         BOOST_REQUIRE(bsiftImg != nullptr);
 
         for (int i = 0; i < bsiftImg->getDescriptors().rows; ++i) {
-            std::vector<bool> bdescriptor = medianBinaryDescriptor(bsiftImg->getDescriptors().row(i));
-            BOOST_REQUIRE_EQUAL_COLLECTIONS(bsiftImg->getBsift()[i].begin(), bsiftImg->getBsift()[i].end(),
-                                            bdescriptor.begin(), bdescriptor.end());
+            std::bitset<128> bdescriptor = medianBinaryDescriptor(bsiftImg->getDescriptors().row(i));
+            BOOST_REQUIRE(bsiftImg->getBsift()[i] == bdescriptor);
         }
     }
 
@@ -80,6 +76,53 @@ BOOST_FIXTURE_TEST_SUITE(DescriptorMedianBSIFTExtractor_TEST, DescriptorMedianBS
     {
         BOOST_REQUIRE_CLOSE_FRACTION(dummyMedianFind({1, 2, 3}), 2, 0.1);
         BOOST_REQUIRE_CLOSE_FRACTION(dummyMedianFind({1, 2, 3, 4}), 2.5, 0.1);
+    }
+
+    BOOST_AUTO_TEST_CASE(BSIFTDatabaseTranslator)
+    {
+        const DatabasePtr database = databaseFactory.createDatabase(resourcePath + imagePath);
+
+        BOOST_REQUIRE(database != nullptr);
+        BOOST_CHECK_EQUAL(database->getImages().size(), 1);
+        BOOST_CHECK_EQUAL(database->getCategories().size(), 0);
+
+        auto img = database->getImages()[0];
+
+        BOOST_REQUIRE(img != nullptr);
+        BOOST_CHECK_EQUAL(img->getMatches().size(), 0);
+        BOOST_CHECK_GT(img->getDescriptors().rows, 0);
+
+        KMeansVocabularyBuilder kMeansVocabularyBuilder;
+        auto vocabulary = kMeansVocabularyBuilder.build(std::make_shared<KMeansParameter>(img->getDescriptors(), means));
+
+        DescriptorMedianBSIFTExtractor descriptorMedianBSIFTExtractor;
+        auto bsiftDatabase = descriptorMedianBSIFTExtractor.extractDatabaseBSIFT(database);
+
+        BOOST_REQUIRE(bsiftDatabase != nullptr);
+        BOOST_CHECK_EQUAL(bsiftDatabase->getImages().size(), 1);
+        BOOST_CHECK_EQUAL(bsiftDatabase->getCategories().size(), 0);
+
+        auto bsiftPtr =
+                std::dynamic_pointer_cast<DescriptorMedianBSIFTExtractor::ImageBSIFT>(bsiftDatabase->getImages()[0]);
+
+        BOOST_REQUIRE(bsiftPtr != nullptr);
+        BOOST_CHECK_EQUAL(bsiftPtr->getMatches().size(), 0);
+        BOOST_CHECK_GT(bsiftPtr->getDescriptors().rows, 0);
+        BOOST_CHECK_EQUAL(bsiftPtr->getBsift().size(), img->getDescriptors().rows);
+
+        auto transformedBSIFTDatabase = descriptorMedianBSIFTExtractor.getDatabaseTranslatorPtr()->transformDatabase(vocabulary, bsiftDatabase);
+
+        BOOST_REQUIRE(transformedBSIFTDatabase != nullptr);
+        BOOST_CHECK_EQUAL(transformedBSIFTDatabase->getImages().size(), 1);
+        BOOST_CHECK_EQUAL(transformedBSIFTDatabase->getCategories().size(), 0);
+
+        auto transformedBSIFTImage =
+                std::dynamic_pointer_cast<DescriptorMedianBSIFTExtractor::ImageBSIFT>(transformedBSIFTDatabase->getImages()[0]);
+
+        BOOST_REQUIRE(transformedBSIFTImage != nullptr);
+        BOOST_CHECK_GT(transformedBSIFTImage->getMatches().size(), 0);
+        BOOST_CHECK_EQUAL(transformedBSIFTImage->getDescriptors().rows, 0);
+        BOOST_CHECK_EQUAL(transformedBSIFTImage->getBsift().size(), img->getDescriptors().rows);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,5 +1,8 @@
 add_executable(KMeansVocabulary_TEST KMeansVocabulary_TEST.cpp)
+add_executable(DatabaseTranslator_TEST DatabaseTranslator_TEST.cpp)
 
 target_link_libraries(KMeansVocabulary_TEST vocabulary database ${Boost_LIBRARIES})
+target_link_libraries(DatabaseTranslator_TEST database vocabulary)
 
-add_test(src/test/algorithm/vocabularyMatrix/KMeansVocabulary_TEST KMeansVocabulary_TEST)
+add_test(src/test/algorithm/vocabulary/KMeansVocabulary_TEST KMeansVocabulary_TEST)
+add_test(src/test/algorithm/vocabulary/DatabaseTranslator_TEST DatabaseTranslator_TEST)

@@ -1,6 +1,8 @@
 set(VOCABULARY_SOURCE_FILES
+        DatabaseTranslator.cpp
         kmeans/KMeansVocabularyBuilder.cpp
-        kmeans/KMeansConfig.cpp VocabularyConfig.cpp VocabularyConfig.h)
+        kmeans/KMeansConfig.cpp
+        VocabularyConfig.h)
 
 add_library(vocabulary STATIC ${VOCABULARY_SOURCE_FILES})
 

@@ -8,7 +8,6 @@
 namespace feitir {
     InvertedFileIndexer::InvertedFileIndexer(const IFParametersPtr &parameters) : Indexer{parameters}, vocabulary{parameters->getVocabulary()} {
         DatabasePtr database = parameters->getDatabase();
-        VocabularyTypePtr vocabulary = parameters->getVocabulary();
 
         for (auto image : database->getImages()) {
             processImage(image);
@@ -22,11 +21,15 @@ namespace feitir {
     }
 
     IFResultPtr InvertedFileIndexer::query(IFQueryPtr query) {
+        IFResultPtr resultPtr = std::make_shared<IFResult>();
         ImagePtr img = query->getImg();
-        std::vector<std::pair<ImagePtr, float>> result;
+        for (auto& match : img->getMatches()) {
+            auto dbImages = invertedFile.find(match.trainIdx);
+            while (dbImages != invertedFile.end()) {
 
-
-        return nullptr;
+            }
+        }
+        return resultPtr;
     }
 
     InvertedFileIndexer::~InvertedFileIndexer() {
@@ -36,8 +39,7 @@ namespace feitir {
     void InvertedFileIndexer::processImage(const ImagePtr img) {
         std::vector<cv::DMatch> matches;
         matcher.match(img->getDescriptors(), vocabulary->getVocabularyMatrix(), matches);
-
-        for (auto match: matches) {
+        for (auto& match : img->getMatches()) {
             invertedFile.insert({match.trainIdx, img});
         }
     }

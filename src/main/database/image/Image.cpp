@@ -39,7 +39,6 @@ namespace feitir {
                                                             path{img->getPath()},
                                                             extension{img->getExtension()},
                                                             matches{std::move(matches)} {
-
     }
 
     const std::string &Image::getFullPath() const {

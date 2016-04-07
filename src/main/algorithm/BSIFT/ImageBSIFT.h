@@ -6,31 +6,45 @@
 #define FEITIR_IMAGEBSIFT_H
 
 #include <iostream>
+#include <bitset>
 #include "src/main/database/image/Image.h"
 
 namespace feitir {
 
-    typedef std::vector<bool> BSIFT;
-
+    /**
+     * Template representing Image with Binary SIFT descriptors value computed. Each Binary SIFT is N bits long.
+     */
+    template <std::size_t N>
     class ImageBSIFT : public Image {
+    public:
+        /**
+         * Single descriptor type
+         */
+        using BSIFT = std::bitset<N>;
+
+        ImageBSIFT(const std::string &name, const std::string &fullPath, const std::string &path,
+                   const Extension extension, const cv::Mat &descriptors, const std::vector<BSIFT> &&bsift)
+                : Image{name, fullPath, path, extension, descriptors}, bsift{std::move(bsift)} { }
+
+        ImageBSIFT(const ImagePtr image, const std::vector<BSIFT>&& bsift) : Image{image}, bsift{std::move(bsift)} { }
+
+        ImageBSIFT(const std::shared_ptr<ImageBSIFT<N>> imageBSIFTPtr,
+                   const std::vector<cv::DMatch>&& matches) : Image(imageBSIFTPtr,
+                                                                    std::move(matches)),
+                                                              bsift{imageBSIFTPtr->getBsift()} { }
+
+        virtual ~ImageBSIFT() { }
+
+        const std::vector<BSIFT> &getBsift() const {
+            return bsift;
+        }
+
     private:
         const std::vector<BSIFT> bsift;
-
-    protected:
-    public:
-        ImageBSIFT(const std::string &name, const std::string &fullPath, const std::string &path,
-                   const Extension extension, const cv::Mat &descriptors, const std::vector<BSIFT> &&bsift);
-
-        ImageBSIFT(const ImagePtr image, const std::vector<BSIFT>&& bsift);
-
-        ImageBSIFT(const std::shared_ptr<ImageBSIFT> imageBSIFTPtr, const std::vector<cv::DMatch>&& matches);
-
-        virtual ~ImageBSIFT();
-
-        const std::vector<BSIFT> & getBsift() const;
     };
 
-    typedef std::shared_ptr<ImageBSIFT> ImageBSIFTPtr;
+    template <std::size_t N>
+    using ImageBSIFTPtr = std::shared_ptr<ImageBSIFT<N>>;
 
 }
 

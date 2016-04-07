@@ -13,16 +13,18 @@
 #include <opencv2/core/mat.hpp>
 #include "src/main/util/Util.h"
 #include "src/main/algorithm/BSIFT/BSIFTExtractor.h"
+#include "src/main/algorithm/BSIFT/BSIFTDatabaseTranslator.h"
 
 namespace feitir {
 
-    class DescriptorMedianBSIFTExtractor : public BSIFTExtractor {
+    class DescriptorMedianBSIFTExtractor : public BSIFTExtractor<128> {
     private:
         Util util;
     protected:
         BSIFT processRow(cv::Mat row);
     public:
         virtual ImageBSIFTPtr extractImageBSIFT(const ImagePtr image);
+        virtual DatabaseTranslatorPtr getDatabaseTranslatorPtr() const;
 
     };
 
