@@ -18,6 +18,19 @@ namespace feitir {
         return K;
     }
 
+    KMeansParameter::KMeansParameter(const DatabasePtr database, const int K) : K{K} {
+        for (auto& img : database->getImages()) {
+            data.push_back(img->getDescriptors());
+        }
+
+        for (auto& cat : database->getCategories()) {
+            for (auto& img : cat->getImages()) {
+                data.push_back(img->getDescriptors());
+            }
+        }
+    }
+
+
     KMeansVocabularyType::KMeansVocabularyType(cv::Mat vocabularyMatrix) : vocabularyMatrix{vocabularyMatrix} { }
 
     cv::Mat KMeansVocabularyType::getVocabularyMatrix() const {

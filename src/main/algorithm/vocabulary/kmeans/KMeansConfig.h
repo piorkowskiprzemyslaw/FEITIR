@@ -7,6 +7,7 @@
 
 
 #include <opencv2/core/mat.hpp>
+#include "src/main/database/Database.h"
 #include "src/main/algorithm/vocabulary/VocabularyConfig.h"
 
 namespace feitir {
@@ -20,6 +21,8 @@ namespace feitir {
         const int K;
     public:
         KMeansParameter(cv::Mat data, const int K);
+
+        KMeansParameter(const DatabasePtr database, const int K);
 
         cv::Mat getData() const;
 

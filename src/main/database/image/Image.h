@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include <vector>
+#include <functional>
+#include <boost/functional/hash.hpp>
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -57,6 +59,7 @@ namespace feitir {
 
         virtual ~Image();
 
+        const boost::uuids::uuid & getUuid() const;
         const std::string &getFullPath() const;
         const std::string &getFileName() const;
         const Extension &getExtension() const;
@@ -67,6 +70,21 @@ namespace feitir {
 
     typedef std::shared_ptr<Image> ImagePtr;
 
+}
+
+namespace std
+{
+    template<>
+    struct hash<boost::uuids::uuid>
+    {
+        typedef boost::uuids::uuid argument_type;
+        typedef std::size_t result_type;
+        result_type operator()(argument_type const& uuid) const {
+            return uuid_hasher(uuid);
+        }
+        private:
+            boost::hash<boost::uuids::uuid> uuid_hasher;
+    };
 }
 
 #endif //FEITIR_IMAGE_H

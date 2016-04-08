@@ -69,4 +69,7 @@ namespace feitir {
 
     }
 
+    const boost::uuids::uuid &Image::getUuid() const {
+        return uuid;
+    }
 }

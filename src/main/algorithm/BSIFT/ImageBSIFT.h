@@ -23,14 +23,13 @@ namespace feitir {
         using BSIFT = std::bitset<N>;
 
         ImageBSIFT(const std::string &name, const std::string &fullPath, const std::string &path,
-                   const Extension extension, const cv::Mat &descriptors, const std::vector<BSIFT> &&bsift)
+                   const Extension extension, const cv::Mat &descriptors, std::vector<BSIFT> bsift)
                 : Image{name, fullPath, path, extension, descriptors}, bsift{std::move(bsift)} { }
 
-        ImageBSIFT(const ImagePtr image, const std::vector<BSIFT>&& bsift) : Image{image}, bsift{std::move(bsift)} { }
+        ImageBSIFT(const ImagePtr image, std::vector<BSIFT> bsift) : Image{image}, bsift{std::move(bsift)} { }
 
         ImageBSIFT(const std::shared_ptr<ImageBSIFT<N>> imageBSIFTPtr,
-                   const std::vector<cv::DMatch>&& matches) : Image(imageBSIFTPtr,
-                                                                    std::move(matches)),
+                   std::vector<cv::DMatch> matches) : Image{imageBSIFTPtr, std::move(matches)},
                                                               bsift{imageBSIFTPtr->getBsift()} { }
 
         virtual ~ImageBSIFT() { }

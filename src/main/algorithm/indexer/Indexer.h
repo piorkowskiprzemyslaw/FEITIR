@@ -13,11 +13,9 @@ namespace feitir {
     class Indexer {
 
     public:
-        explicit Indexer(Parameters parameters) {
-
-        }
+        explicit Indexer(Parameters parameters) { };
         virtual Result query(Query query) = 0;
-        virtual ~Indexer();
+        virtual ~Indexer() = default;
     };
 }
 
