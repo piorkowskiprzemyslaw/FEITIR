@@ -26,15 +26,15 @@ namespace feitir {
             });
         images.erase(std::remove(images.begin(), images.end(), nullptr), images.end());
 
-        if (images.size() != 0) {
-            return std::make_shared<Category>(name, path, std::move(images));
+        if (images.size() == 0) {
+            return nullptr;
         }
 
-        return nullptr;
+        return std::make_shared<Category>(name, path, std::move(images));
     }
 
     const CategoryPtr CategoryFactory::createCategory(const CategoryPtr category,
-                                                      const std::vector<ImagePtr> &&images) const {
+                                                      std::vector<ImagePtr> images) const {
         return std::make_shared<Category>(category->getName(), category->getPath(), std::move(images));
     }
 

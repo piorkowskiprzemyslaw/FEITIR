@@ -29,8 +29,8 @@ namespace feitir {
         }
 
         return databaseFactory.createDatabase(database,
-                                              std::forward<std::vector<CategoryPtr>>(categories),
-                                              std::forward<std::vector<ImagePtr>>(rootImage));
+                                              std::move(categories),
+                                              std::move(rootImage));
     }
 
     CategoryPtr DatabaseTranslator::transformCategory(const VocabularyTypePtr vocabulary,
@@ -42,12 +42,12 @@ namespace feitir {
                 images.push_back(img);
             }
         }
-        return categoryFactory.createCategory(category, std::forward<std::vector<ImagePtr>>(images));
+        return categoryFactory.createCategory(category, std::move(images));
     }
 
     ImagePtr DatabaseTranslator::transformImage(const VocabularyTypePtr vocabulary, const ImagePtr image) const {
         std::vector<cv::DMatch> matches;
         matcher.match(image->getDescriptors(), vocabulary->getVocabularyMatrix(), matches);
-        return imageFactory.createImage(image, std::forward<std::vector<cv::DMatch>>(matches));
+        return imageFactory.createImage(image, std::move(matches));
     }
 }

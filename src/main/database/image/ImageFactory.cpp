@@ -109,7 +109,7 @@ namespace feitir {
         return boost::filesystem::remove(imageDataFile(img->getPath(), img->getFileName()));
     }
 
-    const ImagePtr ImageFactory::createImage(const ImagePtr img, const std::vector<cv::DMatch> &&matches) const {
+    const ImagePtr ImageFactory::createImage(const ImagePtr img, std::vector<cv::DMatch> matches) const {
         return std::make_shared<Image>(img, std::move(matches));
     }
 

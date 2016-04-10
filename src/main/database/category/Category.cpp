@@ -6,7 +6,7 @@
 
 namespace feitir {
 
-    Category::Category(const std::string &name, const std::string &path, const std::vector<ImagePtr> &&images)
+    Category::Category(const std::string &name, const std::string &path, std::vector<ImagePtr> images)
             : name{name}, path{path}, images{std::move(images)} { }
 
     const std::string &Category::getName() const {

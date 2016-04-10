@@ -22,8 +22,8 @@ namespace feitir {
 
     public:
         Database(const std::string &rootPath,
-                 const std::vector<CategoryPtr> &&categories,
-                 const std::vector<ImagePtr> &&images);
+                 std::vector<CategoryPtr> categories,
+                 std::vector<ImagePtr> images);
         const std::string & getRootPath() const;
         const std::vector<CategoryPtr> & getCategories() const;
         const std::vector<ImagePtr> & getImages() const;

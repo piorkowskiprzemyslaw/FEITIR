@@ -27,7 +27,7 @@ namespace feitir {
         return images;
     }
 
-    void IFResult::addResultEntry(const std::pair<ImagePtr, float> &&element) {
+    void IFResult::addResultEntry(std::pair<ImagePtr, float> element) {
         this->images.push_back(std::move(element));
     }
 

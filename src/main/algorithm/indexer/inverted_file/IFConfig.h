@@ -36,7 +36,7 @@ namespace feitir {
         std::vector<std::pair<ImagePtr, float>> images;
     public:
         IFResult();
-        void addResultEntry(const std::pair<ImagePtr, float>&& element);
+        void addResultEntry(std::pair<ImagePtr, float> element);
         const std::vector<std::pair<ImagePtr, float>> & getImages() const;
     };
 

@@ -22,7 +22,7 @@ namespace feitir {
     protected:
 
     public:
-        Category(const std::string &name, const std::string &path, const std::vector<ImagePtr>&& images);
+        Category(const std::string &name, const std::string &path, std::vector<ImagePtr> images);
         const std::string & getName() const;
         const std::string & getPath() const;
         const std::vector<ImagePtr> & getImages() const;

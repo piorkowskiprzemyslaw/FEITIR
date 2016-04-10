@@ -24,7 +24,7 @@ namespace feitir {
         CategoryFactory();
         const CategoryPtr createCategory(const std::string &root, const std::string &path) const;
         const CategoryPtr createCategory(const std::string &root, const std::string &path, bool findRecursive) const;
-        const CategoryPtr createCategory(const CategoryPtr category, const std::vector<ImagePtr>&& images) const;
+        const CategoryPtr createCategory(const CategoryPtr category, std::vector<ImagePtr> images) const;
     };
 
 

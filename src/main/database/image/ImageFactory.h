@@ -42,7 +42,7 @@ namespace feitir {
                                    const std::string &fileName) const;
         const ImagePtr createImage(const ImagePtr img) const;
         const ImagePtr createImage(const ImagePtr img,
-                                   const std::vector<cv::DMatch>&& matches) const;
+                                   std::vector<cv::DMatch> matches) const;
         void saveImageData(const ImagePtr img) const;
         bool deleteImageData(const ImagePtr img) const;
     };

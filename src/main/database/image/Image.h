@@ -50,12 +50,12 @@ namespace feitir {
               const std::string &fullPath,
               const std::string &path,
               const Extension extension,
-              const std::vector<cv::DMatch>&& matches);
+              std::vector<cv::DMatch> matches);
 
         Image(const std::shared_ptr<Image> img);
 
         Image(const std::shared_ptr<Image> img,
-              const std::vector<cv::DMatch>&& matches);
+              std::vector<cv::DMatch> matches);
 
         virtual ~Image();
 

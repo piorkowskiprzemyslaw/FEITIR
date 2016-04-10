@@ -25,20 +25,20 @@ namespace feitir {
 
     Image::Image(const std::string &name, const std::string &fullPath,
                  const std::string &path, const Extension extension,
-                 const std::vector<cv::DMatch> &&matches) : uuid{boost::uuids::random_generator()()},
-                                                            name{name},
-                                                            fullPath{fullPath},
-                                                            path{path},
-                                                            extension{extension},
-                                                            matches{std::move(matches)} { }
+                 std::vector<cv::DMatch> matches) : uuid{boost::uuids::random_generator()()},
+                                                    name{name},
+                                                    fullPath{fullPath},
+                                                    path{path},
+                                                    extension{extension},
+                                                    matches{std::move(matches)} { }
 
     Image::Image(const std::shared_ptr<Image> img,
-                 const std::vector<cv::DMatch> &&matches) : uuid{boost::uuids::random_generator()()},
-                                                            name{img->getFileName()},
-                                                            fullPath{img->getFullPath()},
-                                                            path{img->getPath()},
-                                                            extension{img->getExtension()},
-                                                            matches{std::move(matches)} {
+                 std::vector<cv::DMatch> matches) : uuid{boost::uuids::random_generator()()},
+                                                    name{img->getFileName()},
+                                                    fullPath{img->getFullPath()},
+                                                    path{img->getPath()},
+                                                    extension{img->getExtension()},
+                                                    matches{std::move(matches)} {
     }
 
     const std::string &Image::getFullPath() const {

@@ -32,8 +32,8 @@ namespace feitir {
     }
 
     const DatabasePtr DatabaseFactory::createDatabase(const DatabasePtr database,
-                                                      const std::vector<CategoryPtr> &&categories,
-                                                      const std::vector<ImagePtr> &&images) const {
+                                                      std::vector<CategoryPtr> categories,
+                                                      std::vector<ImagePtr> images) const {
         return std::make_shared<Database>(database->getRootPath(), std::move(categories), std::move(images));
     }
 
