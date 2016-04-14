@@ -14,10 +14,12 @@
 
 namespace feitir {
 
+    /**
+     * Standard implementation of inverted file indexer.
+     */
     class InvertedFileIndexer : public Indexer<IFResultPtr, IFQueryPtr, IFParametersPtr> {
     private:
         const VocabularyTypePtr vocabulary;
-        cv::BFMatcher matcher;
         std::unordered_multimap<int, ImagePtr> invertedFile;
 
     protected:

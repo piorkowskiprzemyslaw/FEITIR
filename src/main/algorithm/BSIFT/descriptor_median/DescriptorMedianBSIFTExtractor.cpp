@@ -7,6 +7,7 @@
 namespace feitir {
 
     DescriptorMedianBSIFTExtractor::ImageBSIFTPtr DescriptorMedianBSIFTExtractor::extractImageBSIFT(const ImagePtr image) {
+        assert(image->getDescriptors().rows > 0);
         std::vector<BSIFT> descriptors(image->getDescriptors().rows);
 
         for (int i = 0; i < image->getDescriptors().rows ; ++i) {
@@ -32,6 +33,6 @@ namespace feitir {
     }
 
     DescriptorMedianBSIFTExtractor::DatabaseTranslatorPtr DescriptorMedianBSIFTExtractor::getDatabaseTranslatorPtr() const {
-        return std::make_shared<BSIFTDatabaseTranslator<128>>();
+        return std::make_shared<const BSIFTDatabaseTranslator<128>>();
     }
 }

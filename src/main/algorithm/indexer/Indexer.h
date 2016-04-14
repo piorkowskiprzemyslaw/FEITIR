@@ -5,8 +5,6 @@
 #ifndef FEITIR_INDEXER_H
 #define FEITIR_INDEXER_H
 
-#include <list>
-
 namespace feitir {
 
     template <class Result, class Query, class Parameters>

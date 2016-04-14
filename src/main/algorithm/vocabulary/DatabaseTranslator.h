@@ -20,11 +20,11 @@ namespace feitir {
         const ImageFactory imageFactory;
         cv::BFMatcher matcher;
 
-        virtual ImagePtr transformImage(const VocabularyTypePtr vocabulary, const ImagePtr image) const;
-        virtual CategoryPtr transformCategory(const VocabularyTypePtr vocabulary, const CategoryPtr category) const;
     public:
         DatabaseTranslator();
         virtual ~DatabaseTranslator();
+        virtual ImagePtr transformImage(const VocabularyTypePtr vocabulary, const ImagePtr image) const;
+        virtual CategoryPtr transformCategory(const VocabularyTypePtr vocabulary, const CategoryPtr category) const;
         virtual DatabasePtr transformDatabase(const VocabularyTypePtr vocabulary, const DatabasePtr database) const;
     };
 }

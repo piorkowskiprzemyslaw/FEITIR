@@ -32,6 +32,9 @@ namespace feitir {
                    std::vector<cv::DMatch> matches) : Image{imageBSIFTPtr, std::move(matches)},
                                                               bsift{imageBSIFTPtr->getBsift()} { }
 
+        ImageBSIFT(const std::shared_ptr<ImageBSIFT<N>> imageBSIFTPtr) : Image{imageBSIFTPtr},
+                                                                         bsift{imageBSIFTPtr->getBsift()} { }
+
         virtual ~ImageBSIFT() { }
 
         const std::vector<BSIFT> &getBsift() const {

@@ -4,7 +4,6 @@
 
 #include <set>
 #include "InvertedFileIndexer.h"
-#include <unordered_map>
 
 namespace feitir {
     InvertedFileIndexer::InvertedFileIndexer(const IFParametersPtr &parameters) : Indexer{parameters}, vocabulary{parameters->getVocabulary()} {
@@ -47,8 +46,6 @@ namespace feitir {
     }
 
     void InvertedFileIndexer::processImage(const ImagePtr img) {
-        std::vector<cv::DMatch> matches;
-        matcher.match(img->getDescriptors(), vocabulary->getVocabularyMatrix(), matches);
         for (auto& match : img->getMatches()) {
             invertedFile.insert({match.trainIdx, img});
         }

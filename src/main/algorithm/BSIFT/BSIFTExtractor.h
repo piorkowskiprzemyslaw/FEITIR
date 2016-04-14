@@ -47,7 +47,7 @@ namespace feitir {
         virtual ImageBSIFTPtr extractImageBSIFT(const ImagePtr image) = 0;
 
         virtual CategoryPtr extractCategoryBSIFT(const CategoryPtr category) {
-            std::vector<ImagePtr> bsiftImages(category->getImages().size());
+            std::vector<ImagePtr> bsiftImages;
 
             for (auto& img : category->getImages()) {
                 bsiftImages.push_back(extractImageBSIFT(img));
