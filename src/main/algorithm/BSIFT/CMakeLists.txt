@@ -1,5 +1,8 @@
 set(BSIFT_SOURCE_FILES
-        descriptor_median/DescriptorMedianBSIFTExtractor.cpp)
+        descriptor_median/DescriptorMedianBSIFTExtractor.cpp
+        BSIFTDatabaseTranslator.h
+        BSIFTExtractor.h
+        ImageBSIFT.h)
 
 add_library(bsift STATIC ${BSIFT_SOURCE_FILES})
 
