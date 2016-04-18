@@ -15,12 +15,10 @@ namespace feitir {
     class IFParameters {
     private:
         DatabasePtr database;
-        VocabularyTypePtr vocabulary;
 
     public:
-        IFParameters(const DatabasePtr &database, const VocabularyTypePtr vocabulary);
+        IFParameters(const DatabasePtr &database);
         const DatabasePtr & getDatabase() const;
-        const VocabularyTypePtr getVocabulary() const;
     };
 
     class IFQuery {

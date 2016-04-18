@@ -22,4 +22,24 @@ namespace feitir {
     const std::vector<ImagePtr> &Database::getImages() const {
         return images;
     }
+
+    Database::const_iterator Database::begin() const {
+        return Database::const_iterator(this);
+    }
+
+    Database::const_iterator Database::end() const {
+        const std::vector<ImagePtr> *currentVector = nullptr;
+        if (this->categories.empty()) {
+            currentVector = &(this->images);
+        } else {
+            currentVector = &(this->categories[this->categories.size() - 1]->getImages());
+        }
+
+        const std::vector<CategoryPtr> *categories = &(this->categories);
+        std::vector<ImagePtr>::const_iterator currentIterator = currentVector->end();
+        std::vector<CategoryPtr>::const_iterator nextCategory = this->categories.end();
+
+        return Database::const_iterator(currentVector, categories, currentIterator, nextCategory);
+    }
+
 }

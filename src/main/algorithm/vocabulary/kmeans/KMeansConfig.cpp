@@ -19,14 +19,8 @@ namespace feitir {
     }
 
     KMeansParameter::KMeansParameter(const DatabasePtr database, const int K) : K{K} {
-        for (auto& img : database->getImages()) {
+        for (auto img : *database) {
             data.push_back(img->getDescriptors());
-        }
-
-        for (auto& cat : database->getCategories()) {
-            for (auto& img : cat->getImages()) {
-                data.push_back(img->getDescriptors());
-            }
         }
     }
 

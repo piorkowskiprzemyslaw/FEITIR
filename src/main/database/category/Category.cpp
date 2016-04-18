@@ -20,4 +20,13 @@ namespace feitir {
     const std::vector<ImagePtr> &Category::getImages() const {
         return images;
     }
+
+    Category::const_iterator Category::begin() const {
+        return Category::const_iterator(images.begin());
+    }
+
+    Category::const_iterator Category::end() const {
+        return Category::const_iterator(images.end());
+    }
+
 }

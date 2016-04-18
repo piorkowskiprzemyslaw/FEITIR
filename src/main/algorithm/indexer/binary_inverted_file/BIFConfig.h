@@ -15,13 +15,11 @@ namespace feitir {
     class BIFParameters {
     private:
         const DatabasePtr database;
-        const VocabularyTypePtr vocabulary;
         const std::size_t treshold;
 
     public:
-        BIFParameters(const DatabasePtr database, const VocabularyTypePtr vocabulary, const std::size_t treshold);
+        BIFParameters(const DatabasePtr database, const std::size_t treshold);
         const DatabasePtr getDatabase() const;
-        const VocabularyTypePtr getVocabulary() const;
         const size_t getTreshold() const;
     };
 

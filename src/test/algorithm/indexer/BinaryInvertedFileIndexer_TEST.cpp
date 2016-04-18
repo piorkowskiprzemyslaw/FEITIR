@@ -49,13 +49,8 @@ BOOST_FIXTURE_TEST_SUITE(BinaryInvertedFileIndexer_TEST, BinaryInvertedFileIndex
         BOOST_REQUIRE(kMeansParameters != nullptr);
 
         unsigned sum = 0;
-        for (auto& img : database->getImages()) {
+        for (auto img : *database) {
             sum += img->getDescriptors().rows;
-        }
-        for (auto& cat : database->getCategories()) {
-            for (auto& img : cat->getImages()) {
-                sum += img->getDescriptors().rows;
-            }
         }
 
         BOOST_REQUIRE_EQUAL(kMeansParameters->getData().rows, sum);
@@ -69,8 +64,11 @@ BOOST_FIXTURE_TEST_SUITE(BinaryInvertedFileIndexer_TEST, BinaryInvertedFileIndex
         auto transformedDatabase = databaseTranslator->transformDatabase(vocabulary, bsiftDatabase);
         BOOST_REQUIRE(transformedDatabase != nullptr);
 
-        BinaryInvertedFileIndexer<128> binaryInvertedFileIndexer(std::make_shared<BIFParameters>(transformedDatabase, vocabulary, 30));
-        auto result = binaryInvertedFileIndexer.query(std::make_shared<BIFQuery<128>>(databaseTranslator->transformImage(vocabulary, image)));
+        BinaryInvertedFileIndexer<128> binaryInvertedFileIndexer(
+                std::make_shared<BIFParameters>(transformedDatabase, 30));
+
+        auto result = binaryInvertedFileIndexer.query(
+                std::make_shared<BIFQuery<128>>(databaseTranslator->transformImage(vocabulary, image)));
 
         BOOST_REQUIRE(result != nullptr);
         BOOST_REQUIRE_EQUAL(result->getResultList().size(), 11);

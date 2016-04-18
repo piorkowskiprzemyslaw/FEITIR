@@ -46,12 +46,6 @@ namespace feitir {
               const Extension extension,
               const cv::Mat descriptors);
 
-        Image(const std::string &name,
-              const std::string &fullPath,
-              const std::string &path,
-              const Extension extension,
-              std::vector<cv::DMatch> matches);
-
         Image(const std::shared_ptr<Image> img);
 
         Image(const std::shared_ptr<Image> img,

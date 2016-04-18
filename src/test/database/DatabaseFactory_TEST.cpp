@@ -20,6 +20,7 @@ struct DatabaseFixture {
     const std::string firstRoot;
     const std::string secondRoot;
     const std::string thirdRoot;
+    unsigned counter;
 
     DatabaseFixture() : databaseRes{resourcesRootDir() + "database/"},
                         firstRoot{"dir1"}, secondRoot{"dir2"}, thirdRoot{"dir3"} {
@@ -50,6 +51,11 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + firstRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 0);
         BOOST_CHECK_EQUAL(database->getImages().size(), 3);
+        counter = 0;
+        for (auto img : *database) {
+            ++counter;
+        }
+        BOOST_CHECK_EQUAL(counter, 3);
         imagesDataClear(database);
     }
 
@@ -60,6 +66,11 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + firstRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 0);
         BOOST_CHECK_EQUAL(database->getImages().size(), 3);
+        counter = 0;
+        for (auto img : *database) {
+            ++counter;
+        }
+        BOOST_CHECK_EQUAL(counter, 3);
         imagesDataClear(database);
     }
 
@@ -70,6 +81,11 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + secondRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 2);
         BOOST_CHECK_EQUAL(database->getImages().size(), 1);
+        counter = 0;
+        for (auto img : *database) {
+            ++counter;
+        }
+        BOOST_CHECK_EQUAL(counter, 7);
         imagesDataClear(database);
     }
 
@@ -80,6 +96,11 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + secondRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 2);
         BOOST_CHECK_EQUAL(database->getImages().size(), 1);
+        counter = 0;
+        for (auto img : *database) {
+            ++counter;
+        }
+        BOOST_CHECK_EQUAL(counter, 7);
         imagesDataClear(database);
     }
 
@@ -90,6 +111,11 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + thirdRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 2);
         BOOST_CHECK_EQUAL(database->getImages().size(), 1);
+        counter = 0;
+        for (auto img : *database) {
+            ++counter;
+        }
+        BOOST_CHECK_EQUAL(counter, 11);
         imagesDataClear(database);
     }
 
@@ -100,6 +126,11 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
         BOOST_CHECK_EQUAL(database->getRootPath(), databaseRes + thirdRoot);
         BOOST_CHECK_EQUAL(database->getCategories().size(), 4);
         BOOST_CHECK_EQUAL(database->getImages().size(), 1);
+        counter = 0;
+        for (auto img : *database) {
+            ++counter;
+        }
+        BOOST_CHECK_EQUAL(counter, 11);
         imagesDataClear(database);
     }
 

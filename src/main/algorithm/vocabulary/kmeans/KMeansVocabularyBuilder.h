@@ -13,7 +13,7 @@
 namespace feitir {
 
     /**
-     * KMeansVocabularyBuilder is implementation of kmeans algorithm for vocabulary building.
+     * KMeansVocabularyBuilder is implementation of k-means algorithm for vocabulary building.
      */
     class KMeansVocabularyBuilder : public VocabularyBuilder<KMeansParameterPtr, KMeansVocabularyTypePtr> {
     public:
