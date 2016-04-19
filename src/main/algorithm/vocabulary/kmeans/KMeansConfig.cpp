@@ -24,7 +24,6 @@ namespace feitir {
         }
     }
 
-
     KMeansVocabularyType::KMeansVocabularyType(cv::Mat vocabularyMatrix) : vocabularyMatrix{vocabularyMatrix} { }
 
     cv::Mat KMeansVocabularyType::getVocabularyMatrix() const {
