@@ -25,6 +25,7 @@ namespace feitir {
     protected:
         HKMeansNodePtr buildVocabularyNode(cv::Mat data, HKMeansNodeWeakPtr parent, unsigned K, unsigned L);
         int saveVocabularyNodeToFile(HKMeansNodePtr root, cv::FileStorage &fs, int nodeNumber) const;
+        std::tuple<int, HKMeansNodePtr> readVocabularyNodeFromFile(cv::FileStorage &fs, int K, int L, HKMeansNodeWeakPtr parent, int nodeNumber) const;
     };
 
 }

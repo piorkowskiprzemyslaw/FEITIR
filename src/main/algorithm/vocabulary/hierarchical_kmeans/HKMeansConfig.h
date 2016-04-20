@@ -40,6 +40,10 @@ namespace feitir {
         void addChildren(HKMeansNodePtr child);
         const std::vector<HKMeansNodePtr> & getChildrens() const;
         const HKMeansNodeWeakPtr getParent() const;
+        bool operator==(const HKMeansNode& rhs) const;
+        inline bool operator!=(const HKMeansNode& rhs) const {
+            return !(*this == rhs);
+        }
 
     private:
         cv::Mat nodeWords;
@@ -54,6 +58,10 @@ namespace feitir {
         const HKMeansNodePtr getRoot() const;
         unsigned int getK() const;
         unsigned int getL() const;
+        bool operator==(const HKMeansVocabularyType& rhs) const;
+        inline bool operator!=(const HKMeansVocabularyType& rhs) const {
+            return !(*this == rhs);
+        }
 
     protected:
         cv::Mat getVocabulary(HKMeansNodePtr root);

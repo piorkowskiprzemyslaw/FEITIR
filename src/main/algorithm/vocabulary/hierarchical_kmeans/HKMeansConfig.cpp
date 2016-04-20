@@ -68,6 +68,20 @@ namespace feitir {
         return parent;
     }
 
+    bool HKMeansNode::operator==(const HKMeansNode& rhs) const {
+        if (cv::countNonZero(rhs.nodeWords != nodeWords) != 0 || rhs.childrens.size() != childrens.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < childrens.size(); ++i) {
+            if (*(childrens[i]) != *(rhs.childrens[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     const HKMeansNodePtr HKMeansVocabularyType::getRoot() const {
         return root;
     }
@@ -78,5 +92,9 @@ namespace feitir {
 
     unsigned int HKMeansVocabularyType::getL() const {
         return L;
+    }
+
+    bool HKMeansVocabularyType::operator==(const HKMeansVocabularyType& rhs) const {
+        return (rhs.K == K) && (rhs.L == L) && (*(rhs.root) == *root);
     }
 }

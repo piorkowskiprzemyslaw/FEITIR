@@ -25,7 +25,6 @@ namespace feitir {
             cv::write(fs, VOCABULARY_FILE_K, static_cast<int>(vocabulary->getK()));
             cv::write(fs, VOCABULARY_FILE_L, static_cast<int>(vocabulary->getL()));
             int lastNode = saveVocabularyNodeToFile(vocabulary->getRoot(), fs, 1);
-            std::cout << lastNode << std::endl;
             fs.release();
         }
     }
@@ -40,8 +39,45 @@ namespace feitir {
     }
 
     HKMeansVocabularyTypePtr HKMeansVocabularyBuilder::readFromFile(const std::string &file) const {
-        return std::make_shared<HKMeansVocabularyType>(nullptr, 0, 0);
+        cv::Mat vocabulary;
+        if (boost::filesystem::exists(file)) {
+            cv::FileStorage fs(file.c_str(), cv::FileStorage::READ);
+            int K,L;
+            cv::read(fs[VOCABULARY_FILE_K], K, -1);
+            cv::read(fs[VOCABULARY_FILE_L], L, -1);
+
+            if (K == -1 || L == -1) {
+                throw std::invalid_argument("corrupted dictionary file " + file);
+            }
+
+            HKMeansNodePtr root;
+            int nodeNumber;
+            std::tie(nodeNumber, root) = readVocabularyNodeFromFile(fs, K, L, std::weak_ptr<HKMeansNode>(), 1);
+            fs.release();
+            return std::make_shared<HKMeansVocabularyType>(root, K, L);
+        }
+        return nullptr;
     }
+
+    std::tuple<int, HKMeansNodePtr> HKMeansVocabularyBuilder::readVocabularyNodeFromFile(cv::FileStorage &fs,
+                                                                                        int K, int L,
+                                                                                        HKMeansNodeWeakPtr parent,
+                                                                                        int nodeNumber) const {
+        cv::Mat nodeData;
+        cv::read(fs[VOCABULARY_FILE_NODE_NAME + std::to_string(nodeNumber++)], nodeData);
+
+        auto node = std::make_shared<HKMeansNode>(nodeData, parent);
+        HKMeansNodePtr child;
+
+        if (L != 0) {
+            for (unsigned i = 0; i < K; ++i) {
+                std::tie(nodeNumber, child) = readVocabularyNodeFromFile(fs, K, L - 1, node, nodeNumber);
+                node->addChildren(child);
+            }
+        }
+
+        return std::make_tuple(nodeNumber, node);
+    };
 
     HKMeansNodePtr HKMeansVocabularyBuilder::buildVocabularyNode(cv::Mat data,
                                                                  HKMeansNodeWeakPtr parent,
@@ -58,7 +94,6 @@ namespace feitir {
                 childrenData[labels.at<int>(i)].push_back(data.row(i));
             }
 
-            std::vector<HKMeansNodePtr> childrens;
             for (unsigned i = 0; i < K; ++i) {
                 node->addChildren(buildVocabularyNode(childrenData[i], node, K, L - 1));
             }

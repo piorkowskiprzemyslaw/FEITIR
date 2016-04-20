@@ -65,7 +65,8 @@ BOOST_FIXTURE_TEST_SUITE(HKMeansVocabulary_TEST, HKMeansFixture)
         auto vocabularyFromFile = builder.readFromFile(resourcesPath + vocabularyFile);
 
         BOOST_REQUIRE_EQUAL(cv::countNonZero(vocabulary->getVocabularyMatrix() != vocabularyFromFile->getVocabularyMatrix()), 0);
-        BOOST_REQUIRE_EQUAL(vocabularyFromFile->getVocabularyMatrix().rows, std::pow(K, L));
+        BOOST_REQUIRE_EQUAL(vocabularyFromFile->getVocabularyMatrix().rows, std::pow(K, L + 1));
+        BOOST_REQUIRE(*vocabulary == *vocabularyFromFile);
 
         imagesDataClear(img);
     }
