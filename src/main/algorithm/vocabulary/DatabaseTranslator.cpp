@@ -46,8 +46,6 @@ namespace feitir {
     }
 
     ImagePtr DatabaseTranslator::transformImage(const VocabularyTypePtr vocabulary, const ImagePtr image) const {
-        std::vector<cv::DMatch> matches;
-        matcher.match(image->getDescriptors(), vocabulary->getVocabularyMatrix(), matches);
-        return imageFactory.createImage(image, std::move(matches));
+        return imageFactory.createImage(image, std::move(vocabulary->getNearestVisualWords(image->getDescriptors())));
     }
 }

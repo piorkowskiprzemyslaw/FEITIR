@@ -29,4 +29,10 @@ namespace feitir {
     cv::Mat KMeansVocabularyType::getVocabularyMatrix() const {
         return vocabularyMatrix;
     }
+
+    std::vector<cv::DMatch> KMeansVocabularyType::getNearestVisualWords(cv::Mat queryFeatures) {
+        std::vector<cv::DMatch> matches;
+        matcher.match(queryFeatures, vocabularyMatrix, matches);
+        return matches;
+    }
 }

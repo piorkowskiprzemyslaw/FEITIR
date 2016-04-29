@@ -3,6 +3,7 @@
 //
 
 #include "HKMeansConfig.h"
+#include "thread"
 
 namespace feitir {
 
@@ -96,5 +97,65 @@ namespace feitir {
 
     bool HKMeansVocabularyType::operator==(const HKMeansVocabularyType& rhs) const {
         return (rhs.K == K) && (rhs.L == L) && (*(rhs.root) == *root);
+    }
+
+    std::vector<cv::DMatch> HKMeansVocabularyType::getNearestVisualWords(cv::Mat queryFeatures) {
+        unsigned numberOfThreads = std::thread::hardware_concurrency() > 0 ? std::thread::hardware_concurrency() : 4;
+
+        if (numberOfThreads < queryFeatures.rows) {
+            return getNearestVisualWordsConcurrent(queryFeatures, numberOfThreads);
+        } else {
+            std::vector<cv::DMatch> matches;
+            matcher.match(queryFeatures, vocabularyMatrix, matches);
+            return matches;
+        }
+    }
+
+    std::vector<cv::DMatch> HKMeansVocabularyType::getNearestVisualWordsConcurrent(cv::Mat queryFeatures,
+                                                                                   unsigned numberOfThreads) {
+        std::vector<std::thread> threads;
+        std::vector<cv::DMatch> resultVector(queryFeatures.rows);
+        unsigned x = queryFeatures.rows / numberOfThreads;
+        unsigned rest = queryFeatures.rows % numberOfThreads;
+        unsigned currentIdx = 0;
+
+        auto fun = [this] (cv::Mat queryFeatures, std::vector<cv::DMatch> &resultVec,
+                           unsigned startIdx, unsigned endIdx) {
+            for (auto i = startIdx; i < endIdx; ++i) {
+                resultVec[i] = this->getNearestVisualWord(this->root, queryFeatures.row(i));
+            }
+        };
+
+        for (int i = 0; i < numberOfThreads; ++i) {
+            if (i < rest) {
+                threads.push_back(std::thread(fun, queryFeatures, std::ref(resultVector), currentIdx, currentIdx + x + 1));
+                currentIdx = currentIdx + x + 1;
+            } else {
+                threads.push_back(std::thread(fun, queryFeatures, std::ref(resultVector), currentIdx, currentIdx + x));
+                currentIdx = currentIdx + x;
+            }
+        }
+
+        for (std::thread &t : threads) {
+            t.join();
+        }
+
+        assert (currentIdx == resultVector.size());
+        return resultVector;
+    }
+
+    cv::DMatch HKMeansVocabularyType::getNearestVisualWord(HKMeansNodePtr root, cv::Mat queryFeature) {
+        assert (queryFeature.rows == 1);
+        std::vector<cv::DMatch> matches;
+        matcher.match(queryFeature, root->getNodeWords(), matches);
+        assert (matches.size() == 1);
+        cv::DMatch match = matches[0];
+
+        if (root->getChildrens().empty()) {
+            return match;
+        } else {
+            return getNearestVisualWord(root->getChildrens()[match.trainIdx], queryFeature);
+        }
+
     }
 }

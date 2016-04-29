@@ -5,8 +5,7 @@
 #ifndef FEITIR_VOCABULARYCONFIG_H
 #define FEITIR_VOCABULARYCONFIG_H
 
-
-#include <opencv2/core/mat.hpp>
+#include <opencv2/core/types.hpp>
 
 namespace feitir {
 
@@ -18,6 +17,7 @@ namespace feitir {
     class VocabularyType {
     public:
         virtual cv::Mat getVocabularyMatrix() const = 0;
+        virtual std::vector<cv::DMatch> getNearestVisualWords(cv::Mat queryFeatures) = 0;
     };
 
     typedef std::shared_ptr<VocabularyParameter> VocabularyParameterPtr;

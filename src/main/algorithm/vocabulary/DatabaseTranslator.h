@@ -18,7 +18,6 @@ namespace feitir {
         const CategoryFactory categoryFactory;
         const DatabaseFactory databaseFactory;
         const ImageFactory imageFactory;
-        cv::BFMatcher matcher;
 
     public:
         DatabaseTranslator();

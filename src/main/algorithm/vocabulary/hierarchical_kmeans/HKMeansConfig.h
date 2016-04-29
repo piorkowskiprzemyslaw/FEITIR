@@ -13,8 +13,11 @@ namespace feitir {
 
     class HKMeansParameter {
     private:
+        // matrix with whole data
         cv::Mat data;
+        // number of words at each vocabulary node
         const unsigned K;
+        // height of created vocabulary tree
         const unsigned L;
 
     public:
@@ -55,6 +58,7 @@ namespace feitir {
     public:
         HKMeansVocabularyType(HKMeansNodePtr root, unsigned K, unsigned L);
         virtual cv::Mat getVocabularyMatrix() const;
+        virtual std::vector<cv::DMatch> getNearestVisualWords(cv::Mat queryFeatures);
         const HKMeansNodePtr getRoot() const;
         unsigned int getK() const;
         unsigned int getL() const;
@@ -65,8 +69,12 @@ namespace feitir {
 
     protected:
         cv::Mat getVocabulary(HKMeansNodePtr root);
+        std::vector<cv::DMatch> getNearestVisualWordsConcurrent(cv::Mat queryFeatures,
+                                                                unsigned numberOfThreads);
+        cv::DMatch getNearestVisualWord(HKMeansNodePtr root, cv::Mat queryFeature);
 
     private:
+        cv::BFMatcher matcher;
         unsigned K;
         unsigned L;
         cv::Mat vocabularyMatrix;

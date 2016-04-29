@@ -15,8 +15,7 @@ namespace feitir {
     class BSIFTDatabaseTranslator : public DatabaseTranslator {
     public:
         virtual ImagePtr transformImage(const VocabularyTypePtr vocabulary, const ImagePtr image) const {
-            std::vector<cv::DMatch> matches;
-            matcher.match(image->getDescriptors(), vocabulary->getVocabularyMatrix(), matches);
+            std::vector<cv::DMatch> matches = vocabulary->getNearestVisualWords(image->getDescriptors());
 
             ImageBSIFTPtr<N> bsiftPtr = std::dynamic_pointer_cast<ImageBSIFT<N>>(image);
             if (bsiftPtr != nullptr) {

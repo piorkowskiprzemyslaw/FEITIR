@@ -7,6 +7,7 @@
 
 
 #include <opencv2/core/mat.hpp>
+#include <opencv/cv.hpp>
 #include "src/main/database/Database.h"
 #include "src/main/algorithm/vocabulary/VocabularyConfig.h"
 
@@ -35,8 +36,11 @@ namespace feitir {
     class KMeansVocabularyType : public VocabularyType {
     private:
         cv::Mat vocabularyMatrix;
+        cv::BFMatcher matcher;
     public:
         KMeansVocabularyType(cv::Mat vocabularyMatrix);
+
+        virtual std::vector<cv::DMatch> getNearestVisualWords(cv::Mat queryFeatures);
 
         virtual cv::Mat getVocabularyMatrix() const;
     };
