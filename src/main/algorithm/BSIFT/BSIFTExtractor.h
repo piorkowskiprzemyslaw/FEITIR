@@ -42,9 +42,23 @@ namespace feitir {
          */
         using DatabaseTranslatorPtr = typename feitir::BSIFTDatabaseTranslatorPtr<N>;
 
+    protected:
+        virtual BSIFT processRow(cv::Mat row) = 0;
+
+    public:
+
         virtual ~BSIFTExtractor() { }
 
-        virtual ImageBSIFTPtr extractImageBSIFT(const ImagePtr image) = 0;
+        virtual ImageBSIFTPtr extractImageBSIFT(const ImagePtr image) {
+            assert (image->getDescriptors().rows > 0);
+            std::vector<BSIFT> descriptors(image->getDescriptors().rows);
+
+            for (int i = 0; i < image->getDescriptors().rows; ++i) {
+                descriptors[i] = processRow(image->getDescriptors().row(i));
+            }
+
+            return std::make_shared<ImageBSIFT>(image, std::move(descriptors));
+        }
 
         virtual CategoryPtr extractCategoryBSIFT(const CategoryPtr category) {
             std::vector<ImagePtr> bsiftImages;

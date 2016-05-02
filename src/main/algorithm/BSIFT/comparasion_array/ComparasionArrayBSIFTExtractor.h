@@ -26,19 +26,8 @@ namespace feitir {
         ComparasionArrayBSIFTExtractor(const unsigned L, const unsigned T, Fi fi = GREATERWINS)
                 : L{L}, T{T}, fiFunction{fi} { }
 
-        virtual typename BSIFTExtractor<N>::ImageBSIFTPtr extractImageBSIFT(const ImagePtr image) {
-            assert (image->getDescriptors().rows > 0);
-            std::vector<typename BSIFTExtractor<N>::BSIFT> descriptors(image->getDescriptors().rows);
-
-            for (int i = 0; i < image->getDescriptors().rows; ++i) {
-                descriptors[i] = processRow(image->getDescriptors().row(i));
-            }
-
-            return std::make_shared<typename BSIFTExtractor<N>::ImageBSIFT>(image, std::move(descriptors));
-        }
-
-        virtual typename BSIFTExtractor<N>::DatabaseTranslatorPtr getDatabaseTranslatorPtr() const {
-            return nullptr;
+        virtual typename BSIFTExtractor<N>::DatabaseTranslatorPtr getDatabaseTranslatorPtr() const override {
+            return std::make_shared<const BSIFTDatabaseTranslator<N>>();
         }
 
     protected:
@@ -46,7 +35,7 @@ namespace feitir {
         const std::pair<bool, bool> C2 = {true, false};
         const std::pair<bool, bool> C3 = {false, false};
 
-        typename BSIFTExtractor<N>::BSIFT processRow(cv::Mat row) {
+        virtual typename BSIFTExtractor<N>::BSIFT processRow(cv::Mat row) override {
             assert (row.rows == 1);
             std::vector<bool> comparasionString;
 

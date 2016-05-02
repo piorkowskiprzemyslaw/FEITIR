@@ -6,17 +6,6 @@
 
 namespace feitir {
 
-    DescriptorMedianBSIFTExtractor::ImageBSIFTPtr DescriptorMedianBSIFTExtractor::extractImageBSIFT(const ImagePtr image) {
-        assert(image->getDescriptors().rows > 0);
-        std::vector<BSIFT> descriptors(image->getDescriptors().rows);
-
-        for (int i = 0; i < image->getDescriptors().rows ; ++i) {
-            descriptors[i] = processRow(image->getDescriptors().row(i));
-        }
-
-        return std::make_shared<ImageBSIFT>(image, std::move(descriptors));
-    }
-
     DescriptorMedianBSIFTExtractor::BSIFT DescriptorMedianBSIFTExtractor::processRow(cv::Mat row) {
         assert(row.cols == 128);
         std::vector<float> elements(row.cols);

@@ -1,8 +1,11 @@
 add_executable(DescriptorMedianBSIFT_TEST DescriptorMedianBSIFT_TEST.cpp)
 add_executable(ComparasionArrayBSIFT_TEST ComparasionArrayBSIFT_TEST.cpp)
+add_executable(DescriptorPositionMedianBSIFT_TEST DescriptorPositionMedianBSIFT_TEST.cpp)
 
 target_link_libraries(DescriptorMedianBSIFT_TEST bsift image ${Boost_LIBRARIES} ${OpenCV_LIBRARIES})
 target_link_libraries(ComparasionArrayBSIFT_TEST bsift image ${Boost_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(DescriptorPositionMedianBSIFT_TEST bsift image ${OpenCV_LIBRARIES})
 
 add_test(src/test/algorithm/BSIFT/DescriptorMedianBSIFT_TEST DescriptorMedianBSIFT_TEST)
 add_test(src/test/algorithm/BSIFT/ComparasionArrayBSIFT_TEST ComparasionArrayBSIFT_TEST)
+add_test(src/test/algorithm/BSIFT/DescriptorPositionMedianBSIFT_TEST DescriptorPositionMedianBSIFT_TEST)

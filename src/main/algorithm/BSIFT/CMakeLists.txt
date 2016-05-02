@@ -2,6 +2,8 @@ set(BSIFT_SOURCE_FILES
         descriptor_median/DescriptorMedianBSIFTExtractor.cpp
         descriptor_median/DescriptorMedianBSIFTExtractor.h
         comparasion_array/ComparasionArrayBSIFTExtractor.h
+        descriptor_position_median/DescriptorPositionMedianBSIFTExtractor.cpp
+        descriptor_position_median/DescriptorPositionMedianBSIFTExtractor.h
         BSIFTDatabaseTranslator.h
         BSIFTExtractor.h
         ImageBSIFT.h)
