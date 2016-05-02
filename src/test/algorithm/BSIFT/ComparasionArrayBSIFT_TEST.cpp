@@ -87,4 +87,18 @@ BOOST_FIXTURE_TEST_SUITE(ComparasionArrayBSIFTExtractor_TEST, ComparasionArrayBS
         }
     }
 
+    BOOST_AUTO_TEST_CASE(FourthTestCase)
+    {
+        auto img = imageFactory.createImage(resourcePath + imagePath + lennaImage);
+        BOOST_REQUIRE(img != nullptr);
+        auto fakeImg = imageFactory.createImage(img, cv::Mat::zeros(10, 300, CV_32F));
+        ComparasionArrayBSIFTExtractor<L> extractor(L, T);
+        auto fakeBsiftImg = extractor.extractImageBSIFT(fakeImg);
+        BOOST_REQUIRE(fakeBsiftImg != nullptr);
+        for (auto bsift : fakeBsiftImg->getBsift()) {
+            std::cout << bsift << std::endl;
+            BOOST_REQUIRE(bsift.size() == L);
+        }
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
