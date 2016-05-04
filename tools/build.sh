@@ -9,6 +9,7 @@ OPTIND=1
 CURRENT_DIR=`pwd`
 SRC_DIR="$CURRENT_DIR/.."
 BUILD_DIR="$CURRENT_DIR/../build"
+CMAKE_ADDITIONAL_OPTIONS="-DCMAKE_MODULE_PATH=/opt/local/share/cmake/Modules/"
 
 
 function build() {
@@ -28,7 +29,7 @@ function clear() {
     fi
     mkdir -p $BUILD_DIR
     cd $BUILD_DIR
-    cmake $SRC_DIR
+    cmake $SRC_DIR $CMAKE_ADDITIONAL_OPTIONS
 }
 
 function run() {

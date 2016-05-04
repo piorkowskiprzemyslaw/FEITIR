@@ -4,6 +4,7 @@ set(BSIFT_SOURCE_FILES
         comparasion_array/ComparasionArrayBSIFTExtractor.h
         descriptor_position_median/DescriptorPositionMedianBSIFTExtractor.cpp
         descriptor_position_median/DescriptorPositionMedianBSIFTExtractor.h
+        locality_sensitive_hashing/LocalitySensitiveHashingBSIFTExtractor.h
         BSIFTDatabaseTranslator.h
         BSIFTExtractor.h
         ImageBSIFT.h)
