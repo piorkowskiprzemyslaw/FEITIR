@@ -46,7 +46,7 @@ BOOST_FIXTURE_TEST_SUITE(DescriptorPositionMedianBSIFTExtractor_TEST, Descriptor
 
         auto database = databaseFactory.createDatabase(resourcePath + imagePath);
         BOOST_REQUIRE(database != nullptr);
-        auto transformedDatabase = extractor.extractDatabaseBSIFT(database);
+        BOOST_CHECK_NO_THROW(extractor.extractDatabaseBSIFT(database));
     }
 
     BOOST_AUTO_TEST_CASE(ThirdTestCase)
