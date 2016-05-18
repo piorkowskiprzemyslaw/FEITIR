@@ -14,4 +14,13 @@ set(VOCABULARY_SOURCE_FILES
 
 add_library(vocabulary STATIC ${VOCABULARY_SOURCE_FILES})
 
-target_link_libraries(vocabulary database bsift ${OpenCV_LIBRARIES} ${Boost_LIBRARIES})
+set(VOCABULARY_LIBRARIES database bsift ${OpenCV_LIBRARIES} ${Boost_LIBRARIES})
+
+if ("${CMAKE_SYSTEM}" MATCHES "Linux")
+    find_package(Threads)
+    set(VOCABULARY_LIBRARIES ${VOCABULARY_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+endif()
+
+message("vocabulary libraries " ${VOCABULARY_LIBRARIES})
+
+target_link_libraries(vocabulary ${VOCABULARY_LIBRARIES})

@@ -9,7 +9,17 @@ OPTIND=1
 CURRENT_DIR=`pwd`
 SRC_DIR="$CURRENT_DIR/.."
 BUILD_DIR="$CURRENT_DIR/../build"
-CMAKE_ADDITIONAL_OPTIONS="-DCMAKE_MODULE_PATH=/opt/local/share/cmake/Modules/"
+OS=`uname -s`
+CMAKE_ADDITIONAL_OPTIONS=""
+
+if [ "$OS" == "Darwin" ]; then
+    echo "Darwin build"
+    CMAKE_ADDITIONAL_OPTIONS="-DCMAKE_MODULE_PATH=/opt/local/share/cmake/Modules/"
+elif [ "$OS" == "Linux" ]; then
+    echo "Linux build"
+    CMAKE_ADDITIONAL_OPTIONS="-DBOOST_ROOT=/home/przemek/Development/boost_1_60_0/
+                              -DCMAKE_MODULE_PATH=/usr/share/cmake-2.8/Modules"
+fi
 
 
 function build() {

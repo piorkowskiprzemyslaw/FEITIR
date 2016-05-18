@@ -5,6 +5,7 @@
 #ifndef FEITIR_VOCABULARYCONFIG_H
 #define FEITIR_VOCABULARYCONFIG_H
 
+#include <memory>
 #include <opencv2/core/types.hpp>
 
 namespace feitir {
