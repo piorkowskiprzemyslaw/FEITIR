@@ -21,6 +21,4 @@ if ("${CMAKE_SYSTEM}" MATCHES "Linux")
     set(VOCABULARY_LIBRARIES ${VOCABULARY_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
-message("vocabulary libraries " ${VOCABULARY_LIBRARIES})
-
 target_link_libraries(vocabulary ${VOCABULARY_LIBRARIES})
