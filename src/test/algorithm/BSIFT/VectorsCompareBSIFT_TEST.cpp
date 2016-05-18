@@ -8,8 +8,7 @@
 #include <iostream>
 #include "test_global.h"
 #include <boost/test/unit_test.hpp>
-#include <src/main/algorithm/BSIFT/vectors_compare/VectorsCompareBSIFTExtractor.h>
-#include "src/main/algorithm/BSIFT/locality_sensitive_hashing/LocalitySensitiveHashingBSIFTExtractor.h"
+#include "src/main/algorithm/BSIFT/vectors_compare/VectorsCompareBSIFTExtractor.h"
 
 using namespace feitir;
 

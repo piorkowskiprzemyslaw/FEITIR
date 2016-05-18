@@ -2,8 +2,8 @@
 // Created by Przemek Piórkowski on 29.04.2016.
 //
 
-#ifndef FEITIR_COMPARASIONARRAYBSIFTEXTRACTOR_H
-#define FEITIR_COMPARASIONARRAYBSIFTEXTRACTOR_H
+#ifndef FEITIR_COMPARISONARRAYBSIFTEXTRACTOR_H
+#define FEITIR_COMPARISONARRAYBSIFTEXTRACTOR_H
 
 #include <iostream>
 #include <algorithm>
@@ -20,10 +20,10 @@ namespace feitir {
     };
 
     template <std::size_t N, typename Fi = decltype(GREATERWINS)>
-    class ComparasionArrayBSIFTExtractor : public BSIFTExtractor<N> {
+    class ComparisonArrayBSIFTExtractor : public BSIFTExtractor<N> {
     public:
 
-        ComparasionArrayBSIFTExtractor(const unsigned L, const unsigned T, Fi fi = GREATERWINS)
+        ComparisonArrayBSIFTExtractor(const unsigned L, const unsigned T, Fi fi = GREATERWINS)
                 : L{L}, T{T}, fiFunction{fi} { }
 
         virtual typename BSIFTExtractor<N>::DatabaseTranslatorPtr getDatabaseTranslatorPtr() const override {
@@ -96,4 +96,4 @@ namespace feitir {
 }
 
 
-#endif //FEITIR_COMPARASIONARRAYBSIFTEXTRACTOR_H
+#endif //FEITIR_COMPARISONARRAYBSIFTEXTRACTOR_H

@@ -30,7 +30,7 @@ namespace feitir {
         static std::vector<std::function<std::vector<bool>(cv::Mat row)>> generateRandomHashFunctions() {
             std::vector<std::function<std::vector<bool>(cv::Mat row)>> hashFunctions;
             Eigen::VectorXd mean = Eigen::VectorXd::Zero(N);
-            Eigen::MatrixXd cov= Eigen::MatrixXd::Identity(N, N);
+            Eigen::MatrixXd cov = Eigen::MatrixXd::Identity(N, N);
             Eigen::EigenMultivariateNormal<double> normalGenerator(mean, cov);
 
             cv::Mat samples;
