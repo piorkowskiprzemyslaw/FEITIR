@@ -1,0 +1,19 @@
+{
+  "scenarios": [
+    {
+      "type": "BSIFTBenchmark",
+      "method": "DescriptorMedian",
+      "database": "path/to/database",
+      "vocabulary": "path/to/vocabulary",
+      "measure_time": "0",
+      "result_file": "descriptor_median.csv"
+    },
+    {
+      "type": "IndexerBenchmark",
+      "method": "InvertedFile",
+      "database": "path/to/database",
+      "vocabulary": "path/to/vocabulary",
+      "result_file": "some_file.txt"
+    }
+  ]
+}

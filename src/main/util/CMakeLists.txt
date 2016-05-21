@@ -1,3 +1,4 @@
+configure_file(feitir_config.h.in ${CMAKE_BINARY_DIR}/generated/feitir_config.h)
 set(UTIL_SOURCE_FILES
         Util.cpp
         Util.h
