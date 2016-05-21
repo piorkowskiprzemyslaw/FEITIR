@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(FEITIR CXX)
+project(FEITIR)
 
 set(FEITIR_MAJOR_VERSION 0)
 set(FEITIR_MINOR_VERSION 1)
