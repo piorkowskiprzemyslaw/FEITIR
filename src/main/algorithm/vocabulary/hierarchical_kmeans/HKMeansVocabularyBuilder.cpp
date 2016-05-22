@@ -84,7 +84,8 @@ namespace feitir {
                                                                  unsigned K, unsigned L) {
         cv::Mat labels, centers;
         cv::kmeans(data, K, labels,
-                   cv::TermCriteria(cv::TermCriteria::EPS, 10, 1.0), 10, cv::KMEANS_PP_CENTERS, centers);
+                   cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 10, 1.0),
+                   4, cv::KMEANS_PP_CENTERS, centers);
 
         auto node = std::make_shared<HKMeansNode>(centers, parent);
 

@@ -79,7 +79,7 @@ namespace feitir {
                 return Extension::PNG;
             } else if (!extension.compare(".tiff")) {
                 return Extension::TIFF;
-            } else if (!extension.compare(".jpeg") || !extension.compare(".jp2")) {
+            } else if (!extension.compare(".jpeg") || !extension.compare(".jp2") || !extension.compare(".jpg")) {
                 return Extension::JPEG;
             } else if (!extension.compare(".bmp") || !extension.compare(".dib")) {
                 return Extension::BITMAP;
