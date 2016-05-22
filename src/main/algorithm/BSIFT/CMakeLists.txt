@@ -10,6 +10,7 @@ set(BSIFT_SOURCE_FILES
         vectors_compare/VectorsCompareBSIFTExtractor.h
         BSIFTDatabaseTranslator.h
         BSIFTExtractor.h
+        BSIFTDatabaseExtractor.h
         ImageBSIFT.h)
 
 add_library(bsift STATIC ${BSIFT_SOURCE_FILES})

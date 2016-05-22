@@ -2,17 +2,24 @@
   "scenarios": [
     {
       "type": "BSIFTBenchmark",
-      "method": "DescriptorMedian",
-      "database": "path/to/database",
-      "vocabulary": "path/to/vocabulary",
+      "method_description": {
+        "method": "comparison_array",
+        "N": "64",
+        "L": "64",
+        "T": "20"
+      },
+      "database": "/Users/Przemek/Documents/Magisterka/imgDB/wang_small",
+      "vocabulary_type": "kmeans",
+      "vocabulary": "/Users/Przemek/Documents/Magisterka/vocabulary/kmeans_1000_wang_small.yml",
       "measure_time": "0",
       "result_file": "descriptor_median.csv"
     },
     {
       "type": "IndexerBenchmark",
       "method": "InvertedFile",
-      "database": "path/to/database",
-      "vocabulary": "path/to/vocabulary",
+      "database": "/Users/Przemek/Documents/Magisterka/imgDB/wang_small",
+      "vocabulary_type": "kmeans",
+      "vocabulary": "/Users/Przemek/Documents/Magisterka/vocabulary/kmeans_1000_wang_small.yml",
       "result_file": "some_file.txt"
     }
   ]

@@ -12,6 +12,7 @@
 #include "src/main/database/image/Image.h"
 #include "src/main/algorithm/BSIFT/ImageBSIFT.h"
 #include "src/main/algorithm/BSIFT/BSIFTDatabaseTranslator.h"
+#include "src/main/algorithm/BSIFT/BSIFTDatabaseExtractor.h"
 
 namespace feitir {
 
@@ -19,7 +20,7 @@ namespace feitir {
      * Abstract class representing entity which is able to extract N bits Binary SIFT descriptor value for particular Image.
      */
     template <std::size_t N>
-    class BSIFTExtractor {
+    class BSIFTExtractor : public BSIFTDatabaseExtractor {
     public:
 
         /**
@@ -70,7 +71,7 @@ namespace feitir {
             return std::make_shared<Category>(category->getName(), category->getPath(), std::move(bsiftImages));
         }
 
-        virtual DatabasePtr extractDatabaseBSIFT(const DatabasePtr database) {
+        virtual DatabasePtr extractDatabaseBSIFT(const DatabasePtr database) override {
             std::vector<ImagePtr> bsiftImages;
             std::vector<CategoryPtr> bsiftCategories;
 

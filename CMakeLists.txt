@@ -8,7 +8,7 @@ set(FEITIR_VERSION ${FEITIR_MAJOR_VERSION}.${FEITIR_MINOR_VERSION}.${FEITIR_PATC
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
-find_package(Boost 1.5.90 REQUIRED unit_test_framework system filesystem program_options)
+find_package(Boost 1.5.90 REQUIRED unit_test_framework system filesystem program_options log)
 find_package(OpenCV 3.1.0 REQUIRED)
 find_package(Eigen3 REQUIRED)
 

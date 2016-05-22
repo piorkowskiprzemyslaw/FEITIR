@@ -6,13 +6,11 @@
 #define FEITIR_FEITIR_CONFIG_H
 
 #include <iostream>
-#include <boost/filesystem/path.hpp>
 
 #define PROJECT_ROOT_PATH @PROJECT_ROOT@
 
 std::string projectRootDir() {
     return "@PROJECT_ROOT@";
 }
-
 
 #endif //FEITIR_FEITIR_CONFIG_H

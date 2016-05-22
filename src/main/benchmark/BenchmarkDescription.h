@@ -21,7 +21,8 @@ namespace feitir {
         BenchmarkDescription(BenchmarkType type) : type{type} {};
         BenchmarkType getType() const;
         static std::string getTypeFieldName();
-        virtual void setPropertiesValues(const std::map<std::string, std::string> valuesMap) = 0;
+        virtual void setBasicPropertiesValues(const std::map<std::string, std::string> valuesMap) = 0;
+        virtual void setCompoundPropertiesValues(const std::map<std::string, std::map<std::string, std::string>> compoundProperties) = 0;
 
     private:
         BenchmarkType type;

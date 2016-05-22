@@ -102,22 +102,23 @@ BOOST_FIXTURE_TEST_SUITE(DescriptorMedianBSIFTExtractor_TEST, DescriptorMedianBS
         BOOST_CHECK_EQUAL(bsiftDatabase->getImages().size(), 1);
         BOOST_CHECK_EQUAL(bsiftDatabase->getCategories().size(), 0);
 
-        auto bsiftPtr =
-                std::dynamic_pointer_cast<DescriptorMedianBSIFTExtractor::ImageBSIFT>(bsiftDatabase->getImages()[0]);
+        auto bsiftPtr = std::dynamic_pointer_cast<DescriptorMedianBSIFTExtractor::ImageBSIFT>(
+                bsiftDatabase->getImages()[0]);
 
         BOOST_REQUIRE(bsiftPtr != nullptr);
         BOOST_CHECK_EQUAL(bsiftPtr->getMatches().size(), 0);
         BOOST_CHECK_GT(bsiftPtr->getDescriptors().rows, 0);
         BOOST_CHECK_EQUAL(bsiftPtr->getBsift().size(), img->getDescriptors().rows);
 
-        auto transformedBSIFTDatabase = descriptorMedianBSIFTExtractor.getDatabaseTranslatorPtr()->transformDatabase(vocabulary, bsiftDatabase);
+        auto transformedBSIFTDatabase = descriptorMedianBSIFTExtractor
+                .getDatabaseTranslatorPtr()->transformDatabase(vocabulary, bsiftDatabase);
 
         BOOST_REQUIRE(transformedBSIFTDatabase != nullptr);
         BOOST_CHECK_EQUAL(transformedBSIFTDatabase->getImages().size(), 1);
         BOOST_CHECK_EQUAL(transformedBSIFTDatabase->getCategories().size(), 0);
 
-        auto transformedBSIFTImage =
-                std::dynamic_pointer_cast<DescriptorMedianBSIFTExtractor::ImageBSIFT>(transformedBSIFTDatabase->getImages()[0]);
+        auto transformedBSIFTImage = std::dynamic_pointer_cast<DescriptorMedianBSIFTExtractor::ImageBSIFT>(
+                transformedBSIFTDatabase->getImages()[0]);
 
         BOOST_REQUIRE(transformedBSIFTImage != nullptr);
         BOOST_CHECK_GT(transformedBSIFTImage->getMatches().size(), 0);

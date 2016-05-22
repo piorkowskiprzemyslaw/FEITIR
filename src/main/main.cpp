@@ -2,9 +2,10 @@
 #include <sstream>
 #include <fstream>
 #include <boost/program_options.hpp>
-#include <src/main/algorithm/vocabulary/kmeans/KMeansVocabularyBuilder.h>
-#include <src/main/algorithm/vocabulary/hierarchical_kmeans/HKMeansVocabularyBuilder.h>
+#include "src/main/algorithm/vocabulary/kmeans/KMeansVocabularyBuilder.h"
+#include "src/main/algorithm/vocabulary/hierarchical_kmeans/HKMeansVocabularyBuilder.h"
 #include "src/main/benchmark/BenchmarkScenarioFactory.h"
+#include "src/main/benchmark/BenchmarkScenarioRunner.h"
 #include "feitir_config.h"
 
 namespace po = boost::program_options;
@@ -68,8 +69,8 @@ int main(int ac, char* av[]) {
             }
         }
 
-        BenchmarkScenario scenario = BenchmarkScenarioFactory().fromJSON(benchmarkScenarioFile);
-
+        BenchmarkScenarioRunner runner;
+        runner.runScenario(BenchmarkScenarioFactory().fromJSON(benchmarkScenarioFile));
     } catch(std::exception& e) {
         std::cout << e.what() << "\n";
     }

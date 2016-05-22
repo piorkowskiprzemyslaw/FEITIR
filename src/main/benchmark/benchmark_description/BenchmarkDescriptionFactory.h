@@ -25,6 +25,8 @@ namespace feitir {
     class BenchmarkDescriptionFactory {
     public:
         BenchmarkDescriptionPtr fromPtree(const boost::property_tree::ptree& ptree);
+        static std::map<std::string, std::string> getFieldsValue(const std::vector<std::string>& fieldNames,
+                                                                 const boost::property_tree::ptree& ptree);
 
     private:
         BSIFTBenchmarkDescriptionFactory bsiftFactory;

@@ -6,8 +6,11 @@
 
 namespace feitir {
 
-    const std::vector<std::string> IndexerBenchmarkDescription::FIELD_NAMES = {"method", "database",
-                                                                               "vocabulary", "result_file"};
+    const std::vector<std::string> IndexerBenchmarkDescription::FIELD_NAMES = {/* 0 */ "method",
+                                                                               /* 1 */ "database",
+                                                                               /* 2 */ "vocabulary_type",
+                                                                               /* 3 */ "vocabulary",
+                                                                               /* 4 */ "result_file"};
 
     IndexerBenchmarkDescription::IndexerBenchmarkDescription() : BenchmarkDescription(BenchmarkType::Indexer) { }
 
@@ -15,12 +18,16 @@ namespace feitir {
         return FIELD_NAMES;
     }
 
-    void IndexerBenchmarkDescription::setPropertiesValues(const std::map<std::string, std::string> valuesMap) {
+    void IndexerBenchmarkDescription::setBasicPropertiesValues(const std::map<std::string, std::string> valuesMap) {
         this->method = valuesMap.at(FIELD_NAMES[0]);
         this->databasePath = valuesMap.at(FIELD_NAMES[1]);
-        this->vocabularyPath = valuesMap.at(FIELD_NAMES[2]);
-        this->resultFile = valuesMap.at(FIELD_NAMES[3]);
+        this->vocabularyType = valuesMap.at(FIELD_NAMES[2]);
+        this->vocabularyPath = valuesMap.at(FIELD_NAMES[3]);
+        this->resultFile = valuesMap.at(FIELD_NAMES[4]);
     }
+
+    void IndexerBenchmarkDescription::setCompoundPropertiesValues(
+            const std::map<std::string, std::map<std::string, std::string>> compoundProperties) { }
 
     const std::string &IndexerBenchmarkDescription::getMethod() const {
         return method;
@@ -37,4 +44,9 @@ namespace feitir {
     const std::string &IndexerBenchmarkDescription::getResultFile() const {
         return resultFile;
     }
+
+    const std::string &IndexerBenchmarkDescription::getVocabularyType() const {
+        return vocabularyType;
+    }
+
 };

@@ -11,6 +11,10 @@
 
 namespace feitir {
 
+    /**
+     * BSIFT database translator should be used *after* extracting BSIFT informations from whole database
+     * it persists BSIFT descriptor while dropping out original descriptor value.
+     */
     template <std::size_t N>
     class BSIFTDatabaseTranslator : public DatabaseTranslator {
     public:
