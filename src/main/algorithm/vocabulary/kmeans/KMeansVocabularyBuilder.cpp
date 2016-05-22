@@ -16,8 +16,8 @@ namespace feitir {
         cv::Mat labels, centers;
         //TODO think about better adjustment of those parameters
         cv::kmeans(parameter->getData(), parameter->getK(), labels,
-                   cv::TermCriteria(cv::TermCriteria::MAX_ITER + cv::TermCriteria::EPS, 10, 1.0),
-                   4, cv::KMEANS_PP_CENTERS, centers);
+                   cv::TermCriteria(cv::TermCriteria::MAX_ITER + cv::TermCriteria::EPS, 5, 1.0),
+                   3, cv::KMEANS_PP_CENTERS, centers);
         return std::make_shared<KMeansVocabularyType>(centers);
     }
 
