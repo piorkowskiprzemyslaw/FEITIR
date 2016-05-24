@@ -7,27 +7,10 @@
 namespace feitir {
 
     const std::vector<std::string> IndexerBenchmarkDescription::FIELD_NAMES = {/* 0 */ "method",
-                                                                               /* 1 */ "database",
+                                                                               /* 1 */ "database_path",
                                                                                /* 2 */ "vocabulary_type",
-                                                                               /* 3 */ "vocabulary",
+                                                                               /* 3 */ "vocabulary_path",
                                                                                /* 4 */ "result_file"};
-
-    IndexerBenchmarkDescription::IndexerBenchmarkDescription() : BenchmarkDescription(BenchmarkType::Indexer) { }
-
-    std::vector<std::string> IndexerBenchmarkDescription::getFieldNames() {
-        return FIELD_NAMES;
-    }
-
-    void IndexerBenchmarkDescription::setBasicPropertiesValues(const std::map<std::string, std::string> valuesMap) {
-        this->method = valuesMap.at(FIELD_NAMES[0]);
-        this->databasePath = valuesMap.at(FIELD_NAMES[1]);
-        this->vocabularyType = valuesMap.at(FIELD_NAMES[2]);
-        this->vocabularyPath = valuesMap.at(FIELD_NAMES[3]);
-        this->resultFile = valuesMap.at(FIELD_NAMES[4]);
-    }
-
-    void IndexerBenchmarkDescription::setCompoundPropertiesValues(
-            const std::map<std::string, std::map<std::string, std::string>> compoundProperties) { }
 
     const std::string &IndexerBenchmarkDescription::getMethod() const {
         return method;
@@ -35,6 +18,10 @@ namespace feitir {
 
     const std::string &IndexerBenchmarkDescription::getDatabasePath() const {
         return databasePath;
+    }
+
+    const std::string &IndexerBenchmarkDescription::getVocabularyType() const {
+        return vocabularyType;
     }
 
     const std::string &IndexerBenchmarkDescription::getVocabularyPath() const {
@@ -45,8 +32,19 @@ namespace feitir {
         return resultFile;
     }
 
-    const std::string &IndexerBenchmarkDescription::getVocabularyType() const {
-        return vocabularyType;
+    JSONObject::FieldNames IndexerBenchmarkDescription::basicFieldNames() const {
+        return FIELD_NAMES;
     }
 
+    void IndexerBenchmarkDescription::setBasicFields(const JSONObject::ValuesMap &valuesMap) {
+        if (valuesMap.count(FIELD_NAMES[0]))  method = valuesMap.at(FIELD_NAMES[0]);
+        if (valuesMap.count(FIELD_NAMES[1])) databasePath = valuesMap.at(FIELD_NAMES[1]);
+        if (valuesMap.count(FIELD_NAMES[2])) vocabularyType = valuesMap.at(FIELD_NAMES[2]);
+        if (valuesMap.count(FIELD_NAMES[3])) vocabularyPath = valuesMap.at(FIELD_NAMES[3]);
+        if (valuesMap.count(FIELD_NAMES[4])) resultFile = valuesMap.at(FIELD_NAMES[4]);
+    }
+
+    JSONObject::JSONObjectPtr IndexerBenchmarkDescription::constructNewObject() const {
+        return std::make_shared<IndexerBenchmarkDescription>();
+    }
 };

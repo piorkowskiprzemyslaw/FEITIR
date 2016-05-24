@@ -5,25 +5,26 @@
 #ifndef FEITIR_INDEXERBENCHMARKDESCRIPTION_H
 #define FEITIR_INDEXERBENCHMARKDESCRIPTION_H
 
-#include "src/main/benchmark/BenchmarkDescription.h"
+#include "src/main/util/JSON/JSONObject.h"
 
 namespace feitir {
-    class IndexerBenchmarkDescription : public BenchmarkDescription {
-    public:
 
-        IndexerBenchmarkDescription();
-        static std::vector<std::string> getFieldNames();
-        virtual void setBasicPropertiesValues(const std::map<std::string, std::string> valuesMap) override;
-        virtual void setCompoundPropertiesValues(
-                        const std::map<std::string, std::map<std::string, std::string>> compoundProperties) override;
+    class IndexerBenchmarkDescription : public JSONObject {
+    public:
         const std::string & getMethod() const;
         const std::string & getDatabasePath() const;
+        const std::string & getVocabularyType() const;
         const std::string & getVocabularyPath() const;
         const std::string & getResultFile() const;
-        const std::string & getVocabularyType() const;
+
+    protected:
+        virtual FieldNames basicFieldNames() const override;
+        virtual void setBasicFields(const ValuesMap &valuesMap) override;
+        virtual JSONObjectPtr constructNewObject() const override;
 
     private:
         static const std::vector<std::string> FIELD_NAMES;
+
         std::string method;
         std::string databasePath;
         std::string vocabularyType;
@@ -31,7 +32,7 @@ namespace feitir {
         std::string resultFile;
     };
 
-    using IndexerBenchmarkDescriptionPtr = typename std::shared_ptr<IndexerBenchmarkDescription>;
+    using IndexerBenchmarkDescriptionPtr = std::shared_ptr<IndexerBenchmarkDescription>;
 }
 
 

@@ -19,16 +19,14 @@ namespace feitir {
     public:
         BenchmarkScenarioRunner() = default;
         ~BenchmarkScenarioRunner() = default;
-        void runScenario(const BenchmarkScenario& scenario);
-
-    protected:
-        void runDescription(const BenchmarkDescriptionPtr descriptionPtr);
+        void runScenario(BenchmarkScenarioPtr scenario);
 
     private:
-        void runBSIFTDescription(const BSIFTBenchmarkDescriptionPtr descriptionPtr);
-        void runIndexerDescription(const IndexerBenchmarkDescriptionPtr descriptionPtr);
+        void runBSIFTDescription(BSIFTBenchmarkDescriptionPtr description);
+        void runIndexerDescription(IndexerBenchmarkDescriptionPtr description);
         VocabularyTypePtr setupVocabulary(std::string vocabularyType, std::string vocabularyPath);
-        BSIFTDatabaseExtractorPtr setupExtractor(BSIFTMethodDescription method, DatabasePtr imageDatabase,
+        BSIFTDatabaseExtractorPtr setupExtractor(BSIFTMethodDescriptionPtr method,
+                                                 DatabasePtr imageDatabase,
                                                  VocabularyTypePtr vocabularyTypePtr);
 
         DatabaseFactory databaseFactory;

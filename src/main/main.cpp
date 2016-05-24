@@ -4,7 +4,6 @@
 #include <boost/program_options.hpp>
 #include "src/main/algorithm/vocabulary/kmeans/KMeansVocabularyBuilder.h"
 #include "src/main/algorithm/vocabulary/hierarchical_kmeans/HKMeansVocabularyBuilder.h"
-#include "src/main/benchmark/BenchmarkScenarioFactory.h"
 #include "src/main/benchmark/BenchmarkScenarioRunner.h"
 #include "feitir_config.h"
 
@@ -70,7 +69,7 @@ int main(int ac, char* av[]) {
         }
 
         BenchmarkScenarioRunner runner;
-        runner.runScenario(BenchmarkScenarioFactory().fromJSON(benchmarkScenarioFile));
+        runner.runScenario(getJSONRootObjectFromFile<BenchmarkScenario>(benchmarkScenarioFile, "scenario"));
     } catch(std::exception& e) {
         std::cout << e.what() << "\n";
     }

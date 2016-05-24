@@ -13,29 +13,25 @@
 #include "src/main/algorithm/BSIFT/descriptor_position_median/DescriptorPositionMedianBSIFTExtractor.h"
 #include "src/main/algorithm/BSIFT/comparison_array/ComparisonArrayBSIFTExtractor.h"
 
-
 namespace feitir {
-    void BenchmarkScenarioRunner::runScenario(const feitir::BenchmarkScenario &scenario) {
+    void BenchmarkScenarioRunner::runScenario(BenchmarkScenarioPtr scenario) {
         BOOST_LOG_TRIVIAL(info) << "Faculty of Electronics Benchmark Scenario Runner";
-        for (int i = 0; i < scenario.getDescriptions().size(); ++i) {
-            BOOST_LOG_TRIVIAL(info) << "Running benchmark " << i + 1 << " of " << scenario.getDescriptions().size();
-            runDescription(scenario.getDescriptions()[i]);
+        for (int i = 0; i < scenario->getBsiftBenchmarkDescriptions().size(); ++i) {
+            BOOST_LOG_TRIVIAL(info) << "Running BSIFT benchmark " << i + 1 << " of " << scenario->getBsiftBenchmarkDescriptions().size();
+            runBSIFTDescription(scenario->getBsiftBenchmarkDescriptions()[i]);
+        }
+
+        for (int i = 0; i < scenario->getIndexerBenchmarkDescriptions().size(); ++i) {
+            BOOST_LOG_TRIVIAL(info) << "Running Indexer benchmark " << i + 1 << " of " << scenario->getIndexerBenchmarkDescriptions().size();
+            runIndexerDescription(scenario->getIndexerBenchmarkDescriptions()[i]);
         }
     }
 
-    void BenchmarkScenarioRunner::runDescription(const BenchmarkDescriptionPtr descriptionPtr) {
-        if (nullptr != std::dynamic_pointer_cast<BSIFTBenchmarkDescription>(descriptionPtr)) {
-            runBSIFTDescription(std::dynamic_pointer_cast<BSIFTBenchmarkDescription>(descriptionPtr));
-        } else if (nullptr != std::dynamic_pointer_cast<IndexerBenchmarkDescription>(descriptionPtr)) {
-            runIndexerDescription(std::dynamic_pointer_cast<IndexerBenchmarkDescription>(descriptionPtr));
-        }
-    }
-
-    void BenchmarkScenarioRunner::runBSIFTDescription(const BSIFTBenchmarkDescriptionPtr descriptionPtr) {
+    void BenchmarkScenarioRunner::runBSIFTDescription(BSIFTBenchmarkDescriptionPtr description) {
         BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark";
-        auto database = databaseFactory.createDatabase(descriptionPtr->getDatabasePath());
-        auto vocabulary = setupVocabulary(descriptionPtr->getVocabularyType(), descriptionPtr->getVocabularyPath());
-        BSIFTDatabaseExtractorPtr bsiftExtractor = setupExtractor(descriptionPtr->getMethodDescription(),
+        auto database = databaseFactory.createDatabase(description->getDatabasePath());
+        auto vocabulary = setupVocabulary(description->getVocabularyType(), description->getVocabularyPath());
+        BSIFTDatabaseExtractorPtr bsiftExtractor = setupExtractor(description->getMethodDescription(),
                                                                   database, vocabulary);
         auto transformedDatabase = bsiftExtractor->extractDatabaseBSIFT(database);
 
@@ -44,10 +40,10 @@ namespace feitir {
 
     }
 
-    void BenchmarkScenarioRunner::runIndexerDescription(const IndexerBenchmarkDescriptionPtr descriptionPtr) {
+    void BenchmarkScenarioRunner::runIndexerDescription(IndexerBenchmarkDescriptionPtr description) {
         BOOST_LOG_TRIVIAL(info) << "Indexer benchmark";
-        auto database = databaseFactory.createDatabase(descriptionPtr->getDatabasePath());
-        auto vocabulary = setupVocabulary(descriptionPtr->getVocabularyType(), descriptionPtr->getVocabularyPath());
+        auto database = databaseFactory.createDatabase(description->getDatabasePath());
+        auto vocabulary = setupVocabulary(description->getVocabularyType(), description->getVocabularyPath());
     }
 
     VocabularyTypePtr BenchmarkScenarioRunner::setupVocabulary(std::string vocabularyType, std::string vocabularyPath) {
@@ -59,12 +55,12 @@ namespace feitir {
         throw std::invalid_argument(vocabularyType + " has no meaning as vocabulary type");
     }
 
-    BSIFTDatabaseExtractorPtr BenchmarkScenarioRunner::setupExtractor(BSIFTMethodDescription method,
+    BSIFTDatabaseExtractorPtr BenchmarkScenarioRunner::setupExtractor(BSIFTMethodDescriptionPtr method,
                                                                       DatabasePtr database,
                                                                       VocabularyTypePtr vocabularyTypePtr) {
-        std::string methodName = method.getMethod();
+        std::string methodName = method->getMethod();
         if (!methodName.compare("comparison_array")) {
-            return std::make_shared<ComparisonArrayBSIFTExtractor<CmpArrN()>>(method.getL(), method.getT());
+            return std::make_shared<ComparisonArrayBSIFTExtractor<CmpArrN()>>(method->getL(), method->getT());
         } else if (!methodName.compare("descriptor_median")) {
             return std::make_shared<DescriptorMedianBSIFTExtractor>();
         } else if (!methodName.compare("descriptor_position_median")) {

@@ -3,12 +3,8 @@ set(BENCHMARK_SOURCE_FILES
         BenchmarkScenarioRunner.h
         BenchmarkScenario.cpp
         BenchmarkScenario.h
-        BenchmarkDescription.cpp
-        BenchmarkDescription.h
-        BenchmarkScenarioFactory.cpp
-        BenchmarkScenarioFactory.h
-        benchmark_description/BenchmarkDescriptionFactory.h
-        benchmark_description/BenchmarkDescriptionFactory.cpp
+        benchmark_description/BSIFTMethodDescription.cpp
+        benchmark_description/BSIFTMethodDescription.h
         benchmark_description/BSIFTBenchmarkDescription.cpp
         benchmark_description/BSIFTBenchmarkDescription.h
         benchmark_description/IndexerBenchmarkDescription.cpp
@@ -23,4 +19,4 @@ include_directories(${CMAKE_BINARY_DIR}/generated/)
 
 add_library(benchmark STATIC ${BENCHMARK_SOURCE_FILES})
 
-target_link_libraries(benchmark ${Boost_LIBRARIES})
+target_link_libraries(benchmark ${Boost_LIBRARIES} util)

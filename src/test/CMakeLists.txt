@@ -3,6 +3,7 @@ include_directories(${CMAKE_BINARY_DIR}/generated/)
 
 add_subdirectory(database)
 add_subdirectory(algorithm)
+add_subdirectory(util)
 
 add_executable(main_TEST main_TEST.cpp)
 target_link_libraries(main_TEST ${Boost_LIBRARIES})

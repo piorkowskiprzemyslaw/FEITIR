@@ -1,0 +1,18 @@
+{
+  "scenario": {
+    "bsift_benchmarks": [
+      {
+        "bsift_method": {
+          "method": "method",
+          "L": "1",
+          "T": "2"
+        },
+        "database_path": "database_path",
+        "vocabulary_type": "vocabulary_type",
+        "vocabulary_path": "vocabulary_path",
+        "measure_time": "0",
+        "result_file": "result_file"
+      }
+    ]
+  }
+}

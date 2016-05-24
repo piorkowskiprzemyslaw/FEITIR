@@ -1,0 +1,13 @@
+{
+  "scenario": {
+    "indexer_benchmarks": [
+      {
+        "method": "method",
+        "database_path": "database_path",
+        "vocabulary_type": "vocabulary_type",
+        "vocabulary_path": "vocabulary_path",
+        "result_file": "result_file"
+      }
+    ]
+  }
+}
