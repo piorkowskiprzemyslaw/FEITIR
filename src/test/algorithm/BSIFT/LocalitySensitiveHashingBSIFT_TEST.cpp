@@ -34,8 +34,8 @@ BOOST_FIXTURE_TEST_SUITE(LocalitySensitiveHashingBSIFTExtractor_TEST, LocalitySe
 
     BOOST_AUTO_TEST_CASE(Database)
     {
-        auto hashFunctions = LocalitySensitiveHashingBSIFTExtractor<N>::generateRandomHashFunctions();
-        LocalitySensitiveHashingBSIFTExtractor<N> extractor(hashFunctions);
+        auto hashFunctions = LocalitySensitiveHashingBSIFTExtractor::generateRandomHashFunctions(N);
+        LocalitySensitiveHashingBSIFTExtractor extractor(N, hashFunctions);
 
         auto database = databaseFactory.createDatabase(resourcePath + imagePath);
         BOOST_REQUIRE(database != nullptr);
@@ -44,8 +44,8 @@ BOOST_FIXTURE_TEST_SUITE(LocalitySensitiveHashingBSIFTExtractor_TEST, LocalitySe
 
     BOOST_AUTO_TEST_CASE(SingleImage)
     {
-        auto hashFunctions = LocalitySensitiveHashingBSIFTExtractor<N>::generateRandomHashFunctions();
-        LocalitySensitiveHashingBSIFTExtractor<N> extractor(hashFunctions);
+        auto hashFunctions = LocalitySensitiveHashingBSIFTExtractor::generateRandomHashFunctions(N);
+        LocalitySensitiveHashingBSIFTExtractor extractor(N, hashFunctions);
 
         auto img = imageFactory.createImage(resourcePath + imagePath + lennaImage);
         BOOST_REQUIRE(img != nullptr);

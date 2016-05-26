@@ -35,7 +35,7 @@ BOOST_FIXTURE_TEST_SUITE(ComparisonArrayBSIFTExtractor_TEST, ComparisonArrayBSIF
     {
         auto img = imageFactory.createImage(resourcePath + imagePath + lennaImage);
         BOOST_REQUIRE(img != nullptr);
-        ComparisonArrayBSIFTExtractor<L> extractor(L, T);
+        ComparisonArrayBSIFTExtractor<> extractor(L, L, T);
         auto bsiftImg = extractor.extractImageBSIFT(img);
         BOOST_REQUIRE(bsiftImg != nullptr);
         BOOST_REQUIRE(bsiftImg->getBsift()[0].size() == L);
@@ -46,7 +46,7 @@ BOOST_FIXTURE_TEST_SUITE(ComparisonArrayBSIFTExtractor_TEST, ComparisonArrayBSIF
         auto img = imageFactory.createImage(resourcePath + imagePath + lennaImage);
         BOOST_REQUIRE(img != nullptr);
         auto fakeImg = imageFactory.createImage(img, cv::Mat::zeros(10, 256, CV_32F));
-        ComparisonArrayBSIFTExtractor<L> extractor(L, T);
+        ComparisonArrayBSIFTExtractor<> extractor(L, L, T);
         auto fakeBsiftImg = extractor.extractImageBSIFT(fakeImg);
         BOOST_REQUIRE(fakeBsiftImg != nullptr);
         for (auto bsift : fakeBsiftImg->getBsift()) {
@@ -77,7 +77,7 @@ BOOST_FIXTURE_TEST_SUITE(ComparisonArrayBSIFTExtractor_TEST, ComparisonArrayBSIF
         BOOST_REQUIRE(fakeDescriptors.cols == 256);
 
         auto fakeImg = imageFactory.createImage(img, fakeDescriptors);
-        ComparisonArrayBSIFTExtractor<L> extractor(L, T);
+        ComparisonArrayBSIFTExtractor<> extractor(L, L, T);
         auto fakeBsiftImg = extractor.extractImageBSIFT(fakeImg);
         BOOST_REQUIRE(fakeBsiftImg != nullptr);
 
@@ -92,11 +92,10 @@ BOOST_FIXTURE_TEST_SUITE(ComparisonArrayBSIFTExtractor_TEST, ComparisonArrayBSIF
         auto img = imageFactory.createImage(resourcePath + imagePath + lennaImage);
         BOOST_REQUIRE(img != nullptr);
         auto fakeImg = imageFactory.createImage(img, cv::Mat::zeros(10, 300, CV_32F));
-        ComparisonArrayBSIFTExtractor<L> extractor(L, T);
+        ComparisonArrayBSIFTExtractor<> extractor(L, L, T);
         auto fakeBsiftImg = extractor.extractImageBSIFT(fakeImg);
         BOOST_REQUIRE(fakeBsiftImg != nullptr);
         for (auto bsift : fakeBsiftImg->getBsift()) {
-            std::cout << bsift << std::endl;
             BOOST_REQUIRE(bsift.size() == L);
         }
     }

@@ -40,14 +40,14 @@ struct DescriptorMedianBSIFTExtractorFixture {
         }
     }
 
-    std::bitset<128> medianBinaryDescriptor(cv::Mat row) {
+    boost::dynamic_bitset<> medianBinaryDescriptor(cv::Mat row) {
         std::vector<float> vec(row.cols);
         for (int i = 0; i < row.cols; ++i) {
             vec[i] = row.at<float>(0, i);
         }
 
         float median = dummyMedianFind(vec);
-        std::bitset<128> binaryDescriptor;
+        boost::dynamic_bitset<> binaryDescriptor(128);
 
         for (int i = 0; i < row.cols; ++i) {
             binaryDescriptor[i] = vec[i] > median;
@@ -67,7 +67,7 @@ BOOST_FIXTURE_TEST_SUITE(DescriptorMedianBSIFTExtractor_TEST, DescriptorMedianBS
         BOOST_REQUIRE(bsiftImg != nullptr);
 
         for (int i = 0; i < bsiftImg->getDescriptors().rows; ++i) {
-            std::bitset<128> bdescriptor = medianBinaryDescriptor(bsiftImg->getDescriptors().row(i));
+            boost::dynamic_bitset<> bdescriptor = medianBinaryDescriptor(bsiftImg->getDescriptors().row(i));
             BOOST_REQUIRE(bsiftImg->getBsift()[i] == bdescriptor);
         }
     }

@@ -11,12 +11,12 @@
 
 namespace feitir {
 
-    class VectorsCompareBSIFTExtractor : public BSIFTExtractor<384> {
+    class VectorsCompareBSIFTExtractor : public BSIFTExtractor {
     public:
         static constexpr int VECTORS_PER_BIN = 8;
         static constexpr int BINS_NUMBER = 4;
 
-        virtual DatabaseTranslatorPtr getDatabaseTranslatorPtr() const;
+        VectorsCompareBSIFTExtractor() : BSIFTExtractor{384} { }
 
     protected:
         virtual BSIFT processRow(cv::Mat row);

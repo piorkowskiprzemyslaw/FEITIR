@@ -14,17 +14,16 @@
 
 namespace feitir {
 
-    template <std::size_t N>
-    class BinaryInvertedFileIndexer : public Indexer<BIFResultPtr<N>, BIFQueryPtr<N>, BIFParametersPtr> {
+    class BinaryInvertedFileIndexer : public Indexer<BIFResultPtr, BIFQueryPtr, BIFParametersPtr> {
     private:
         const Util util;
         const std::size_t treshold;
-        std::unordered_multimap<int, std::tuple<ImageBSIFTPtr<N>, typename ImageBSIFT<N>::BSIFT>> binaryInvertedFile;
-        std::unordered_map<boost::uuids::uuid, ImageBSIFTPtr<N>> uuidToImageMap;
+        std::unordered_multimap<int, std::tuple<ImageBSIFTPtr, typename ImageBSIFT::BSIFT>> binaryInvertedFile;
+        std::unordered_map<boost::uuids::uuid, ImageBSIFTPtr> uuidToImageMap;
 
     protected:
         void processImage(ImagePtr img) {
-            auto bsiftImg = std::dynamic_pointer_cast<ImageBSIFT<N>>(img);
+            auto bsiftImg = std::dynamic_pointer_cast<ImageBSIFT>(img);
             if (bsiftImg == nullptr) {
                 throw std::invalid_argument("img of type ImagePtr which cannot be casted to ImageBSIFTPtr");
             }
@@ -36,7 +35,7 @@ namespace feitir {
         }
 
     public:
-        BinaryInvertedFileIndexer(const BIFParametersPtr &parameters) : Indexer<BIFResultPtr<N>, BIFQueryPtr<N>, BIFParametersPtr>{parameters},
+        BinaryInvertedFileIndexer(const BIFParametersPtr &parameters) : Indexer<BIFResultPtr, BIFQueryPtr, BIFParametersPtr>{parameters},
                                                                         treshold{parameters->getTreshold()} {
             DatabasePtr database = parameters->getDatabase();
             for (auto image : *database) {
@@ -44,11 +43,11 @@ namespace feitir {
             }
         }
 
-        virtual BIFResultPtr<N> query(BIFQueryPtr<N> query) {
+        virtual BIFResultPtr query(BIFQueryPtr query) {
             std::unordered_map<boost::uuids::uuid, int32_t> uuidToResult;
-            BIFResultPtr<N> resultPtr = std::make_shared<BIFResult<N>>();
-            typename ImageBSIFT<N>::BSIFT bsift;
-            ImageBSIFTPtr<N> imgPtr;
+            BIFResultPtr resultPtr = std::make_shared<BIFResult>();
+            typename ImageBSIFT::BSIFT bsift;
+            ImageBSIFTPtr imgPtr;
 
             auto img = query->getImg();
             for (auto& match : img->getMatches()) {

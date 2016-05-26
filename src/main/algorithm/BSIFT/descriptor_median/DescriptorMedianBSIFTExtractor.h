@@ -5,7 +5,6 @@
 #ifndef FEITIR_DESCRIPTORMEDIANBSIFTEXTRACTOR_H
 #define FEITIR_DESCRIPTORMEDIANBSIFTEXTRACTOR_H
 
-#include <iostream>
 #include <opencv2/core/mat.hpp>
 #include "src/main/util/Util.h"
 #include "src/main/algorithm/BSIFT/BSIFTExtractor.h"
@@ -13,13 +12,13 @@
 
 namespace feitir {
 
-    class DescriptorMedianBSIFTExtractor : public BSIFTExtractor<128> {
+    class DescriptorMedianBSIFTExtractor : public BSIFTExtractor {
     private:
         Util util;
     protected:
         virtual BSIFT processRow(cv::Mat row) override;
     public:
-        virtual DatabaseTranslatorPtr getDatabaseTranslatorPtr() const override;
+        DescriptorMedianBSIFTExtractor() : BSIFTExtractor{128} { }
     };
 
 }

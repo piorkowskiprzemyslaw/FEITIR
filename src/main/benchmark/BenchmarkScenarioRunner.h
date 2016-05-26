@@ -25,9 +25,9 @@ namespace feitir {
         void runBSIFTDescription(BSIFTBenchmarkDescriptionPtr description);
         void runIndexerDescription(IndexerBenchmarkDescriptionPtr description);
         VocabularyTypePtr setupVocabulary(std::string vocabularyType, std::string vocabularyPath);
-        BSIFTDatabaseExtractorPtr setupExtractor(BSIFTMethodDescriptionPtr method,
-                                                 DatabasePtr imageDatabase,
-                                                 VocabularyTypePtr vocabularyTypePtr);
+        BSIFTExtractorPtr setupExtractor(BSIFTMethodDescriptionPtr method,
+                                         DatabasePtr imageDatabase,
+                                         VocabularyTypePtr vocabularyTypePtr);
 
         DatabaseFactory databaseFactory;
         KMeansVocabularyBuilder kMeansVocabularyBuilder;

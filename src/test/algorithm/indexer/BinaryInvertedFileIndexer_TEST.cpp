@@ -64,11 +64,11 @@ BOOST_FIXTURE_TEST_SUITE(BinaryInvertedFileIndexer_TEST, BinaryInvertedFileIndex
         auto transformedDatabase = databaseTranslator->transformDatabase(vocabulary, bsiftDatabase);
         BOOST_REQUIRE(transformedDatabase != nullptr);
 
-        BinaryInvertedFileIndexer<128> binaryInvertedFileIndexer(
+        BinaryInvertedFileIndexer binaryInvertedFileIndexer(
                 std::make_shared<BIFParameters>(transformedDatabase, 30));
 
         auto result = binaryInvertedFileIndexer.query(
-                std::make_shared<BIFQuery<128>>(databaseTranslator->transformImage(vocabulary, image)));
+                std::make_shared<BIFQuery>(databaseTranslator->transformImage(vocabulary, image)));
 
         BOOST_REQUIRE(result != nullptr);
         BOOST_REQUIRE_EQUAL(result->getResultList().size(), 11);

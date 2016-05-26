@@ -11,10 +11,8 @@ namespace feitir {
             throw std::logic_error("median values array is empty\n"
                                            "call DescriptorPositionMedianBSIFTExtractor::extractDatabaseBSIFT");
         }
-        assert(row.rows == 1);
-        assert(row.cols == medianValues.size());
 
-        BSIFT descriptor;
+        BSIFT descriptor(getN());
         for (int i = 0; i < row.cols; ++i) {
             descriptor[i] = (row.at<float>(0,i) > medianValues[i]);
         }
@@ -37,10 +35,6 @@ namespace feitir {
 
     DatabasePtr DescriptorPositionMedianBSIFTExtractor::extractDatabaseBSIFT(const DatabasePtr database) {
         computeMedianValues(database);
-        return BSIFTExtractor<128>::extractDatabaseBSIFT(database);
-    }
-
-    DescriptorPositionMedianBSIFTExtractor::DatabaseTranslatorPtr DescriptorPositionMedianBSIFTExtractor::getDatabaseTranslatorPtr() const {
-        return std::make_shared<const BSIFTDatabaseTranslator<128>>();
+        return BSIFTExtractor::extractDatabaseBSIFT(database);
     }
 }

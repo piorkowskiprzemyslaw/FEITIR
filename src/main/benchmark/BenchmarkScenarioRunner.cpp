@@ -6,6 +6,7 @@
 
 #include "BenchmarkScenarioRunner.h"
 #include <boost/log/trivial.hpp>
+#include <memory>
 #include "src/main/algorithm/BSIFT/descriptor_median/DescriptorMedianBSIFTExtractor.h"
 #include "src/main/algorithm/BSIFT/locality_sensitive_hashing/LocalitySensitiveHashingBSIFTExtractor.h"
 #include "src/main/algorithm/BSIFT/vectors_compare/VectorsCompareBSIFTExtractor.h"
@@ -31,7 +32,7 @@ namespace feitir {
         BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark";
         auto database = databaseFactory.createDatabase(description->getDatabasePath());
         auto vocabulary = setupVocabulary(description->getVocabularyType(), description->getVocabularyPath());
-        BSIFTDatabaseExtractorPtr bsiftExtractor = setupExtractor(description->getMethodDescription(),
+        BSIFTExtractorPtr bsiftExtractor = setupExtractor(description->getMethodDescription(),
                                                                   database, vocabulary);
         auto transformedDatabase = bsiftExtractor->extractDatabaseBSIFT(database);
 
@@ -55,21 +56,21 @@ namespace feitir {
         throw std::invalid_argument(vocabularyType + " has no meaning as vocabulary type");
     }
 
-    BSIFTDatabaseExtractorPtr BenchmarkScenarioRunner::setupExtractor(BSIFTMethodDescriptionPtr method,
+    BSIFTExtractorPtr BenchmarkScenarioRunner::setupExtractor(BSIFTMethodDescriptionPtr method,
                                                                       DatabasePtr database,
                                                                       VocabularyTypePtr vocabularyTypePtr) {
         std::string methodName = method->getMethod();
         if (!methodName.compare("comparison_array")) {
-            return std::make_shared<ComparisonArrayBSIFTExtractor<CmpArrN()>>(method->getL(), method->getT());
+            return std::make_shared<ComparisonArrayBSIFTExtractor<>>(CmpArrN(), method->getL(), method->getT());
         } else if (!methodName.compare("descriptor_median")) {
             return std::make_shared<DescriptorMedianBSIFTExtractor>();
         } else if (!methodName.compare("descriptor_position_median")) {
             return std::make_shared<DescriptorPositionMedianBSIFTExtractor>();
         } else if (!methodName.compare("descriptor_voronoi_position")) {
-            return std::make_shared<DescriptorVoronoiPositionBSIFTExtractor<VorPosN()>>(vocabularyTypePtr, database);
+            return std::make_shared<DescriptorVoronoiPositionBSIFTExtractor>(VorPosN(), vocabularyTypePtr, database);
         } else if (!methodName.compare("locality_sensitive_hashing")) {
-            auto hashFunctions = LocalitySensitiveHashingBSIFTExtractor<LSHN()>::generateRandomHashFunctions();
-            return std::make_shared<LocalitySensitiveHashingBSIFTExtractor<LSHN()>>(hashFunctions);
+            auto hashFunctions = LocalitySensitiveHashingBSIFTExtractor::generateRandomHashFunctions(LSHN());
+            return std::make_shared<LocalitySensitiveHashingBSIFTExtractor>(LSHN(), hashFunctions);
         } else if (!methodName.compare("vectors_compare")) {
             return std::make_shared<VectorsCompareBSIFTExtractor>();
         }

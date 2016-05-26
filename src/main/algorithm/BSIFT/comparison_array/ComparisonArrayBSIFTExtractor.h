@@ -19,23 +19,19 @@ namespace feitir {
         return result;
     };
 
-    template <std::size_t N, typename Fi = decltype(GREATERWINS)>
-    class ComparisonArrayBSIFTExtractor : public BSIFTExtractor<N> {
+    template <typename Fi = decltype(GREATERWINS)>
+    class ComparisonArrayBSIFTExtractor : public BSIFTExtractor {
     public:
 
-        ComparisonArrayBSIFTExtractor(const unsigned L, const unsigned T, Fi fi = GREATERWINS)
-                : L{L}, T{T}, fiFunction{fi} { }
-
-        virtual typename BSIFTExtractor<N>::DatabaseTranslatorPtr getDatabaseTranslatorPtr() const override {
-            return std::make_shared<const BSIFTDatabaseTranslator<N>>();
-        }
+        ComparisonArrayBSIFTExtractor(const unsigned N, const int L, const int T, Fi fi = GREATERWINS)
+                : BSIFTExtractor{N}, L{L}, T{T}, fiFunction{fi} { }
 
     protected:
         const std::pair<bool, bool> C1 = {true, true};
         const std::pair<bool, bool> C2 = {true, false};
         const std::pair<bool, bool> C3 = {false, false};
 
-        virtual typename BSIFTExtractor<N>::BSIFT processRow(cv::Mat row) override {
+        virtual BSIFTExtractor::BSIFT processRow(cv::Mat row) override {
             assert (row.rows == 1);
             std::vector<bool> comparasionString;
 
@@ -57,11 +53,11 @@ namespace feitir {
                 }
             }
 
-            typename BSIFTExtractor<N>::BSIFT result;
+            typename BSIFTExtractor::BSIFT result(getN());
             unsigned resultPosition = 0;
-            unsigned partSize = comparasionString.size() / L;
-            unsigned rest = comparasionString.size() % L;
-            unsigned counter = 0;
+            unsigned long partSize = comparasionString.size() / L;
+            unsigned long rest = comparasionString.size() % L;
+            unsigned long counter = 0;
             std::vector<bool> partialResult;
 
             for (unsigned i = 0; i < L; ++i) {
@@ -77,19 +73,19 @@ namespace feitir {
                 partialResult = fiFunction(std::vector<bool>(beginIt, endIt));
 
                 for (int j = 0; j < partialResult.size(); ++j) {
-                    assert (resultPosition < N);
+                    assert (resultPosition < getN());
                     result[resultPosition++] = partialResult[j];
                 }
             }
 
-            assert (resultPosition == N);
+            assert (resultPosition == getN());
 
             return result;
         }
 
     private:
-        const unsigned L;
-        const unsigned T;
+        const int L;
+        const int T;
         const Fi fiFunction;
     };
 

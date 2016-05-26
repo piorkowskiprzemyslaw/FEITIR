@@ -23,46 +23,44 @@ namespace feitir {
         const size_t getTreshold() const;
     };
 
-    template <std::size_t N>
     class BIFQuery {
     private:
-        ImageBSIFTPtr<N> img;
+        ImageBSIFTPtr img;
     public:
         BIFQuery(const ImagePtr img) {
-            this->img = std::dynamic_pointer_cast<ImageBSIFT<N>>(img);
+            this->img = std::dynamic_pointer_cast<ImageBSIFT>(img);
             if (this->img == nullptr) {
                 throw std::invalid_argument("img");
             }
         }
 
-        BIFQuery(const ImageBSIFTPtr<N> img) : img{img} { }
+        BIFQuery(const ImageBSIFTPtr img) : img{img} { }
 
-        const ImageBSIFTPtr<N> getImg() const {
+        const ImageBSIFTPtr getImg() const {
             return img;
         }
     };
 
-    template <std::size_t N> using BIFResultEntry = std::pair<ImageBSIFTPtr<N>, std::size_t>;
+    using BIFResultEntry = std::pair<ImageBSIFTPtr, std::size_t>;
 
-    template <std::size_t N>
     class BIFResult {
     private:
-        std::vector<BIFResultEntry<N> > resultList;
+        std::vector<BIFResultEntry> resultList;
     public:
         BIFResult() { }
 
-        void addResultEntry(BIFResultEntry<N> entry) {
+        void addResultEntry(BIFResultEntry entry) {
             resultList.push_back(std::move(entry));
         }
 
-        const std::vector<BIFResultEntry<N>>& getResultList() const {
+        const std::vector<BIFResultEntry>& getResultList() const {
             return resultList;
         }
     };
 
-    template <std::size_t N> using BIFResultPtr = std::shared_ptr<BIFResult<N>>;
+    using BIFResultPtr = std::shared_ptr<BIFResult>;
 
-    template <std::size_t N> using BIFQueryPtr = std::shared_ptr<BIFQuery<N>>;
+    using BIFQueryPtr = std::shared_ptr<BIFQuery>;
 
     using BIFParametersPtr = std::shared_ptr<BIFParameters>;
 }

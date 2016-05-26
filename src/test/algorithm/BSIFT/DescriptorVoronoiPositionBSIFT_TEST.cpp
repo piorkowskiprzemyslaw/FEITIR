@@ -18,7 +18,6 @@ struct DescriptorVoronoiPositionBSIFTExtractorFixture {
     const std::string imagePath;
     const std::string lennaImage;
     const std::string databaseDir;
-    static constexpr unsigned N = 128;
     ImageFactory imageFactory;
     DatabaseFactory databaseFactory;
 
@@ -38,7 +37,7 @@ BOOST_FIXTURE_TEST_SUITE(DescriptorVoronoiPositionBSIFTExtractor_TEST, Descripto
         KMeansVocabularyBuilder kMeansVocabularyBuilder;
         KMeansParameterPtr param = std::make_shared<KMeansParameter>(database, 5);
         auto vocabulary = kMeansVocabularyBuilder.build(param);
-        DescriptorVoronoiPositionBSIFTExtractor<64> extractor(vocabulary, database);
+        DescriptorVoronoiPositionBSIFTExtractor extractor(64, vocabulary, database);
         auto bsiftImg = extractor.extractImageBSIFT(image);
         BOOST_REQUIRE(bsiftImg != nullptr);
         for (auto bsift : bsiftImg->getBsift()) {

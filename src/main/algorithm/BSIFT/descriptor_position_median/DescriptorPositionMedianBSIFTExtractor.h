@@ -11,7 +11,7 @@
 
 namespace feitir {
 
-    class DescriptorPositionMedianBSIFTExtractor : public BSIFTExtractor<128> {
+    class DescriptorPositionMedianBSIFTExtractor : public BSIFTExtractor {
     private:
         Util util;
         std::vector<float> medianValues;
@@ -21,8 +21,8 @@ namespace feitir {
         void computeMedianValues(const DatabasePtr database);
 
     public:
+        DescriptorPositionMedianBSIFTExtractor() : BSIFTExtractor{128} { }
         virtual DatabasePtr extractDatabaseBSIFT(const DatabasePtr database) override;
-        virtual DatabaseTranslatorPtr getDatabaseTranslatorPtr() const override;
     };
 
 }

@@ -6,12 +6,8 @@
 
 namespace feitir {
 
-    VectorsCompareBSIFTExtractor::DatabaseTranslatorPtr VectorsCompareBSIFTExtractor::getDatabaseTranslatorPtr() const {
-        return std::make_shared<const BSIFTDatabaseTranslator<384>>();
-    }
-
     VectorsCompareBSIFTExtractor::BSIFT VectorsCompareBSIFTExtractor::processRow(cv::Mat row) {
-        BSIFT result;
+        BSIFT result(getN());
         int resultFirstIdx = 0;
         for (int i = 0; i < BINS_NUMBER; ++i) {
             for (int j = 0; j < BINS_NUMBER; ++j, resultFirstIdx += (3 * VECTORS_PER_BIN)) {

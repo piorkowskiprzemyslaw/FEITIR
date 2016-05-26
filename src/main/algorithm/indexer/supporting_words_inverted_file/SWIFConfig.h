@@ -31,17 +31,16 @@ namespace feitir {
         size_t getK() const;
     };
 
-    template <std::size_t N>
     class SWIFQuery {
     private:
         ImagePtr originalImage;
-        ImageBSIFTPtr<N> transformedImage;
+        ImageBSIFTPtr transformedImage;
     public:
-        SWIFQuery(const ImagePtr originalImage, const ImageBSIFTPtr<N> transformedImage)
+        SWIFQuery(const ImagePtr originalImage, const ImageBSIFTPtr transformedImage)
                 : originalImage{originalImage},
                   transformedImage{transformedImage} { }
 
-        const ImageBSIFTPtr<N> getTransformedImage() const {
+        const ImageBSIFTPtr getTransformedImage() const {
             return transformedImage;
         }
 
@@ -50,30 +49,29 @@ namespace feitir {
         }
     };
 
-    template <std::size_t N> using SWIFResultEntry = std::pair<ImageBSIFTPtr<N>, std::size_t>;
+    using SWIFResultEntry = std::pair<ImageBSIFTPtr, std::size_t>;
 
-    template <std::size_t N>
     class SWIFResult {
     private:
-        std::vector<SWIFResultEntry<N>> resultList;
+        std::vector<SWIFResultEntry> resultList;
 
     public:
         SWIFResult() { }
 
-        void addResultEntry(SWIFResultEntry<N> resultEntry) {
+        void addResultEntry(SWIFResultEntry resultEntry) {
             resultList.emplace_back(std::move(resultEntry));
         }
 
-        const std::vector<SWIFResultEntry<N>> &getResultList() const {
+        const std::vector<SWIFResultEntry> &getResultList() const {
             return resultList;
         }
     };
 
     using SWIFParametersPtr = std::shared_ptr<SWIFParameters>;
 
-    template <std::size_t N> using SWIFQueryPtr = std::shared_ptr<SWIFQuery<N>>;
+    using SWIFQueryPtr = std::shared_ptr<SWIFQuery>;
 
-    template <std::size_t N> using SWIFResultPtr = std::shared_ptr<SWIFResult<N>>;
+    using SWIFResultPtr = std::shared_ptr<SWIFResult>;
 }
 
 

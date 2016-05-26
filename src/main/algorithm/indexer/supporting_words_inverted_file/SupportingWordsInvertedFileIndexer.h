@@ -18,8 +18,7 @@ namespace feitir {
     /**
      * Implementation of binary inverted file indexer which uses supporting words map.
      */
-    template <std::size_t N>
-    class SupportingWordsInvertedFileIndexer : public Indexer<SWIFResultPtr<N>,  SWIFQueryPtr<N>, SWIFParametersPtr> {
+    class SupportingWordsInvertedFileIndexer : public Indexer<SWIFResultPtr,  SWIFQueryPtr, SWIFParametersPtr> {
     private:
         cv::BFMatcher matcher;
         const Util util;
@@ -30,7 +29,7 @@ namespace feitir {
         // algorithm parameter
         std::size_t K;
 
-        // hamming distance treshold which below which we mark pair of features as match.
+        // hamming distance threshold below which pair is marked as a match.
         std::size_t distanceTreshold;
 
         // Transformed database - database transformed with vocabulary - does not include original SIFT descriptor
@@ -39,17 +38,17 @@ namespace feitir {
         VocabularyTypePtr vocabulary;
 
         // below map contains transformed images - without information about original SIFT descriptor
-        std::unordered_map<boost::uuids::uuid, ImageBSIFTPtr<N>> uuidToBSIFTImageMap;
+        std::unordered_map<boost::uuids::uuid, ImageBSIFTPtr> uuidToBSIFTImageMap;
 
         // inverted file structure
-        std::unordered_multimap<int, std::tuple<ImageBSIFTPtr<N>, typename ImageBSIFT<N>::BSIFT>> invertedFile;
+        std::unordered_multimap<int, std::tuple<ImageBSIFTPtr, ImageBSIFT::BSIFT>> invertedFile;
 
         // supporting words multimap
         std::unordered_multimap<int, int> supportingWordsMap;
 
     protected:
         void processImage(ImagePtr img) {
-            auto bsiftImg = std::dynamic_pointer_cast<ImageBSIFT<N>>(img);
+            auto bsiftImg = std::dynamic_pointer_cast<ImageBSIFT>(img);
             if (bsiftImg == nullptr) {
                 throw std::invalid_argument("img");
             }
@@ -120,7 +119,7 @@ namespace feitir {
 
     public:
         explicit SupportingWordsInvertedFileIndexer(const SWIFParametersPtr &parameters)
-                : Indexer<SWIFResultPtr<N>,  SWIFQueryPtr<N>, SWIFParametersPtr>{parameters},
+                : Indexer<SWIFResultPtr, SWIFQueryPtr, SWIFParametersPtr>{parameters},
                   transformedDb{parameters->getTransformedDb()},
                   p{parameters->getP()},
                   distanceTreshold{parameters->getDistanceTreshold()},
@@ -134,13 +133,13 @@ namespace feitir {
             computeSupportingWords();
         }
 
-        virtual SWIFResultPtr<N> query(SWIFQueryPtr<N> query) override {
+        virtual SWIFResultPtr query(SWIFQueryPtr query) override {
             std::unordered_map<boost::uuids::uuid, int32_t> uuidToResult;
-            SWIFResultPtr<N> resultPtr = std::make_shared<SWIFResult<N>>();
-            ImageBSIFTPtr<N> transformedImage = query->getTransformedImage();
+            SWIFResultPtr resultPtr = std::make_shared<SWIFResult>();
+            ImageBSIFTPtr transformedImage = query->getTransformedImage();
             ImagePtr originalImage = query->getOriginalImage();
-            typename ImageBSIFT<N>::BSIFT bsift;
-            ImageBSIFTPtr<N> imgPtr;
+            ImageBSIFT::BSIFT bsift;
+            ImageBSIFTPtr imgPtr;
 
             for (auto match : transformedImage->getMatches()) {
                 cv::Mat qFeature = originalImage->getDescriptors().row(match.queryIdx);

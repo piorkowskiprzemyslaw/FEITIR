@@ -17,7 +17,6 @@ struct VectorsCompareBSIFTExtractorFixture {
     const std::string imagePath;
     const std::string lennaImage;
     const std::string databaseDir;
-    static constexpr unsigned N = 128;
     ImageFactory imageFactory;
     DatabaseFactory databaseFactory;
 
@@ -51,25 +50,25 @@ BOOST_FIXTURE_TEST_SUITE(VectorsCompareBSIFTExtractor_TEST, VectorsCompareBSIFTE
                                          8, 7, 6, 5, 4, 3, 2, 1,
                                          11, 6, 9, 4, 7, 2, 5, 0};
         cv::Mat fakeDescriptor = cv::Mat(1, img->getDescriptors().cols, CV_32F, fakeDescriptorData);
-        std::string expectedResultString =  "xxxxxxxy" "xxxxyyyy" "xxxxxxxx"
-                                            "yyyyyyyx" "xyxyxyxy" "yyyyyyyy"
-                                            "yxyxyxyx" "xxxxxxxx" "yxyxyxyx"
-                                            "yxyxyxyx" "yyyyyxxx" "xyxyxyxy"
-                                            "yxyxxxxx" "yyyyyyyy" "yyyyyyyy"
-                                            "yyyyyyyx" "xxxxxxxx" "xxxxxxxx"
-                                            "yyyyyyyx" "xyxyxyxy" "xyxyxyxy"
-                                            "yxyxyxyx" "yxyxyxxx" "yxyxyxyx"
-                                            "xxxxxxxy" "xxxxyyyy" "xxxxxxxx"
-                                            "yyyyyyyx" "xyxyxyxy" "yyyyyyyy"
-                                            "yxyxyxyx" "xxxxxxxx" "yxyxyxyx"
-                                            "yxyxyxyx" "yyyyyxxx" "xyxyxyxy"
-                                            "yxyxxxxx" "yyyyyyyy" "yyyyyyyy"
-                                            "yyyyyyyx" "xxxxxxxx" "xxxxxxxx"
-                                            "yyyyyyyx" "xyxyxyxy" "xyxyxyxy"
-                                            "yxyxyxyx" "yxyxyxxx" "yxyxyxyx";
+        std::string expectedResultString =  "00000001" "00001111" "00000000"
+                                            "11111110" "01010101" "11111111"
+                                            "10101010" "00000000" "10101010"
+                                            "10101010" "11111000" "01010101"
+                                            "10100000" "11111111" "11111111"
+                                            "11111110" "00000000" "00000000"
+                                            "11111110" "01010101" "01010101"
+                                            "10101010" "10101000" "10101010"
+                                            "00000001" "00001111" "00000000"
+                                            "11111110" "01010101" "11111111"
+                                            "10101010" "00000000" "10101010"
+                                            "10101010" "11111000" "01010101"
+                                            "10100000" "11111111" "11111111"
+                                            "11111110" "00000000" "00000000"
+                                            "11111110" "01010101" "01010101"
+                                            "10101010" "10101000" "10101010";
         std::reverse(expectedResultString.begin(), expectedResultString.end());
         VectorsCompareBSIFTExtractor::BSIFT expectedResult(expectedResultString, 0,
-                                                           expectedResultString.size(), 'x', 'y');
+                                                           expectedResultString.size());
 
         auto fakeImg = imageFactory.createImage(img, fakeDescriptor);
         auto fakeBSIFTImg = extractor.extractImageBSIFT(fakeImg);

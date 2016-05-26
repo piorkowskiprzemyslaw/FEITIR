@@ -9,6 +9,7 @@
 #include <vector>
 #include <boost/filesystem.hpp>
 #include <bitset>
+#include <boost/dynamic_bitset.hpp>
 
 namespace feitir {
 
@@ -67,8 +68,7 @@ namespace feitir {
             return median<T, RT>(localCopy);
         }
 
-        template <std::size_t N>
-        auto hammingDistance(std::bitset<N> a, std::bitset<N> b) const -> decltype(a.count()) {
+        auto hammingDistance(boost::dynamic_bitset<> a, boost::dynamic_bitset<> b) const -> decltype(a.count()) {
             return (a ^ b).count();
         }
     };
