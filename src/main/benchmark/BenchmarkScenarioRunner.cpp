@@ -51,14 +51,14 @@ namespace feitir {
         for (const auto& img : *database) {
             BOOST_LOG_TRIVIAL(debug) << "Processing image " << img->getFileName();
             auto originalVectorsDistances
-                    = util.euclideanDistanceVector(img->getDescriptors(),
+                    = Util::euclideanDistanceVector(img->getDescriptors(),
                                                    cv::repeat(referenceDescriptors.first,
                                                               img->getDescriptors().rows, 1));
             auto bsiftImg = std::dynamic_pointer_cast<ImageBSIFT>(img);
             assert (bsiftImg != nullptr);
             for (int i = 0; i < bsiftImg->getDescriptors().rows; ++i) {
                 resultVector.push_back({originalVectorsDistances[i],
-                                       util.hammingDistance(referenceDescriptors.second, bsiftImg->getBsift()[i])});
+                                       Util::hammingDistance(referenceDescriptors.second, bsiftImg->getBsift()[i])});
             }
         }
 

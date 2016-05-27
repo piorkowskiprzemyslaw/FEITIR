@@ -20,7 +20,6 @@ namespace feitir {
     private:
         const CategoryFactory categoryFactory;
         const ImageFactory imageFactory;
-        const Util util;
 
     protected:
         std::list<std::string> findCategoriesRoots(const std::string &root, bool nestedCategories) const;

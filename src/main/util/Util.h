@@ -7,8 +7,8 @@
 
 #include <list>
 #include <vector>
+#include <numeric>
 #include <boost/filesystem.hpp>
-#include <bitset>
 #include <boost/dynamic_bitset.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core.hpp>
@@ -22,7 +22,7 @@ namespace feitir {
         Util();
 
         template <class Predicate>
-        std::list<std::string> findInDirectory(const std::string &root, bool findRecursive, Predicate pred) const {
+        static std::list<std::string> findInDirectory(const std::string &root, bool findRecursive, Predicate pred) {
             std::list<std::string> result;
             if (boost::filesystem::is_directory(root)) {
                 std::vector<boost::filesystem::path> paths;
@@ -47,12 +47,12 @@ namespace feitir {
         }
 
         template <class T, class RT = T>
-        RT median(std::vector<T>& v) {
-            return median(v, std::greater<T>());
+        static RT median(std::vector<T>& v) {
+            return Util::median(v, std::greater<T>());
         }
 
         template <class T, class Compare, class RT = T>
-        RT median(std::vector<T>& v, Compare compare) {
+        static RT median(std::vector<T>& v, Compare compare) {
             typename std::vector<T>::size_type s = v.size();
             if (s & 0x1) {
                 std::nth_element(v.begin(), v.begin() + s/2, v.end(), compare);
@@ -65,17 +65,17 @@ namespace feitir {
         }
 
         template <class T, class RT = T>
-        RT median(const std::vector<T>& v) {
+        static RT median(const std::vector<T>& v) {
             std::vector<T> localCopy{v};
-            return median<T, RT>(localCopy);
+            return Util::median<T, RT>(localCopy);
         }
 
-        auto hammingDistance(boost::dynamic_bitset<> a, boost::dynamic_bitset<> b) const -> decltype(a.count()) {
+        static auto hammingDistance(boost::dynamic_bitset<> a, boost::dynamic_bitset<> b) -> decltype(a.count()) {
             return (a ^ b).count();
         }
 
 
-        float euclideanDistance(cv::Mat a, cv::Mat b) {
+        static float euclideanDistance(cv::Mat a, cv::Mat b) {
             assert (a.cols == b.cols);
             assert (a.rows == b.rows);
             assert (a.rows == 1);
@@ -91,7 +91,7 @@ namespace feitir {
             return static_cast<float>(sqrt(std::accumulate(result.begin(), result.end(), 0.0f)));
         }
 
-        std::vector<float> euclideanDistanceVector(cv::Mat a, cv::Mat b) {
+        static std::vector<float> euclideanDistanceVector(cv::Mat a, cv::Mat b) {
             assert (a.cols == b.cols && a.rows == b.rows);
             cv::Mat pow, sub = a - b;
             cv::multiply(sub, sub, pow);

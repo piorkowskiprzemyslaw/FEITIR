@@ -40,7 +40,6 @@ namespace feitir {
                                          VocabularyTypePtr vocabularyTypePtr);
         void writeBSIFTResult(const std::string& filename, const std::vector<SingleBSFITResult>& result);
 
-        Util util;
         DatabaseFactory databaseFactory;
         KMeansVocabularyBuilder kMeansVocabularyBuilder;
         HKMeansVocabularyBuilder hkMeansVocabularyBuilder;

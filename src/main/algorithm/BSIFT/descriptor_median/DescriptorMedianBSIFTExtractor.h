@@ -13,8 +13,6 @@
 namespace feitir {
 
     class DescriptorMedianBSIFTExtractor : public BSIFTExtractor {
-    private:
-        Util util;
     protected:
         virtual BSIFT processRow(cv::Mat row) override;
     public:

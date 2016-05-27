@@ -15,7 +15,7 @@ namespace feitir {
 
     const CategoryPtr CategoryFactory::createCategory(const std::string &root, const std::string &path, bool findRecursive) const {
         std::string name = categoryName(root, path);
-        std::list<std::string> paths = util.findInDirectory(path, findRecursive, [](const boost::filesystem::path &p) {
+        std::list<std::string> paths = Util::findInDirectory(path, findRecursive, [](const boost::filesystem::path &p) {
             return boost::filesystem::is_regular_file(p);
         });
 

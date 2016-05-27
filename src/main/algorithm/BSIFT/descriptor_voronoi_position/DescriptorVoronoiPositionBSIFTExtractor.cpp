@@ -56,7 +56,7 @@ namespace feitir {
                 for (int j = 0; j < centroidMap.cols; ++j) {
                     std::vector<float> column;
                     centroidMap.col(j).copyTo(column);
-                    centroidMedians[j] = util.median(column);
+                    centroidMedians[j] = Util::median(column);
                 }
                 medians[i] = centroidMedians;
             }

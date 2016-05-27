@@ -13,7 +13,6 @@ namespace feitir {
 
     class DescriptorPositionMedianBSIFTExtractor : public BSIFTExtractor {
     private:
-        Util util;
         std::vector<float> medianValues;
 
     protected:

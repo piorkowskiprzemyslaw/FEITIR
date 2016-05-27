@@ -16,7 +16,6 @@ namespace feitir {
 
     class BinaryInvertedFileIndexer : public Indexer<BIFResultPtr, BIFQueryPtr, BIFParametersPtr> {
     private:
-        const Util util;
         const std::size_t treshold;
         std::unordered_multimap<int, std::tuple<ImageBSIFTPtr, typename ImageBSIFT::BSIFT>> binaryInvertedFile;
         std::unordered_map<boost::uuids::uuid, ImageBSIFTPtr> uuidToImageMap;
@@ -54,7 +53,7 @@ namespace feitir {
                 auto range = binaryInvertedFile.equal_range(match.trainIdx);
                 for (auto dbImage = range.first; dbImage != range.second; ++dbImage) {
                     std::tie(imgPtr, bsift) = dbImage->second;
-                    if (util.hammingDistance(img->getBsift()[match.imgIdx], bsift) <= treshold) {
+                    if (Util::hammingDistance(img->getBsift()[match.imgIdx], bsift) <= treshold) {
                         auto currentVal = uuidToResult[imgPtr->getUuid()];
                         uuidToResult[imgPtr->getUuid()] = currentVal + 1;
                     }

@@ -11,7 +11,7 @@ namespace feitir {
         for (int i = 0; i < row.cols; ++i) {
             elements[i] = row.at<float>(0, i);
         }
-        float medianValue = util.median<float, float>(elements);
+        float medianValue = Util::median<float, float>(elements);
 
         BSIFT descriptor(getN());
         for (int i = 0; i < row.cols; ++i) {

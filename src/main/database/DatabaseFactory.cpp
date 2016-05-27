@@ -38,13 +38,13 @@ namespace feitir {
     }
 
     std::list<std::string> DatabaseFactory::findCategoriesRoots(const std::string &root, bool nestedCategories) const {
-        return util.findInDirectory(root, nestedCategories, [] (const boost::filesystem::path &path) {
+        return Util::findInDirectory(root, nestedCategories, [] (const boost::filesystem::path &path) {
             return boost::filesystem::is_directory(path);
         });
     }
 
     std::list<std::string> DatabaseFactory::findRootImages(const std::string &root) const {
-        return util.findInDirectory(root, false, [] (const boost::filesystem::path &path) {
+        return Util::findInDirectory(root, false, [] (const boost::filesystem::path &path) {
             return boost::filesystem::is_regular_file(path);
         });
     }

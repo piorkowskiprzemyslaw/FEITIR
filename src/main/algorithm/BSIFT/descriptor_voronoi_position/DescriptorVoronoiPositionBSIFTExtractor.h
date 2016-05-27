@@ -39,7 +39,6 @@ namespace feitir {
         std::weak_ptr<Database> databaseWeakPtr;
         cv::Mat P;
         std::vector<std::vector<float>> medians;
-        Util util;
     };
 }
 

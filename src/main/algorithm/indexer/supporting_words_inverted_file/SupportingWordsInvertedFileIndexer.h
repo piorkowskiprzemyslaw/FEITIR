@@ -21,7 +21,6 @@ namespace feitir {
     class SupportingWordsInvertedFileIndexer : public Indexer<SWIFResultPtr,  SWIFQueryPtr, SWIFParametersPtr> {
     private:
         cv::BFMatcher matcher;
-        const Util util;
 
         // algorithm parameter
         std::size_t p;
@@ -153,7 +152,7 @@ namespace feitir {
                     auto range = invertedFile.equal_range(vwIdx);
                     for (auto dbImage = range.first; dbImage != range.second; ++ dbImage) {
                         std::tie(imgPtr, bsift) = dbImage->second;
-                        auto distance = util.hammingDistance(transformedImage->getBsift()[match.imgIdx], bsift);
+                        auto distance = Util::hammingDistance(transformedImage->getBsift()[match.imgIdx], bsift);
                         if (distance <= distanceTreshold) {
                             auto currentVal = uuidToResult[imgPtr->getUuid()];
                             uuidToResult[imgPtr->getUuid()] = currentVal + 1;

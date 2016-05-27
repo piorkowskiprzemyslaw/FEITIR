@@ -14,7 +14,6 @@ namespace feitir {
 
     class CategoryFactory {
     private:
-        const Util util;
         const ImageFactory imageFactory;
 
     protected:
