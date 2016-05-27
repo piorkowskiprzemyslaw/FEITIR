@@ -3,7 +3,6 @@
 //
 
 #include "BenchmarkScenarioRunner.h"
-#include <boost/log/trivial.hpp>
 #include <chrono>
 #include "src/main/algorithm/BSIFT/descriptor_median/DescriptorMedianBSIFTExtractor.h"
 #include "src/main/algorithm/BSIFT/locality_sensitive_hashing/LocalitySensitiveHashingBSIFTExtractor.h"
@@ -29,7 +28,7 @@ namespace feitir {
     }
 
     void BenchmarkScenarioRunner::runBSIFTDescription(BSIFTBenchmarkDescriptionPtr description) {
-        BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark";
+        BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark " + description->getMethodDescription()->getMethod();
         std::vector<SingleBSFITResult> resultVector;
         std::chrono::high_resolution_clock::time_point t1;
         auto database = databaseFactory.createDatabase(description->getDatabasePath());
@@ -45,7 +44,7 @@ namespace feitir {
         if (description->isMeasureTime()) {
             std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-            BOOST_LOG_TRIVIAL(info) << "extraction time: " << duration;
+            BOOST_LOG_TRIVIAL(info) << description->getMethodDescription()->getMethod() + " extraction time: " << duration;
         }
 
         auto referenceDescriptors = getFirstDescriptors(database);
