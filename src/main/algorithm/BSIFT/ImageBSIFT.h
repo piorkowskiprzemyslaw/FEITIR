@@ -23,17 +23,29 @@ namespace feitir {
 
         ImageBSIFT(const std::string &name, const std::string &fullPath, const std::string &path,
                    const Extension extension, const cv::Mat &descriptors, const unsigned N, std::vector<BSIFT> bsift)
-                : Image{name, fullPath, path, extension, descriptors}, N{N}, bsift{std::move(bsift)} { }
+                : Image{name, fullPath, path, extension, descriptors}, N{N}, bsift{std::move(bsift)} {
+            assert (this->getDescriptors().rows > 0);
+            assert (this->getDescriptors().rows == this->getBsift().size());
+        }
 
         ImageBSIFT(const ImagePtr image, const unsigned N, std::vector<BSIFT> bsift)
-                : Image{image}, N{N}, bsift{std::move(bsift)} { }
+                : Image{image}, N{N}, bsift{std::move(bsift)} {
+            assert (image->getDescriptors().rows > 0);
+            assert (image->getDescriptors().rows == this->getBsift().size());
+        }
 
         ImageBSIFT(const std::shared_ptr<ImageBSIFT> imageBSIFTPtr,
                    std::vector<cv::DMatch> matches) : Image{imageBSIFTPtr, std::move(matches)}, N{imageBSIFTPtr->getN()},
-                                                      bsift{imageBSIFTPtr->getBsift()} { }
+                                                      bsift{imageBSIFTPtr->getBsift()} {
+            assert (this->getMatches().size() > 0);
+            assert (this->getMatches().size() == this->getBsift().size());
+        }
 
         ImageBSIFT(const std::shared_ptr<ImageBSIFT> imageBSIFTPtr) : Image{imageBSIFTPtr}, N{imageBSIFTPtr->getN()},
-                                                                      bsift{imageBSIFTPtr->getBsift()} { }
+                                                                      bsift{imageBSIFTPtr->getBsift()} {
+            assert (imageBSIFTPtr->getMatches().size() > 0);
+            assert (imageBSIFTPtr->getMatches().size() == imageBSIFTPtr->getBsift().size());
+        }
 
         virtual ~ImageBSIFT() { }
 

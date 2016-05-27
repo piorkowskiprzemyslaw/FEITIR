@@ -2,28 +2,17 @@
   "scenario": {
     "bsift_benchmarks": [
       {
-        "type": "BSIFTBenchmark",
-        "method_description": {
-          "method": "comparison_array",
-          "N": "64",
+        "bsift_method": {
+          "method": "descriptor_median",
           "L": "64",
-          "T": "20"
+          "T": "20",
+          "N": "64"
         },
-        "database": "/Users/Przemek/Documents/Magisterka/imgDB/wang_small",
+        "database_path": "/home/przemek/Documents/Magister/ImgDbs/wang_small/",
         "vocabulary_type": "kmeans",
-        "vocabulary": "/Users/Przemek/Documents/Magisterka/vocabulary/kmeans_1000_wang_small.yml",
-        "measure_time": "0",
-        "result_file": "descriptor_median.csv"
-      }
-    ],
-    "indexer_benchmarks": [
-      {
-        "type": "IndexerBenchmark",
-        "method": "InvertedFile",
-        "database": "/Users/Przemek/Documents/Magisterka/imgDB/wang_small",
-        "vocabulary_type": "kmeans",
-        "vocabulary": "/Users/Przemek/Documents/Magisterka/vocabulary/kmeans_1000_wang_small.yml",
-        "result_file": "some_file.txt"
+        "vocabulary_path": "/home/przemek/Desktop/kmeans_1000_wang_small.yml",
+        "measure_time": "1",
+        "result_file": "/home/przemek/Documents/Magister/results/descriptor_median.csv"
       }
     ]
   }

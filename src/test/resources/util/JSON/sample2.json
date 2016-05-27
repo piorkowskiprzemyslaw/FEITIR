@@ -5,7 +5,8 @@
         "bsift_method": {
           "method": "method",
           "L": "1",
-          "T": "2"
+          "T": "2",
+          "N": "3"
         },
         "database_path": "database_path",
         "vocabulary_type": "vocabulary_type",

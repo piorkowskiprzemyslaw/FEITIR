@@ -8,4 +8,4 @@ set(UTIL_SOURCE_FILES
 
 add_library(util STATIC ${UTIL_SOURCE_FILES})
 
-target_link_libraries(util ${Boost_LIBRARIES})
+target_link_libraries(util ${Boost_LIBRARIES} ${OpenCV_LIBRARIES})

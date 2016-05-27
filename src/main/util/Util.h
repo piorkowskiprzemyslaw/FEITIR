@@ -10,6 +10,8 @@
 #include <boost/filesystem.hpp>
 #include <bitset>
 #include <boost/dynamic_bitset.hpp>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/core.hpp>
 
 namespace feitir {
 
@@ -70,6 +72,41 @@ namespace feitir {
 
         auto hammingDistance(boost::dynamic_bitset<> a, boost::dynamic_bitset<> b) const -> decltype(a.count()) {
             return (a ^ b).count();
+        }
+
+
+        float euclideanDistance(cv::Mat a, cv::Mat b) {
+            assert (a.cols == b.cols);
+            assert (a.rows == b.rows);
+            assert (a.rows == 1);
+            std::vector<float> aVec, bVec, result;
+            a.copyTo(aVec);
+            b.copyTo(bVec);
+
+            std::transform(aVec.begin(), aVec.end(), bVec.begin(), std::back_inserter(result),
+                           [&](float aVal, float bVal) {
+                return (aVal-bVal) * (aVal-bVal);
+            });
+
+            return static_cast<float>(sqrt(std::accumulate(result.begin(), result.end(), 0.0f)));
+        }
+
+        std::vector<float> euclideanDistanceVector(cv::Mat a, cv::Mat b) {
+            assert (a.cols == b.cols && a.rows == b.rows);
+            cv::Mat pow, sub = a - b;
+            cv::multiply(sub, sub, pow);
+            assert (a.rows == pow.rows);
+            std::vector<float> result;
+
+            for (int i = 0; i < pow.rows; ++i) {
+                float tmp = 0;
+                for (int j = 0; j < pow.cols; ++j) {
+                    tmp += pow.at<float>(i, j);
+                }
+                result.push_back(static_cast<float>(sqrt(tmp)));
+            }
+
+            return result;
         }
     };
 

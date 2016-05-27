@@ -14,6 +14,7 @@ namespace feitir {
         const std::string & getMethod() const;
         int getL() const;
         int getT() const;
+        int getN() const;
 
     protected:
         virtual FieldNames basicFieldNames() const override;
@@ -25,6 +26,7 @@ namespace feitir {
         std::string method;
         int L;
         int T;
+        int N;
     };
 
     using BSIFTMethodDescriptionPtr = std::shared_ptr<BSIFTMethodDescription>;

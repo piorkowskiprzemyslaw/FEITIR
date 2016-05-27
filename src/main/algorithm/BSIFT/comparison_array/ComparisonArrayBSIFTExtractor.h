@@ -79,7 +79,6 @@ namespace feitir {
             }
 
             assert (resultPosition == getN());
-
             return result;
         }
 

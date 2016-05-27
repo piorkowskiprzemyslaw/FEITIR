@@ -47,6 +47,7 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE_EQUAL(bsiftMethod->getMethod(), "method");
         BOOST_REQUIRE_EQUAL(bsiftMethod->getL(), 1);
         BOOST_REQUIRE_EQUAL(bsiftMethod->getT(), 2);
+        BOOST_REQUIRE_EQUAL(bsiftMethod->getN(), 3);
 
         BOOST_REQUIRE_EQUAL(scenario->getIndexerBenchmarkDescriptions().size(), 1);
         auto indexerDescription = scenario->getIndexerBenchmarkDescriptions()[0];
@@ -75,6 +76,7 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE_EQUAL(bsiftMethod->getMethod(), "method");
         BOOST_REQUIRE_EQUAL(bsiftMethod->getL(), 1);
         BOOST_REQUIRE_EQUAL(bsiftMethod->getT(), 2);
+        BOOST_REQUIRE_EQUAL(bsiftMethod->getN(), 3);
 
         BOOST_REQUIRE_EQUAL(scenario->getIndexerBenchmarkDescriptions().size(), 0);
     }
