@@ -2,12 +2,9 @@
 // Created by Przemek Piórkowski on 19.05.2016.
 //
 
-#define BOOST_LOG_DYN_LINK 1
-
 #include "BenchmarkScenarioRunner.h"
 #include <boost/log/trivial.hpp>
-#include <iostream>
-#include <fstream>
+#include <chrono>
 #include "src/main/algorithm/BSIFT/descriptor_median/DescriptorMedianBSIFTExtractor.h"
 #include "src/main/algorithm/BSIFT/locality_sensitive_hashing/LocalitySensitiveHashingBSIFTExtractor.h"
 #include "src/main/algorithm/BSIFT/vectors_compare/VectorsCompareBSIFTExtractor.h"
@@ -33,12 +30,24 @@ namespace feitir {
 
     void BenchmarkScenarioRunner::runBSIFTDescription(BSIFTBenchmarkDescriptionPtr description) {
         BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark";
+        std::vector<SingleBSFITResult> resultVector;
+        std::chrono::high_resolution_clock::time_point t1;
         auto database = databaseFactory.createDatabase(description->getDatabasePath());
         auto vocabulary = setupVocabulary(description->getVocabularyType(), description->getVocabularyPath());
         BSIFTExtractorPtr bsiftExtractor = setupExtractor(description->getMethodDescription(), database, vocabulary);
+
+        if (description->isMeasureTime()) {
+            t1 = std::chrono::high_resolution_clock::now();
+        }
+
         database = bsiftExtractor->extractDatabaseBSIFT(database);
 
-        std::vector<SingleBSFITResult> resultVector;
+        if (description->isMeasureTime()) {
+            std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+            BOOST_LOG_TRIVIAL(info) << "extraction time: " << duration;
+        }
+
         auto referenceDescriptors = getFirstDescriptors(database);
         for (const auto& img : *database) {
             BOOST_LOG_TRIVIAL(debug) << "Processing image " << img->getFileName();
