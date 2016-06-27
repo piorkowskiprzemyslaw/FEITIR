@@ -12,7 +12,6 @@
 #include "src/main/database/image/ImageFactory.h"
 #include "src/main/database/DatabaseFactory.h"
 #include "src/main/algorithm/BSIFT/descriptor_median/DescriptorMedianBSIFTExtractor.h"
-#include "src/main/algorithm/vocabulary/DatabaseTranslator.h"
 #include "src/main/algorithm/indexer/supporting_words_inverted_file/SupportingWordsInvertedFileIndexer.h"
 #include "src/main/algorithm/vocabulary/kmeans/KMeansVocabularyBuilder.h"
 
@@ -58,8 +57,12 @@ BOOST_FIXTURE_TEST_SUITE(SupportingWordsInvertedFileIndexer_TEST, SupportingWord
                                                                          bsiftExtractor.extractDatabaseBSIFT(database));
         BOOST_REQUIRE(transformedDatabase != nullptr);
 
+        auto matchingFunction = [] (int vwIdx, const boost::uuids::uuid& imUUID) {
+            return 1;
+        };
+
         SupportingWordsInvertedFileIndexer indexer(
-                std::make_shared<SWIFParameters>(3, 30, 2, transformedDatabase, vocabulary));
+                std::make_shared<SWIFParameters>(3, 30, 2, transformedDatabase, vocabulary, matchingFunction));
 
         auto result = indexer.query(
                 std::make_shared<SWIFQuery>(image,

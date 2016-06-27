@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <memory>
+#include "src/main/algorithm/indexer/Indexer.h"
 #include "src/main/algorithm/BSIFT/ImageBSIFT.h"
 #include "src/main/algorithm/vocabulary/VocabularyConfig.h"
 #include "src/main/database/Database.h"
@@ -20,15 +21,17 @@ namespace feitir {
         std::size_t K;
         DatabasePtr transformedDb;
         VocabularyTypePtr vocabulary;
+        MatchingFunc matchingFunc;
 
     public:
         SWIFParameters(size_t p, size_t distanceTreshold, size_t K, DatabasePtr transformedDb,
-                               VocabularyTypePtr vocabulary);
+                       VocabularyTypePtr vocabulary, const MatchingFunc& matchingFunc);
         size_t getP() const;
         size_t getDistanceTreshold() const;
         const DatabasePtr getTransformedDb() const;
         const VocabularyTypePtr getVocabulary() const;
         size_t getK() const;
+        const MatchingFunc & getMatchingFunc() const;
     };
 
     class SWIFQuery {

@@ -6,6 +6,7 @@
 #define FEITIR_BIFCONFIG_H
 
 #include <memory>
+#include "src/main/algorithm/indexer/Indexer.h"
 #include "src/main/algorithm/BSIFT/ImageBSIFT.h"
 #include "src/main/database/Database.h"
 #include "src/main/algorithm/vocabulary/VocabularyConfig.h"
@@ -16,11 +17,14 @@ namespace feitir {
     private:
         const DatabasePtr database;
         const std::size_t treshold;
+        MatchingFunc matchingFunction;
 
     public:
-        BIFParameters(const DatabasePtr database, const std::size_t treshold);
+        BIFParameters(const DatabasePtr database, const std::size_t treshold,
+                      const MatchingFunc &matchingFunction);
         const DatabasePtr getDatabase() const;
         const size_t getTreshold() const;
+        const MatchingFunc & getMatchingFunction() const;
     };
 
     class BIFQuery {

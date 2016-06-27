@@ -37,7 +37,7 @@ namespace feitir {
     }
 
     void IndexerBenchmarkDescription::setBasicFields(const JSONObject::ValuesMap &valuesMap) {
-        if (valuesMap.count(FIELD_NAMES[0]))  method = valuesMap.at(FIELD_NAMES[0]);
+        if (valuesMap.count(FIELD_NAMES[0])) method = valuesMap.at(FIELD_NAMES[0]);
         if (valuesMap.count(FIELD_NAMES[1])) databasePath = valuesMap.at(FIELD_NAMES[1]);
         if (valuesMap.count(FIELD_NAMES[2])) vocabularyType = valuesMap.at(FIELD_NAMES[2]);
         if (valuesMap.count(FIELD_NAMES[3])) vocabularyPath = valuesMap.at(FIELD_NAMES[3]);

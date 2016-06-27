@@ -6,7 +6,8 @@
 #include "InvertedFileIndexer.h"
 
 namespace feitir {
-    InvertedFileIndexer::InvertedFileIndexer(const IFParametersPtr &parameters) : Indexer{parameters} {
+    InvertedFileIndexer::InvertedFileIndexer(const IFParametersPtr &parameters)
+            : Indexer{parameters}, matchingFunction{parameters->getMatchingFunction()} {
         DatabasePtr database = parameters->getDatabase();
 
         for (auto image : database->getImages()) {
@@ -28,8 +29,12 @@ namespace feitir {
         for (auto& match : img->getMatches()) {
             auto range = invertedFile.equal_range(match.trainIdx);
             for (auto dbImage = range.first; dbImage != range.second; ++dbImage) {
-                float currentVal = uuidToResult[dbImage->second->getUuid()];
-                uuidToResult[dbImage->second->getUuid()] = currentVal + 1;
+                auto matchWeight = matchingFunction(match.trainIdx, dbImage->second->getUuid());
+                if (uuidToResult.find(dbImage->second->getUuid()) == uuidToResult.end()) {
+                    uuidToResult[dbImage->second->getUuid()] = 0;
+                }
+
+                uuidToResult[dbImage->second->getUuid()] += matchWeight;
             }
         }
 

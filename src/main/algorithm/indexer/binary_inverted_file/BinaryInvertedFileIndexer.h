@@ -17,6 +17,7 @@ namespace feitir {
     class BinaryInvertedFileIndexer : public Indexer<BIFResultPtr, BIFQueryPtr, BIFParametersPtr> {
     private:
         const std::size_t treshold;
+        MatchingFunc matchingFunc;
         std::unordered_multimap<int, std::tuple<ImageBSIFTPtr, typename ImageBSIFT::BSIFT>> binaryInvertedFile;
         std::unordered_map<boost::uuids::uuid, ImageBSIFTPtr> uuidToImageMap;
 
@@ -35,7 +36,8 @@ namespace feitir {
 
     public:
         BinaryInvertedFileIndexer(const BIFParametersPtr &parameters) : Indexer<BIFResultPtr, BIFQueryPtr, BIFParametersPtr>{parameters},
-                                                                        treshold{parameters->getTreshold()} {
+                                                                        treshold{parameters->getTreshold()},
+                                                                        matchingFunc{parameters->getMatchingFunction()} {
             DatabasePtr database = parameters->getDatabase();
             for (auto image : *database) {
                 processImage(image);
@@ -54,8 +56,13 @@ namespace feitir {
                 for (auto dbImage = range.first; dbImage != range.second; ++dbImage) {
                     std::tie(imgPtr, bsift) = dbImage->second;
                     if (Util::hammingDistance(img->getBsift()[match.imgIdx], bsift) <= treshold) {
-                        auto currentVal = uuidToResult[imgPtr->getUuid()];
-                        uuidToResult[imgPtr->getUuid()] = currentVal + 1;
+                        auto matchWeight = matchingFunc(match.trainIdx, imgPtr->getUuid());
+
+                        if (uuidToResult.find(imgPtr->getUuid()) == uuidToResult.end()) {
+                            uuidToResult[imgPtr->getUuid()] = 0;
+                        }
+
+                        uuidToResult[imgPtr->getUuid()] += matchWeight;
                     }
                 }
             }

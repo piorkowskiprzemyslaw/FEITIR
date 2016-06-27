@@ -33,7 +33,7 @@ namespace feitir {
 
         virtual BSIFTExtractor::BSIFT processRow(cv::Mat row) override {
             assert (row.rows == 1);
-            std::vector<bool> comparasionString;
+            std::vector<bool> comparisonString;
 
             for (unsigned i = 0; i < row.cols; ++i) {
                 for (unsigned j = i + 1; j < row.cols; ++j) {
@@ -48,26 +48,26 @@ namespace feitir {
                         resultBoolPair = C3;
                     }
 
-                    comparasionString.push_back(resultBoolPair.first);
-                    comparasionString.push_back(resultBoolPair.second);
+                    comparisonString.push_back(resultBoolPair.first);
+                    comparisonString.push_back(resultBoolPair.second);
                 }
             }
 
             typename BSIFTExtractor::BSIFT result(getN());
             unsigned resultPosition = 0;
-            unsigned long partSize = comparasionString.size() / L;
-            unsigned long rest = comparasionString.size() % L;
+            unsigned long partSize = comparisonString.size() / L;
+            unsigned long rest = comparisonString.size() % L;
             unsigned long counter = 0;
             std::vector<bool> partialResult;
 
             for (unsigned i = 0; i < L; ++i) {
-                auto beginIt = comparasionString.begin() + counter;
-                auto endIt = comparasionString.end();
+                auto beginIt = comparisonString.begin() + counter;
+                auto endIt = comparisonString.end();
                 if (i < rest) {
-                    endIt = comparasionString.begin() + counter + partSize + 1;
+                    endIt = comparisonString.begin() + counter + partSize + 1;
                     counter = counter + partSize + 1;
                 } else {
-                    endIt = comparasionString.begin() + counter + partSize;
+                    endIt = comparisonString.begin() + counter + partSize;
                     counter = counter + partSize;
                 }
                 partialResult = fiFunction(std::vector<bool>(beginIt, endIt));

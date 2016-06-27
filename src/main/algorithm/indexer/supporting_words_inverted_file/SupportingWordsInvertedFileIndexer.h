@@ -45,6 +45,9 @@ namespace feitir {
         // supporting words multimap
         std::unordered_multimap<int, int> supportingWordsMap;
 
+        // matching function
+        MatchingFunc matchingFunc;
+
     protected:
         void processImage(ImagePtr img) {
             auto bsiftImg = std::dynamic_pointer_cast<ImageBSIFT>(img);
@@ -123,7 +126,8 @@ namespace feitir {
                   p{parameters->getP()},
                   distanceTreshold{parameters->getDistanceTreshold()},
                   K{parameters->getK()},
-                  vocabulary{parameters->getVocabulary()} {
+                  vocabulary{parameters->getVocabulary()},
+                  matchingFunc{parameters->getMatchingFunc()} {
 
             for (auto img : *transformedDb) {
                 processImage(img);
@@ -154,8 +158,13 @@ namespace feitir {
                         std::tie(imgPtr, bsift) = dbImage->second;
                         auto distance = Util::hammingDistance(transformedImage->getBsift()[match.imgIdx], bsift);
                         if (distance <= distanceTreshold) {
-                            auto currentVal = uuidToResult[imgPtr->getUuid()];
-                            uuidToResult[imgPtr->getUuid()] = currentVal + 1;
+                            auto matchWeight = matchingFunc(match.trainIdx, imgPtr->getUuid());
+
+                            if (uuidToResult.find(imgPtr->getUuid()) == uuidToResult.end()) {
+                                uuidToResult[imgPtr->getUuid()] = 0;
+                            }
+
+                            uuidToResult[imgPtr->getUuid()] += matchWeight;
                         }
                     }
                 }

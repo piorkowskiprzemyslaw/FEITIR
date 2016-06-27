@@ -6,12 +6,14 @@
 #define BOOST_TEST_MODULE FEITR_InvertedFileIndexer_test
 
 #include <iostream>
-#include "test_global.h"
 #include <boost/test/unit_test.hpp>
-#include <src/main/database/DatabaseFactory.h>
-#include <src/main/algorithm/indexer/inverted_file/InvertedFileIndexer.h>
-#include <src/main/algorithm/vocabulary/kmeans/KMeansVocabularyBuilder.h>
-#include <src/main/algorithm/vocabulary/DatabaseTranslator.h>
+#include <boost/uuid/uuid.hpp>
+
+#include "test_global.h"
+#include "src/main/database/DatabaseFactory.h"
+#include "src/main/algorithm/indexer/inverted_file/InvertedFileIndexer.h"
+#include "src/main/algorithm/vocabulary/kmeans/KMeansVocabularyBuilder.h"
+#include "src/main/algorithm/vocabulary/DatabaseTranslator.h"
 
 using namespace feitir;
 
@@ -56,7 +58,11 @@ BOOST_FIXTURE_TEST_SUITE(InvertedFileIndexer_TEST, InvertedFileIndexerFixture)
         BOOST_REQUIRE(image != nullptr);
         auto vocabulary = vocabularyBuilder.build(std::make_shared<KMeansParameter>(database, means));
         auto transformedDatabase = databaseTranslator.transformDatabase(vocabulary, database);
-        InvertedFileIndexer indexer(std::make_shared<IFParameters>(transformedDatabase));
+        auto matchingFunction = [] (int vwIdx, const boost::uuids::uuid& imUUID) {
+            return 1;
+        };
+
+        InvertedFileIndexer indexer(std::make_shared<IFParameters>(transformedDatabase, matchingFunction));
         auto result = indexer.query(std::make_shared<IFQuery>(databaseTranslator.transformImage(vocabulary, image)));
         BOOST_REQUIRE(result != nullptr);
         BOOST_REQUIRE_EQUAL(result->getImages().size(), 11);

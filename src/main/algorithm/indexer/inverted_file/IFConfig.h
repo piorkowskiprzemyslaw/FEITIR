@@ -7,18 +7,23 @@
 
 #include <iostream>
 #include <vector>
-#include <src/main/algorithm/vocabulary/VocabularyConfig.h>
+#include "src/main/algorithm/vocabulary/VocabularyConfig.h"
+#include "src/main/algorithm/indexer/Indexer.h"
 #include "src/main/database/Database.h"
 
 namespace feitir {
 
     class IFParameters {
+    public:
+
     private:
         DatabasePtr database;
+        MatchingFunc matchingFunction;
 
     public:
-        IFParameters(const DatabasePtr &database);
+        IFParameters(const DatabasePtr &database, const MatchingFunc &matchingFunction);
         const DatabasePtr & getDatabase() const;
+        MatchingFunc getMatchingFunction() const;
     };
 
     class IFQuery {

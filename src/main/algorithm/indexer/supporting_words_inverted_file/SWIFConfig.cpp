@@ -6,10 +6,10 @@
 
 namespace feitir {
 
-    SWIFParameters::SWIFParameters(size_t p, size_t distanceTreshold, size_t K,
-                                   DatabasePtr database, VocabularyTypePtr vocabulary)
-            : p{p}, distanceTreshold{distanceTreshold}, K{K},
-              transformedDb{database}, vocabulary{vocabulary} { }
+    SWIFParameters::SWIFParameters(size_t p, size_t distanceTreshold, size_t K, DatabasePtr database,
+                                   VocabularyTypePtr vocabulary, const MatchingFunc& matchingFunc)
+            : p{p}, distanceTreshold{distanceTreshold}, K{K}, transformedDb{database},
+              vocabulary{vocabulary}, matchingFunc{matchingFunc} { }
 
     size_t SWIFParameters::getP() const {
         return p;
@@ -29,5 +29,9 @@ namespace feitir {
 
     size_t SWIFParameters::getK() const {
         return K;
+    }
+
+    const MatchingFunc& SWIFParameters::getMatchingFunc() const {
+        return matchingFunc;
     }
 }

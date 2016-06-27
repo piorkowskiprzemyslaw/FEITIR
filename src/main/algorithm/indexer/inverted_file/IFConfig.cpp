@@ -6,10 +6,15 @@
 
 namespace feitir {
 
-    IFParameters::IFParameters(const DatabasePtr &database) : database{database} { }
+    IFParameters::IFParameters(const DatabasePtr &database, const MatchingFunc &matchingFunction)
+            : database{database}, matchingFunction{matchingFunction} { }
 
     const DatabasePtr &IFParameters::getDatabase() const {
         return database;
+    }
+
+    MatchingFunc IFParameters::getMatchingFunction() const {
+        return this->matchingFunction;
     }
 
     IFQuery::IFQuery(const ImagePtr &img) : img(img) { }

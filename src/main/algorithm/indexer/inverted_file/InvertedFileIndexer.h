@@ -19,6 +19,7 @@ namespace feitir {
      */
     class InvertedFileIndexer : public Indexer<IFResultPtr, IFQueryPtr, IFParametersPtr> {
     private:
+        MatchingFunc matchingFunction;
         std::unordered_multimap<int, ImagePtr> invertedFile;
         std::unordered_map<boost::uuids::uuid, ImagePtr> uuidToImageMap;
 
