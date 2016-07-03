@@ -12,7 +12,9 @@
         "vocabulary_type": "vocabulary_type",
         "vocabulary_path": "vocabulary_path",
         "measure_time": "0",
-        "result_file": "result_file"
+        "result_file": "result_file",
+        "a_set_file" : "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/random_set/a_test.set",
+        "b_set_file" : "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/random_set/b_test.set"
       }
     ]
   }

@@ -29,7 +29,7 @@ namespace feitir {
 
     void BenchmarkScenarioRunner::runBSIFTDescription(BSIFTBenchmarkDescriptionPtr description) {
         BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark " + description->getMethodDescription()->getMethod();
-        std::vector<SingleBSFITResult> resultVector;
+        std::vector<SingleResult> resultVector;
         std::chrono::high_resolution_clock::time_point t1;
         auto database = databaseFactory.createDatabase(description->getDatabasePath());
         auto vocabulary = setupVocabulary(description->getVocabularyType(), description->getVocabularyPath());
@@ -47,18 +47,14 @@ namespace feitir {
             BOOST_LOG_TRIVIAL(info) << description->getMethodDescription()->getMethod() + " extraction time: " << duration;
         }
 
-        auto referenceDescriptors = getFirstDescriptors(database);
-        for (const auto& img : *database) {
-            BOOST_LOG_TRIVIAL(debug) << "Processing image " << img->getFileName();
-            auto originalVectorsDistances
-                    = Util::euclideanDistanceVector(img->getDescriptors(),
-                                                   cv::repeat(referenceDescriptors.first,
-                                                              img->getDescriptors().rows, 1));
-            auto bsiftImg = std::dynamic_pointer_cast<ImageBSIFT>(img);
-            assert (bsiftImg != nullptr);
-            for (int i = 0; i < bsiftImg->getDescriptors().rows; ++i) {
-                resultVector.push_back({originalVectorsDistances[i],
-                                       Util::hammingDistance(referenceDescriptors.second, bsiftImg->getBsift()[i])});
+        auto aSet = getDescriptorVector(database, description->getASet());
+        auto bSet = getDescriptorVector(database, description->getBSet());
+
+        for (const auto& aImg : aSet) {
+            for (const auto& bImg : bSet) {
+                resultVector.push_back({Util::euclideanDistanceVector(aImg.first, bImg.first)[0],
+                                        Util::hammingDistance(aImg.second, bImg.second)});
+
             }
         }
 
@@ -101,17 +97,8 @@ namespace feitir {
         throw std::invalid_argument(methodName + " has no meaning as bsift extractor method");
     }
 
-    std::pair<cv::Mat, ImageBSIFT::BSIFT> BenchmarkScenarioRunner::getFirstDescriptors(const DatabasePtr database) {
-        auto begIt = database->begin();
-        assert (begIt != database->end());
-        auto bsiftImg = std::dynamic_pointer_cast<ImageBSIFT>(*begIt);
-        assert (bsiftImg->getBsift().size() > 0 && bsiftImg->getDescriptors().rows > 0);
-        assert (bsiftImg->getBsift().size() == bsiftImg->getDescriptors().rows);
-        return std::make_pair(bsiftImg->getDescriptors().row(0), bsiftImg->getBsift()[0]);
-    }
-
     void BenchmarkScenarioRunner::writeBSIFTResult(const std::string &filename,
-                                                   const std::vector<SingleBSFITResult> &result) {
+                                                   const std::vector<SingleResult> &result) {
         std::ofstream resultFile;
         resultFile.open(filename);
         resultFile << "dsift,dbsift" << std::endl;
@@ -119,6 +106,45 @@ namespace feitir {
             resultFile << r.first << "," << r.second << std::endl;
         }
         resultFile.close();
+    }
+
+    std::vector<BenchmarkScenarioRunner::DescriptorPair>
+        BenchmarkScenarioRunner::getDescriptorVector(const DatabasePtr database,
+                                                     const std::vector<unsigned> ids) {
+        std::vector<BenchmarkScenarioRunner::DescriptorPair> retVec;
+        retVec.reserve(ids.size());
+        // place for futher optimizations - perform concatenation only once for A and B set.
+        std::vector<ImageBSIFT::BSIFT> concatenatedBSIFT = concatenateBSIFT(database);
+        cv::Mat concatenatedSIFT = concatenateSIFT(database);
+
+        // ensure that we are working on non empty BSIFT and SIFT descriptors sets.
+        assert (concatenatedBSIFT.size() > 0 && concatenatedBSIFT.size() == concatenatedSIFT.rows);
+
+        for (auto id : ids) {
+            retVec.push_back({concatenatedSIFT.row(id), concatenatedBSIFT.at(id)});
+        }
+
+        return retVec;
+    }
+
+    std::vector<ImageBSIFT::BSIFT> BenchmarkScenarioRunner::concatenateBSIFT(const DatabasePtr database) {
+        std::vector<ImageBSIFT::BSIFT> concatenated;
+        for (auto img : *database) {
+            auto imgBSIFT = std::dynamic_pointer_cast<ImageBSIFT>(img);
+            assert (imgBSIFT != nullptr);
+            for (auto bsift : imgBSIFT->getBsift()) {
+                concatenated.push_back(bsift);
+            }
+        }
+        return concatenated;
+    }
+
+    cv::Mat BenchmarkScenarioRunner::concatenateSIFT(const DatabasePtr database) {
+        cv::Mat concatenated;
+        for (auto img : *database) {
+            concatenated.push_back(img->getDescriptors());
+        }
+        return concatenated;
     }
 
 }

@@ -3,68 +3,15 @@
     "bsift_benchmarks": [
       {
         "bsift_method": {
-          "method": "comparison_array",
-          "L": "64",
-          "T": "10",
-          "N": "64"
-        },
-        "database_path": "/home/przemek/Documents/Magister/ImgDbs/wang_small/",
-        "vocabulary_type": "kmeans",
-        "vocabulary_path": "/home/przemek/Desktop/kmeans_1000_wang_small.yml",
-        "measure_time": "1",
-        "result_file": "/home/przemek/Documents/Magister/results/comparison_array_64_20_64.csv"
-      },
-      {
-        "bsift_method": {
-          "method": "descriptor_median"
-        },
-        "database_path": "/home/przemek/Documents/Magister/ImgDbs/wang_small/",
-        "vocabulary_type": "kmeans",
-        "vocabulary_path": "/home/przemek/Desktop/kmeans_1000_wang_small.yml",
-        "measure_time": "1",
-        "result_file": "/home/przemek/Documents/Magister/results/descriptor_median.csv"
-      },
-      {
-        "bsift_method": {
           "method": "descriptor_position_median"
         },
-        "database_path": "/home/przemek/Documents/Magister/ImgDbs/wang_small/",
+        "database_path": "/Users/Przemek/Development/ClionProjects/imgDB/wang_small/",
         "vocabulary_type": "kmeans",
-        "vocabulary_path": "/home/przemek/Desktop/kmeans_1000_wang_small.yml",
+        "vocabulary_path": "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/vocabulary/kmeans_1000_wang_small.yml",
         "measure_time": "1",
-        "result_file": "/home/przemek/Documents/Magister/results/descriptor_position_median.csv"
-      },
-      {
-        "bsift_method": {
-          "method": "descriptor_voronoi_position",
-          "N": "64"
-        },
-        "database_path": "/home/przemek/Documents/Magister/ImgDbs/wang_small/",
-        "vocabulary_type": "kmeans",
-        "vocabulary_path": "/home/przemek/Desktop/kmeans_1000_wang_small.yml",
-        "measure_time": "1",
-        "result_file": "/home/przemek/Documents/Magister/results/descriptor_voronoi_position_64.csv"
-      },
-      {
-        "bsift_method": {
-          "method": "locality_sensitive_hashing",
-          "N": "128"
-        },
-        "database_path": "/home/przemek/Documents/Magister/ImgDbs/wang_small/",
-        "vocabulary_type": "kmeans",
-        "vocabulary_path": "/home/przemek/Desktop/kmeans_1000_wang_small.yml",
-        "measure_time": "1",
-        "result_file": "/home/przemek/Documents/Magister/results/locality_sensitive_hashing_128.csv"
-      },
-      {
-        "bsift_method": {
-          "method": "vectors_compare"
-        },
-        "database_path": "/home/przemek/Documents/Magister/ImgDbs/wang_small/",
-        "vocabulary_type": "kmeans",
-        "vocabulary_path": "/home/przemek/Desktop/kmeans_1000_wang_small.yml",
-        "measure_time": "1",
-        "result_file": "/home/przemek/Documents/Magister/results/vectors_compare.csv"
+        "result_file": "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/descriptor_position_median.csv",
+        "a_set_file" : "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/random_set/a_test.set",
+        "b_set_file" : "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/random_set/b_test.set"
       }
     ]
   }

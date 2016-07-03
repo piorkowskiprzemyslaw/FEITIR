@@ -19,13 +19,17 @@ struct JSONObjectFixture {
     const std::string sampleFile3;
     const std::string sampleFile4;
     const std::string rootObjectName;
+    const std::vector<unsigned> aSet;
+    const std::vector<unsigned> bSet;
 
     JSONObjectFixture() : resourcePath{resourcesRootDir() + "util/JSON/"},
                           sampleFile1{"sample1.json"},
                           sampleFile2{"sample2.json"},
                           sampleFile3{"sample3.json"},
                           sampleFile4{"sample4.json"},
-                          rootObjectName{"scenario"} { }
+                          rootObjectName{"scenario"},
+                          aSet{38, 62, 12, 59, 4},
+                          bSet{9, 87, 64, 53, 84, 13} { }
 };
 
 BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
@@ -42,6 +46,10 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE_EQUAL(bsiftDescription->getResultFile(), "result_file");
         BOOST_REQUIRE_EQUAL(bsiftDescription->getVocabularyPath(), "vocabulary_path");
         BOOST_REQUIRE_EQUAL(bsiftDescription->getVocabularyType(), "vocabulary_type");
+        BOOST_REQUIRE_EQUAL_COLLECTIONS(bsiftDescription->getASet().begin(), bsiftDescription->getASet().end(),
+                aSet.begin(), aSet.end());
+        BOOST_REQUIRE_EQUAL_COLLECTIONS(bsiftDescription->getBSet().begin(), bsiftDescription->getBSet().end(),
+                bSet.begin(), bSet.end());
         BOOST_REQUIRE(!bsiftDescription->isMeasureTime());
         auto bsiftMethod = bsiftDescription->getMethodDescription();
         BOOST_REQUIRE_EQUAL(bsiftMethod->getMethod(), "method");
@@ -71,6 +79,10 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE_EQUAL(bsiftDescription->getResultFile(), "result_file");
         BOOST_REQUIRE_EQUAL(bsiftDescription->getVocabularyPath(), "vocabulary_path");
         BOOST_REQUIRE_EQUAL(bsiftDescription->getVocabularyType(), "vocabulary_type");
+        BOOST_REQUIRE_EQUAL_COLLECTIONS(bsiftDescription->getASet().begin(), bsiftDescription->getASet().end(),
+                aSet.begin(), aSet.end());
+        BOOST_REQUIRE_EQUAL_COLLECTIONS(bsiftDescription->getBSet().begin(), bsiftDescription->getBSet().end(),
+                bSet.begin(), bSet.end());
         BOOST_REQUIRE(!bsiftDescription->isMeasureTime());
         auto bsiftMethod = bsiftDescription->getMethodDescription();
         BOOST_REQUIRE_EQUAL(bsiftMethod->getMethod(), "method");

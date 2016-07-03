@@ -18,6 +18,8 @@ namespace feitir {
         bool isMeasureTime() const;
         const std::string & getResultFile() const;
         BSIFTMethodDescriptionPtr getMethodDescription() const;
+        const std::vector<unsigned> & getASet() const;
+        const std::vector<unsigned> & getBSet() const;
 
     protected:
         virtual FieldNames basicFieldNames() const override;
@@ -37,6 +39,8 @@ namespace feitir {
         bool measureTime;
         std::string resultFile;
         BSIFTMethodDescriptionPtr methodDescription;
+        std::vector<unsigned> aSet;
+        std::vector<unsigned> bSet;
     };
 
     using BSIFTBenchmarkDescriptionPtr = std::shared_ptr<BSIFTBenchmarkDescription>;

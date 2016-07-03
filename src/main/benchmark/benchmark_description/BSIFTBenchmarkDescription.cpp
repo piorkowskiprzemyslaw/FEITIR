@@ -3,6 +3,7 @@
 //
 
 #include <boost/lexical_cast.hpp>
+#include <src/main/util/Util.h>
 #include "BSIFTBenchmarkDescription.h"
 
 namespace feitir {
@@ -11,7 +12,9 @@ namespace feitir {
                                                                              /* 1 */ "vocabulary_type",
                                                                              /* 2 */ "vocabulary_path",
                                                                              /* 3 */ "measure_time",
-                                                                             /* 4 */ "result_file"};
+                                                                             /* 4 */ "result_file",
+                                                                             /* 5 */ "a_set_file",
+                                                                             /* 6 */ "b_set_file"};
 
     const std::string BSIFTBenchmarkDescription::BSIFT_METHOD = "bsift_method";
 
@@ -39,6 +42,14 @@ namespace feitir {
         return methodDescription;
     }
 
+    const std::vector<unsigned> & BSIFTBenchmarkDescription::getASet() const {
+        return aSet;
+    }
+
+    const std::vector<unsigned> & BSIFTBenchmarkDescription::getBSet() const {
+        return bSet;
+    }
+
     JSONObject::FieldNames BSIFTBenchmarkDescription::basicFieldNames() const {
         return FIELD_NAMES;
     }
@@ -49,6 +60,8 @@ namespace feitir {
         if (valuesMap.count(FIELD_NAMES[2])) vocabularyPath = valuesMap.at(FIELD_NAMES[2]);
         if (valuesMap.count(FIELD_NAMES[3])) measureTime = boost::lexical_cast<bool>(valuesMap.at(FIELD_NAMES[3]));
         if (valuesMap.count(FIELD_NAMES[4])) resultFile = valuesMap.at(FIELD_NAMES[4]);
+        if (valuesMap.count(FIELD_NAMES[5])) aSet = Util::fileToElements<unsigned>(valuesMap.at(FIELD_NAMES[5]));
+        if (valuesMap.count(FIELD_NAMES[6])) bSet = Util::fileToElements<unsigned>(valuesMap.at(FIELD_NAMES[6]));
     }
 
     JSONObject::FieldNames BSIFTBenchmarkDescription::innerObjectFieldNames() const {
@@ -69,4 +82,5 @@ namespace feitir {
     JSONObject::JSONObjectPtr BSIFTBenchmarkDescription::constructNewObject() const {
         return std::make_shared<BSIFTBenchmarkDescription>();
     }
+
 }

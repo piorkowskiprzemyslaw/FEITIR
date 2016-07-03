@@ -85,6 +85,13 @@ namespace feitir {
                 return this->operator++();
             }
 
+            inline const_iterator& operator+(unsigned offset) {
+                while (offset--) {
+                    this->operator++();
+                }
+                return *this;
+            }
+
             inline bool operator==(const const_iterator& other) {
                 return (currentIterator == other.currentIterator) && (other.nextCategory == nextCategory);
             }

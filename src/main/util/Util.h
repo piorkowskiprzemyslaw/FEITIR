@@ -12,6 +12,9 @@
 #include <boost/dynamic_bitset.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core.hpp>
+#include <boost/lexical_cast.hpp>
+#include <fstream>
+#include <iostream>
 
 namespace feitir {
 
@@ -108,6 +111,19 @@ namespace feitir {
 
             return result;
         }
+
+        template <typename T>
+        static std::vector<T> fileToElements(const std::string & fName) {
+            std::ifstream file(fName.c_str(), std::ifstream::in);
+            std::vector<T> returnVector;
+            T element;
+            while (file >> element) {
+                returnVector.push_back(element);
+            }
+            file.close();
+            return returnVector;
+        }
+
     };
 
 }
