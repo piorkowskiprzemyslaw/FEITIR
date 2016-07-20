@@ -6,6 +6,7 @@
 #define FEITIR_UTIL_H
 
 #include <list>
+#include <set>
 #include <vector>
 #include <numeric>
 #include <boost/filesystem.hpp>
@@ -15,15 +16,16 @@
 #include <boost/lexical_cast.hpp>
 #include <fstream>
 #include <iostream>
+#include <unordered_set>
 
 namespace feitir {
 
     class Util {
     private:
-    protected:
-    public:
         Util();
 
+    protected:
+    public:
         template <class Predicate>
         static std::list<std::string> findInDirectory(const std::string &root, bool findRecursive, Predicate pred) {
             std::list<std::string> result;
@@ -73,7 +75,7 @@ namespace feitir {
             return Util::median<T, RT>(localCopy);
         }
 
-        static auto hammingDistance(boost::dynamic_bitset<> a, boost::dynamic_bitset<> b) -> decltype(a.count()) {
+        static auto hammingDistance(const boost::dynamic_bitset<> &a, const boost::dynamic_bitset<> &b) {
             return (a ^ b).count();
         }
 
@@ -122,6 +124,42 @@ namespace feitir {
             }
             file.close();
             return returnVector;
+        }
+
+        template <typename T>
+        static std::set<std::set<T>> generateAllSubsets(const std::set<T> &s, const size_t size) {
+            if (size >= s.size()) {
+                throw std::invalid_argument("cannot generate subset of size greater or equal to original set size");
+            }
+
+            if (size == 0) {
+                return std::set<std::set<T>>({{}});
+            }
+
+            auto levelUp = generateAllSubsets(s, size - 1);
+            std::set<std::set<T>> result(levelUp);
+
+            for (auto & element : s) {
+                for (auto & levelUpSet : levelUp) {
+                    std::set<T> newSet(levelUpSet);
+                    newSet.insert(element);
+                    result.insert(newSet);
+                }
+            }
+
+            return result;
+        }
+
+        template <typename T>
+        static void customInsert(std::unordered_set<T> &s, std::unordered_set<T> &visitedS, T element) {
+            if (visitedS.find(element) == visitedS.end()) {
+                s.insert(element);
+            }
+        }
+
+        template <typename T>
+        static bool contains(const std::unordered_set<T> &s, T element) {
+            return s.find(element) != s.end();
         }
 
     };

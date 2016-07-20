@@ -119,10 +119,10 @@ namespace feitir {
         unsigned rest = queryFeatures.rows % numberOfThreads;
         unsigned currentIdx = 0;
 
-        auto fun = [this] (cv::Mat queryFeatures, std::vector<cv::DMatch> &resultVec,
+        auto fun = [this] (cv::Mat features, std::vector<cv::DMatch> &resultVec,
                            unsigned startIdx, unsigned endIdx) {
             for (auto i = startIdx; i < endIdx; ++i) {
-                resultVec[i] = this->getNearestVisualWord(this->root, queryFeatures.row(i));
+                resultVec[i] = this->getNearestVisualWord(this->root, features.row(i));
             }
         };
 

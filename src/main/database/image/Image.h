@@ -74,10 +74,10 @@ namespace std
         typedef boost::uuids::uuid argument_type;
         typedef std::size_t result_type;
         result_type operator()(argument_type const& uuid) const {
-            return uuid_hasher(uuid);
+            return dynamic_bitset_hasher(uuid);
         }
         private:
-            boost::hash<boost::uuids::uuid> uuid_hasher;
+            boost::hash<boost::uuids::uuid> dynamic_bitset_hasher;
     };
 }
 

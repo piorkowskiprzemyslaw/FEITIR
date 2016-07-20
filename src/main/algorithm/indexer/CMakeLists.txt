@@ -6,7 +6,11 @@ set(INDEXER_SOURCE_FILES
         binary_inverted_file/BinaryInvertedFileIndexer.h
         supporting_words_inverted_file/SupportingWordsInvertedFileIndexer.h
         supporting_words_inverted_file/SWIFConfig.h
-        supporting_words_inverted_file/SWIFConfig.cpp)
+        supporting_words_inverted_file/SWIFConfig.cpp
+        cross_indexer/CrossConfig.h
+        cross_indexer/CrossConfig.cpp
+        cross_indexer/CrossIndexer.cpp
+        cross_indexer/CrossIndexer.h)
 
 add_library(indexer STATIC ${INDEXER_SOURCE_FILES})
 

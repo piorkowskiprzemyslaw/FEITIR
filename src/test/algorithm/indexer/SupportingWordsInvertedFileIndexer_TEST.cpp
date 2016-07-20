@@ -25,7 +25,7 @@ struct SupportingWordsInvertedFileIndexerFixture {
     ImageFactory imageFactory;
     DatabaseFactory databaseFactory;
     DescriptorMedianBSIFTExtractor bsiftExtractor;
-    DescriptorMedianBSIFTExtractor::DatabaseTranslatorPtr databaseTranslator;
+    BSIFTExtractor::DatabaseTranslatorPtr databaseTranslator;
     KMeansVocabularyBuilder vocabularyBuilder;
 
 

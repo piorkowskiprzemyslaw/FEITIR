@@ -66,4 +66,28 @@ namespace feitir {
 
 }
 
+namespace boost {
+    template <typename B, typename A>
+    std::size_t hash_value(const boost::dynamic_bitset<B, A>& bs) {
+        std::vector<B, A> v;
+        boost::to_block_range(bs, std::back_inserter(v));
+        return boost::hash_value(v);
+    }
+}
+
+namespace std
+{
+    template<>
+    struct hash<boost::dynamic_bitset<>>
+    {
+        typedef boost::dynamic_bitset<> argument_type;
+        typedef std::size_t result_type;
+        result_type operator()(argument_type const& bitset) const {
+            return dynamic_bitset_hasher(bitset);
+        }
+    private:
+        boost::hash<boost::dynamic_bitset<>> dynamic_bitset_hasher;
+    };
+}
+
 #endif //FEITIR_IMAGEBSIFT_H
