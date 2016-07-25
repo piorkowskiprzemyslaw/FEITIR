@@ -19,11 +19,30 @@
     ],
     "indexer_benchmarks": [
       {
-        "method": "method",
         "database_path": "database_path",
-        "vocabulary_type": "vocabulary_type",
-        "vocabulary_path": "vocabulary_path",
-        "result_file": "result_file"
+        "matching_func": "matching_func",
+        "result_file": "result_file",
+        "indexer_method": {
+          "method": "indexer_method",
+          "vocabulary_path": "method_vocabulary_path",
+          "vocabulary_type": "method_vocabulary_type",
+          "treshold": "4",
+          "K": "5",
+          "N": "6",
+          "R": "7",
+          "code_word_size": "8"
+        },
+        "bsift_algorithm": {
+          "database_path": "algorithm_database_path",
+          "vocabulary_path": "algorithm_vocabulary_path",
+          "vocabulary_type": "algorithm_vocabulary_type",
+          "bsift_method": {
+            "method": "algorithm_method",
+            "L": "9",
+            "T": "10",
+            "N": "11"
+          }
+        }
       }
     ]
   }

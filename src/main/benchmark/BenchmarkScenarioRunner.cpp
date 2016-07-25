@@ -61,10 +61,9 @@ namespace feitir {
         writeBSIFTResult(description->getResultFile(), resultVector);
     }
 
-    void BenchmarkScenarioRunner::runIndexerDescription(IndexerBenchmarkDescriptionPtr description) {
+    void BenchmarkScenarioRunner::runIndexerDescription(IndexerBenchmarkPtr description) {
         BOOST_LOG_TRIVIAL(info) << "Indexer benchmark";
         auto database = databaseFactory.createDatabase(description->getDatabasePath());
-        auto vocabulary = setupVocabulary(description->getVocabularyType(), description->getVocabularyPath());
     }
 
     VocabularyTypePtr BenchmarkScenarioRunner::setupVocabulary(std::string vocabularyType, std::string vocabularyPath) {
@@ -110,7 +109,7 @@ namespace feitir {
 
     std::vector<BenchmarkScenarioRunner::DescriptorPair>
         BenchmarkScenarioRunner::getDescriptorVector(const DatabasePtr database,
-                                                     const std::vector<unsigned> ids) {
+                                                     const std::vector<JSONObject::number> ids) {
         std::vector<BenchmarkScenarioRunner::DescriptorPair> retVec;
         retVec.reserve(ids.size());
         // place for futher optimizations - perform concatenation only once for A and B set.
@@ -145,6 +144,12 @@ namespace feitir {
             concatenated.push_back(img->getDescriptors());
         }
         return concatenated;
+    }
+
+    MatchingFunc BenchmarkScenarioRunner::generateMatchingFunction(const std::string &matchingFunctionType,
+                                                                   const DatabasePtr database,
+                                                                   const VocabularyTypePtr vocabulary) {
+        return feitir::MatchingFunc();
     }
 
 }

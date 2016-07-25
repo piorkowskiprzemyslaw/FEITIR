@@ -11,10 +11,10 @@ namespace feitir {
 
     class BSIFTMethodDescription : public JSONObject {
     public:
-        const std::string & getMethod() const;
-        int getL() const;
-        int getT() const;
-        int getN() const;
+        const string & getMethod() const;
+        number getL() const;
+        number getT() const;
+        number getN() const;
 
     protected:
         virtual FieldNames basicFieldNames() const override;
@@ -23,10 +23,10 @@ namespace feitir {
 
     private:
         static const std::vector<std::string> FIELD_NAMES;
-        std::string method;
-        int L;
-        int T;
-        int N;
+        string method;
+        number L;
+        number T;
+        number N;
     };
 
     using BSIFTMethodDescriptionPtr = std::shared_ptr<BSIFTMethodDescription>;

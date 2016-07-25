@@ -11,19 +11,19 @@ namespace feitir {
                                                                           /* 2 */ "T",
                                                                           /* 3 */ "N"};
 
-    const std::string &BSIFTMethodDescription::getMethod() const {
+    const JSONObject::string &BSIFTMethodDescription::getMethod() const {
         return method;
     }
 
-    int BSIFTMethodDescription::getL() const {
+    JSONObject::number BSIFTMethodDescription::getL() const {
         return L;
     }
 
-    int BSIFTMethodDescription::getT() const {
+    JSONObject::number BSIFTMethodDescription::getT() const {
         return T;
     }
 
-    int BSIFTMethodDescription::getN() const {
+    JSONObject::number BSIFTMethodDescription::getN() const {
         return N;
     }
 
@@ -33,9 +33,9 @@ namespace feitir {
 
     void BSIFTMethodDescription::setBasicFields(const JSONObject::ValuesMap &valuesMap) {
         if (valuesMap.count(FIELD_NAMES[0])) method = valuesMap.at(FIELD_NAMES[0]);
-        if (valuesMap.count(FIELD_NAMES[1])) L = boost::lexical_cast<int>(valuesMap.at(FIELD_NAMES[1]));
-        if (valuesMap.count(FIELD_NAMES[2])) T = boost::lexical_cast<int>(valuesMap.at(FIELD_NAMES[2]));
-        if (valuesMap.count(FIELD_NAMES[3])) N = boost::lexical_cast<int>(valuesMap.at(FIELD_NAMES[3]));
+        if (valuesMap.count(FIELD_NAMES[1])) L = boost::lexical_cast<number>(valuesMap.at(FIELD_NAMES[1]));
+        if (valuesMap.count(FIELD_NAMES[2])) T = boost::lexical_cast<number>(valuesMap.at(FIELD_NAMES[2]));
+        if (valuesMap.count(FIELD_NAMES[3])) N = boost::lexical_cast<number>(valuesMap.at(FIELD_NAMES[3]));
     }
 
     JSONObject::JSONObjectPtr BSIFTMethodDescription::constructNewObject() const {

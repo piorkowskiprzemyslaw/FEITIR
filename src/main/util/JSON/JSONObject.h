@@ -19,6 +19,10 @@ namespace feitir {
      */
     class JSONObject {
     public:
+        using string = std::string;
+        using number = int;
+        using boolean = bool;
+
         JSONObject() = default;
         ~JSONObject() = default;
 

@@ -12,14 +12,14 @@ namespace feitir {
 
     class BSIFTBenchmarkDescription : public JSONObject {
     public:
-        const std::string & getDatabasePath() const;
-        const std::string & getVocabularyPath() const;
-        const std::string & getVocabularyType() const;
-        bool isMeasureTime() const;
-        const std::string & getResultFile() const;
+        const string & getDatabasePath() const;
+        const string & getVocabularyPath() const;
+        const string & getVocabularyType() const;
+        boolean isMeasureTime() const;
+        const string & getResultFile() const;
         BSIFTMethodDescriptionPtr getMethodDescription() const;
-        const std::vector<unsigned> & getASet() const;
-        const std::vector<unsigned> & getBSet() const;
+        const std::vector<number> & getASet() const;
+        const std::vector<number> & getBSet() const;
 
     protected:
         virtual FieldNames basicFieldNames() const override;
@@ -33,14 +33,14 @@ namespace feitir {
         static const std::vector<std::string> FIELD_NAMES;
         static const std::string BSIFT_METHOD;
 
-        std::string databasePath;
-        std::string vocabularyPath;
-        std::string vocabularyType;
-        bool measureTime;
-        std::string resultFile;
+        string databasePath;
+        string vocabularyPath;
+        string vocabularyType;
+        boolean measureTime;
+        string resultFile;
         BSIFTMethodDescriptionPtr methodDescription;
-        std::vector<unsigned> aSet;
-        std::vector<unsigned> bSet;
+        std::vector<number> aSet;
+        std::vector<number> bSet;
     };
 
     using BSIFTBenchmarkDescriptionPtr = std::shared_ptr<BSIFTBenchmarkDescription>;

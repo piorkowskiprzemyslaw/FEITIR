@@ -61,10 +61,32 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         auto indexerDescription = scenario->getIndexerBenchmarkDescriptions()[0];
         BOOST_REQUIRE(indexerDescription != nullptr);
         BOOST_REQUIRE_EQUAL(indexerDescription->getDatabasePath(), "database_path");
+        BOOST_REQUIRE_EQUAL(indexerDescription->getMatchingFunc(), "matching_func");
         BOOST_REQUIRE_EQUAL(indexerDescription->getResultFile(), "result_file");
-        BOOST_REQUIRE_EQUAL(indexerDescription->getVocabularyPath(), "vocabulary_path");
-        BOOST_REQUIRE_EQUAL(indexerDescription->getVocabularyType(), "vocabulary_type");
-        BOOST_REQUIRE_EQUAL(indexerDescription->getMethod(), "method");
+
+        auto indexerMethod = indexerDescription->getMethod();
+        BOOST_REQUIRE(indexerMethod != nullptr);
+        BOOST_REQUIRE_EQUAL(indexerMethod->getMethodName(), "indexer_method");
+        BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyPath(), "method_vocabulary_path");
+        BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyType(), "method_vocabulary_type");
+        BOOST_REQUIRE_EQUAL(indexerMethod->getTreshold(), 4);
+        BOOST_REQUIRE_EQUAL(indexerMethod->getK(), 5);
+        BOOST_REQUIRE_EQUAL(indexerMethod->getN(), 6);
+        BOOST_REQUIRE_EQUAL(indexerMethod->getR(), 7);
+        BOOST_REQUIRE_EQUAL(indexerMethod->getCodeWordSize(), 8);
+
+        auto bsiftAlgorithm = indexerDescription->getBsiftAlgorithm();
+        BOOST_REQUIRE(bsiftAlgorithm != nullptr);
+        BOOST_REQUIRE_EQUAL(bsiftAlgorithm->getDatabasePath(), "algorithm_database_path");
+        BOOST_REQUIRE_EQUAL(bsiftAlgorithm->getVocabularyPath(), "algorithm_vocabulary_path");
+        BOOST_REQUIRE_EQUAL(bsiftAlgorithm->getVocabularyType(), "algorithm_vocabulary_type");
+
+        bsiftMethod = bsiftAlgorithm->getBsiftMethod();
+        BOOST_REQUIRE(bsiftMethod != nullptr);
+        BOOST_REQUIRE_EQUAL(bsiftMethod->getMethod(), "algorithm_method");
+        BOOST_REQUIRE_EQUAL(bsiftMethod->getL(), 9);
+        BOOST_REQUIRE_EQUAL(bsiftMethod->getT(), 10);
+        BOOST_REQUIRE_EQUAL(bsiftMethod->getN(), 11);
     }
 
     BOOST_AUTO_TEST_CASE(Sample2JSONTest)
@@ -100,14 +122,35 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
 
         BOOST_REQUIRE_EQUAL(scenario->getBsiftBenchmarkDescriptions().size(), 0);
 
-        BOOST_REQUIRE_EQUAL(scenario->getIndexerBenchmarkDescriptions().size(), 1);
         auto indexerDescription = scenario->getIndexerBenchmarkDescriptions()[0];
         BOOST_REQUIRE(indexerDescription != nullptr);
         BOOST_REQUIRE_EQUAL(indexerDescription->getDatabasePath(), "database_path");
+        BOOST_REQUIRE_EQUAL(indexerDescription->getMatchingFunc(), "matching_func");
         BOOST_REQUIRE_EQUAL(indexerDescription->getResultFile(), "result_file");
-        BOOST_REQUIRE_EQUAL(indexerDescription->getVocabularyPath(), "vocabulary_path");
-        BOOST_REQUIRE_EQUAL(indexerDescription->getVocabularyType(), "vocabulary_type");
-        BOOST_REQUIRE_EQUAL(indexerDescription->getMethod(), "method");
+
+        auto indexerMethod = indexerDescription->getMethod();
+        BOOST_REQUIRE(indexerMethod != nullptr);
+        BOOST_REQUIRE_EQUAL(indexerMethod->getMethodName(), "indexer_method");
+        BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyPath(), "method_vocabulary_path");
+        BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyType(), "method_vocabulary_type");
+        BOOST_REQUIRE_EQUAL(indexerMethod->getTreshold(), 4);
+        BOOST_REQUIRE_EQUAL(indexerMethod->getK(), 5);
+        BOOST_REQUIRE_EQUAL(indexerMethod->getN(), 6);
+        BOOST_REQUIRE_EQUAL(indexerMethod->getR(), 7);
+        BOOST_REQUIRE_EQUAL(indexerMethod->getCodeWordSize(), 8);
+
+        auto bsiftAlgorithm = indexerDescription->getBsiftAlgorithm();
+        BOOST_REQUIRE(bsiftAlgorithm != nullptr);
+        BOOST_REQUIRE_EQUAL(bsiftAlgorithm->getDatabasePath(), "algorithm_database_path");
+        BOOST_REQUIRE_EQUAL(bsiftAlgorithm->getVocabularyPath(), "algorithm_vocabulary_path");
+        BOOST_REQUIRE_EQUAL(bsiftAlgorithm->getVocabularyType(), "algorithm_vocabulary_type");
+
+        auto bsiftMethod = bsiftAlgorithm->getBsiftMethod();
+        BOOST_REQUIRE(bsiftMethod != nullptr);
+        BOOST_REQUIRE_EQUAL(bsiftMethod->getMethod(), "algorithm_method");
+        BOOST_REQUIRE_EQUAL(bsiftMethod->getL(), 9);
+        BOOST_REQUIRE_EQUAL(bsiftMethod->getT(), 10);
+        BOOST_REQUIRE_EQUAL(bsiftMethod->getN(), 11);
     }
 
     BOOST_AUTO_TEST_CASE(Sample4JSONTest)

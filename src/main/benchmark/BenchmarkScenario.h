@@ -9,15 +9,15 @@
 #include <boost/program_options.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-#include <src/main/benchmark/benchmark_description/BSIFTBenchmarkDescription.h>
-#include <src/main/benchmark/benchmark_description/IndexerBenchmarkDescription.h>
+#include <src/main/benchmark/benchmark_description/bsift/BSIFTBenchmarkDescription.h>
+#include <src/main/benchmark/benchmark_description/indexer/IndexerBenchmark.h>
 #include "src/main/util/JSON/JSONObject.h"
 
 namespace feitir {
     class BenchmarkScenario : public JSONObject {
     public:
         const std::vector<BSIFTBenchmarkDescriptionPtr> & getBsiftBenchmarkDescriptions() const;
-        const std::vector<IndexerBenchmarkDescriptionPtr> & getIndexerBenchmarkDescriptions() const;
+        const std::vector<IndexerBenchmarkPtr> & getIndexerBenchmarkDescriptions() const;
 
     protected:
         virtual FieldNames arrayOfObjectsFieldNames() const override;
@@ -30,7 +30,7 @@ namespace feitir {
         static const std::string INDEXER_BENCHMARKS;
 
         std::vector<BSIFTBenchmarkDescriptionPtr> bsiftBenchmarkDescriptions;
-        std::vector<IndexerBenchmarkDescriptionPtr> indexerBenchmarkDescriptions;
+        std::vector<IndexerBenchmarkPtr> indexerBenchmarkDescriptions;
     };
 
     using BenchmarkScenarioPtr = std::shared_ptr<BenchmarkScenario>;
