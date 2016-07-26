@@ -8,7 +8,7 @@
 #include <src/main/algorithm/indexer/Indexer.h>
 #include "src/main/util/JSON/JSONObject.h"
 #include "IndexerMethod.h"
-#include "BSIFTAlgorithm.h"
+#include "src/main/benchmark/benchmark_description/bsift/BSIFTAlgorithm.h"
 
 namespace feitir {
 
@@ -17,7 +17,6 @@ namespace feitir {
         IndexerMethodPtr getMethod() const;
         const JSONObject::string & getDatabasePath() const;
         const JSONObject::string & getResultFile() const;
-        const JSONObject::string & getMatchingFunc() const;
         BSIFTAlgorithmPtr getBsiftAlgorithm() const;
 
     protected:
@@ -34,9 +33,8 @@ namespace feitir {
 
         IndexerMethodPtr method;
         BSIFTAlgorithmPtr bsiftAlgorithm;
-        JSONObject::string databasePath;
-        JSONObject::string resultFile;
-        JSONObject::string matchingFunc;
+        string databasePath;
+        string resultFile;
     };
 
     using IndexerBenchmarkPtr = std::shared_ptr<IndexerBenchmark>;

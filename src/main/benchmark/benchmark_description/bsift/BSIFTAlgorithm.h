@@ -6,7 +6,7 @@
 #define FEITIR_BSIFTALGORITHM_H
 
 #include <src/main/util/JSON/JSONObject.h>
-#include <src/main/benchmark/benchmark_description/bsift/BSIFTMethodDescription.h>
+#include <src/main/benchmark/benchmark_description/bsift/BSIFTMethod.h>
 
 namespace feitir {
     class BSIFTAlgorithm : public JSONObject {
@@ -14,7 +14,7 @@ namespace feitir {
         const JSONObject::string &getDatabasePath() const;
         const JSONObject::string &getVocabularyPath() const;
         const JSONObject::string &getVocabularyType() const;
-        const BSIFTMethodDescriptionPtr &getBsiftMethod() const;
+        const BSIFTMethodPtr &getBsiftMethod() const;
 
     protected:
         virtual JSONObjectPtr constructNewObject() const override;
@@ -28,10 +28,10 @@ namespace feitir {
         static const std::vector<std::string> FIELD_NAMES;
         static const std::string BSIFT_METHOD;
 
-        JSONObject::string databasePath;
-        JSONObject::string vocabularyPath;
-        JSONObject::string vocabularyType;
-        BSIFTMethodDescriptionPtr bsiftMethodDescriptionPtr;
+        string databasePath;
+        string vocabularyPath;
+        string vocabularyType;
+        BSIFTMethodPtr bsiftMethodDescriptionPtr;
     };
 
     using BSIFTAlgorithmPtr = std::shared_ptr<BSIFTAlgorithm>;

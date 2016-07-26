@@ -2,30 +2,33 @@
   "scenario": {
     "bsift_benchmarks": [
       {
-        "bsift_method": {
-          "method": "method",
-          "L": "1",
-          "T": "2",
-          "N": "3"
-        },
         "database_path": "database_path",
-        "vocabulary_type": "vocabulary_type",
-        "vocabulary_path": "vocabulary_path",
         "measure_time": "0",
         "result_file": "result_file",
         "a_set_file" : "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/random_set/a_test.set",
-        "b_set_file" : "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/random_set/b_test.set"
+        "b_set_file" : "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/random_set/b_test.set",
+        "bsift_algorithm": {
+          "database_path": "algorithm_database_path",
+          "vocabulary_path": "algorithm_vocabulary_path",
+          "vocabulary_type": "algorithm_vocabulary_type",
+          "bsift_method": {
+            "method": "method",
+            "L": "1",
+            "T": "2",
+            "N": "3"
+          }
+        }
       }
     ],
     "indexer_benchmarks": [
       {
         "database_path": "database_path",
-        "matching_func": "matching_func",
         "result_file": "result_file",
         "indexer_method": {
           "method": "indexer_method",
           "vocabulary_path": "method_vocabulary_path",
           "vocabulary_type": "method_vocabulary_type",
+          "matching_func": "matching_func",
           "treshold": "4",
           "K": "5",
           "N": "6",

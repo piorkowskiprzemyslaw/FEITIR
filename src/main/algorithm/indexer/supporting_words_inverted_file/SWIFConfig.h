@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <memory>
+#include <src/main/algorithm/indexer/IndexerConfig.h>
 #include "src/main/algorithm/indexer/Indexer.h"
 #include "src/main/algorithm/BSIFT/ImageBSIFT.h"
 #include "src/main/algorithm/vocabulary/VocabularyConfig.h"

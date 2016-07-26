@@ -24,7 +24,7 @@ namespace feitir {
         return vocabularyType;
     }
 
-    const BSIFTMethodDescriptionPtr &BSIFTAlgorithm::getBsiftMethod() const {
+    const BSIFTMethodPtr &BSIFTAlgorithm::getBsiftMethod() const {
         return bsiftMethodDescriptionPtr;
     }
 
@@ -48,13 +48,13 @@ namespace feitir {
 
     std::map<JSONObject::FName, JSONObject::JSONObjectPtr> BSIFTAlgorithm::innerObjectTypes() const {
         return {
-                {BSIFT_METHOD, std::make_shared<BSIFTMethodDescription>()}
+                {BSIFT_METHOD, std::make_shared<BSIFTMethod>()}
         };
     }
 
     void BSIFTAlgorithm::setInnerObjectsField(const JSONObject::InnerObjectsValuesMap &innerObjectsValuesMap) {
         if (innerObjectsValuesMap.count(BSIFT_METHOD))
             bsiftMethodDescriptionPtr =
-                    std::dynamic_pointer_cast<BSIFTMethodDescription>(innerObjectsValuesMap.at(BSIFT_METHOD));
+                    std::dynamic_pointer_cast<BSIFTMethod>(innerObjectsValuesMap.at(BSIFT_METHOD));
     }
 }

@@ -9,14 +9,14 @@
 #include <boost/program_options.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-#include <src/main/benchmark/benchmark_description/bsift/BSIFTBenchmarkDescription.h>
+#include <src/main/benchmark/benchmark_description/bsift/BSIFTBenchmark.h>
 #include <src/main/benchmark/benchmark_description/indexer/IndexerBenchmark.h>
 #include "src/main/util/JSON/JSONObject.h"
 
 namespace feitir {
     class BenchmarkScenario : public JSONObject {
     public:
-        const std::vector<BSIFTBenchmarkDescriptionPtr> & getBsiftBenchmarkDescriptions() const;
+        const std::vector<BSIFTBenchmarkPtr> & getBsiftBenchmarkDescriptions() const;
         const std::vector<IndexerBenchmarkPtr> & getIndexerBenchmarkDescriptions() const;
 
     protected:
@@ -29,7 +29,7 @@ namespace feitir {
         static const std::string BSIFT_BENCHMARKS;
         static const std::string INDEXER_BENCHMARKS;
 
-        std::vector<BSIFTBenchmarkDescriptionPtr> bsiftBenchmarkDescriptions;
+        std::vector<BSIFTBenchmarkPtr> bsiftBenchmarkDescriptions;
         std::vector<IndexerBenchmarkPtr> indexerBenchmarkDescriptions;
     };
 

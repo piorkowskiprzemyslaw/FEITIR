@@ -14,7 +14,7 @@
 #include "src/main/algorithm/vocabulary/hierarchical_kmeans/HKMeansVocabularyBuilder.h"
 #include "src/main/algorithm/vocabulary/kmeans/KMeansVocabularyBuilder.h"
 #include "src/main/database/DatabaseFactory.h"
-#include "src/main/benchmark/benchmark_description/bsift/BSIFTBenchmarkDescription.h"
+#include "src/main/benchmark/benchmark_description/bsift/BSIFTBenchmark.h"
 #include "src/main/benchmark/benchmark_description/indexer/IndexerBenchmark.h"
 #include "BenchmarkScenario.h"
 
@@ -32,20 +32,24 @@ namespace feitir {
         using SingleResult = std::pair<float, int>;
         using DescriptorPair = std::pair<cv::Mat, ImageBSIFT::BSIFT>;
 
-        void runBSIFTDescription(BSIFTBenchmarkDescriptionPtr description);
+        void runBSIFTDescription(BSIFTBenchmarkPtr description);
         void runIndexerDescription(IndexerBenchmarkPtr description);
         std::vector<DescriptorPair> getDescriptorVector(const DatabasePtr database,
                                                         const std::vector<JSONObject::number> ids);
         VocabularyTypePtr setupVocabulary(std::string vocabularyType, std::string vocabularyPath);
-        BSIFTExtractorPtr setupExtractor(BSIFTMethodDescriptionPtr method,
-                                         DatabasePtr imageDatabase,
+
+        BSIFTExtractorPtr setupExtractor(BSIFTAlgorithmPtr algorithm);
+        BSIFTExtractorPtr setupExtractor(BSIFTMethodPtr method, DatabasePtr imageDatabase,
                                          VocabularyTypePtr vocabularyTypePtr);
+
         void writeBSIFTResult(const std::string& filename, const std::vector<SingleResult>& result);
         std::vector<ImageBSIFT::BSIFT> concatenateBSIFT(const DatabasePtr database);
         cv::Mat concatenateSIFT(const DatabasePtr database);
-        MatchingFunc generateMatchingFunction(const std::string& matchingFunctionType,
-                                              const DatabasePtr database,
-                                              const VocabularyTypePtr vocabulary);
+
+
+
+        MatchingFunc setupMatchingFunction(const std::string &matchingFunctionType, const DatabasePtr database,
+                                           const VocabularyTypePtr vocabulary);
 
         DatabaseFactory databaseFactory;
         KMeansVocabularyBuilder kMeansVocabularyBuilder;

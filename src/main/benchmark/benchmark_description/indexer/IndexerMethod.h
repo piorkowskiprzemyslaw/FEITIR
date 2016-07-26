@@ -13,6 +13,7 @@ namespace feitir {
         const string &getMethodName() const;
         const string &getVocabularyPath() const;
         const string &getVocabularyType() const;
+        const string &getMatchingFunc() const;
         number getTreshold() const;
         number getK() const;
         number getN() const;
@@ -31,6 +32,7 @@ namespace feitir {
         string methodName;
         string vocabularyPath;
         string vocabularyType;
+        string matchingFunc;
         number treshold;
         number K;
         number N;

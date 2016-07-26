@@ -7,8 +7,7 @@
 namespace feitir {
 
     const std::vector<std::string> IndexerBenchmark::FIELD_NAMES = { /* 0 */ "database_path",
-                                                                     /* 1 */ "result_file",
-                                                                     /* 2 */ "matching_func"};
+                                                                     /* 1 */ "result_file"};
 
     const std::vector<std::string> IndexerBenchmark::OBJECT_NAMES = { /* 0 */"indexer_method",
                                                                       /* 1 */"bsift_algorithm"};
@@ -25,10 +24,6 @@ namespace feitir {
         return resultFile;
     }
 
-    const JSONObject::string & IndexerBenchmark::getMatchingFunc() const {
-        return matchingFunc;
-    }
-
     BSIFTAlgorithmPtr IndexerBenchmark::getBsiftAlgorithm() const {
         return bsiftAlgorithm;
     }
@@ -40,7 +35,6 @@ namespace feitir {
     void IndexerBenchmark::setBasicFields(const JSONObject::ValuesMap &valuesMap) {
         if (valuesMap.count(FIELD_NAMES[0])) databasePath = valuesMap.at(FIELD_NAMES[0]);
         if (valuesMap.count(FIELD_NAMES[1])) resultFile = valuesMap.at(FIELD_NAMES[1]);
-        if (valuesMap.count(FIELD_NAMES[2])) matchingFunc = valuesMap.at(FIELD_NAMES[2]);
     }
 
     JSONObject::JSONObjectPtr IndexerBenchmark::constructNewObject() const {

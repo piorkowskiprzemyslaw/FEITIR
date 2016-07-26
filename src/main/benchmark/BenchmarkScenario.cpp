@@ -9,7 +9,7 @@ namespace feitir {
     const std::string BenchmarkScenario::BSIFT_BENCHMARKS = "bsift_benchmarks";
     const std::string BenchmarkScenario::INDEXER_BENCHMARKS = "indexer_benchmarks";
 
-    const std::vector<BSIFTBenchmarkDescriptionPtr> &BenchmarkScenario::getBsiftBenchmarkDescriptions() const {
+    const std::vector<BSIFTBenchmarkPtr> &BenchmarkScenario::getBsiftBenchmarkDescriptions() const {
         return bsiftBenchmarkDescriptions;
     }
 
@@ -27,7 +27,7 @@ namespace feitir {
 
     std::map<JSONObject::FName, JSONObject::JSONObjectPtr> BenchmarkScenario::arrayOfObjectTypes() const {
         return {
-                {BSIFT_BENCHMARKS, std::make_shared<BSIFTBenchmarkDescription>()},
+                {BSIFT_BENCHMARKS, std::make_shared<BSIFTBenchmark>()},
                 {INDEXER_BENCHMARKS, std::make_shared<IndexerBenchmark>()} };
     }
 
@@ -37,7 +37,7 @@ namespace feitir {
             auto bsiftVector = arrayObjectsValuesMap.at(BSIFT_BENCHMARKS);
             std::transform(bsiftVector.begin(), bsiftVector.end(), back_inserter(bsiftBenchmarkDescriptions),
                            [] (const JSONObjectPtr &objectPtr) {
-                               return std::dynamic_pointer_cast<BSIFTBenchmarkDescription>(objectPtr);
+                               return std::dynamic_pointer_cast<BSIFTBenchmark>(objectPtr);
                            });
         }
 

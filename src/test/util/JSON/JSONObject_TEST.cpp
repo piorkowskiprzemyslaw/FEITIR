@@ -44,14 +44,19 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE(bsiftDescription != nullptr);
         BOOST_REQUIRE_EQUAL(bsiftDescription->getDatabasePath(), "database_path");
         BOOST_REQUIRE_EQUAL(bsiftDescription->getResultFile(), "result_file");
-        BOOST_REQUIRE_EQUAL(bsiftDescription->getVocabularyPath(), "vocabulary_path");
-        BOOST_REQUIRE_EQUAL(bsiftDescription->getVocabularyType(), "vocabulary_type");
         BOOST_REQUIRE_EQUAL_COLLECTIONS(bsiftDescription->getASet().begin(), bsiftDescription->getASet().end(),
                 aSet.begin(), aSet.end());
         BOOST_REQUIRE_EQUAL_COLLECTIONS(bsiftDescription->getBSet().begin(), bsiftDescription->getBSet().end(),
                 bSet.begin(), bSet.end());
         BOOST_REQUIRE(!bsiftDescription->isMeasureTime());
-        auto bsiftMethod = bsiftDescription->getMethodDescription();
+        auto algorithm = bsiftDescription->getAlgorithm();
+        BOOST_REQUIRE(algorithm != nullptr);
+        BOOST_REQUIRE_EQUAL(algorithm->getDatabasePath(), "algorithm_database_path");
+        BOOST_REQUIRE_EQUAL(algorithm->getVocabularyType(), "algorithm_vocabulary_type");
+        BOOST_REQUIRE_EQUAL(algorithm->getVocabularyPath(), "algorithm_vocabulary_path");
+
+        auto bsiftMethod = algorithm->getBsiftMethod();
+        BOOST_REQUIRE(bsiftMethod != nullptr);
         BOOST_REQUIRE_EQUAL(bsiftMethod->getMethod(), "method");
         BOOST_REQUIRE_EQUAL(bsiftMethod->getL(), 1);
         BOOST_REQUIRE_EQUAL(bsiftMethod->getT(), 2);
@@ -61,7 +66,6 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         auto indexerDescription = scenario->getIndexerBenchmarkDescriptions()[0];
         BOOST_REQUIRE(indexerDescription != nullptr);
         BOOST_REQUIRE_EQUAL(indexerDescription->getDatabasePath(), "database_path");
-        BOOST_REQUIRE_EQUAL(indexerDescription->getMatchingFunc(), "matching_func");
         BOOST_REQUIRE_EQUAL(indexerDescription->getResultFile(), "result_file");
 
         auto indexerMethod = indexerDescription->getMethod();
@@ -69,6 +73,7 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE_EQUAL(indexerMethod->getMethodName(), "indexer_method");
         BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyPath(), "method_vocabulary_path");
         BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyType(), "method_vocabulary_type");
+        BOOST_REQUIRE_EQUAL(indexerMethod->getMatchingFunc(), "matching_func");
         BOOST_REQUIRE_EQUAL(indexerMethod->getTreshold(), 4);
         BOOST_REQUIRE_EQUAL(indexerMethod->getK(), 5);
         BOOST_REQUIRE_EQUAL(indexerMethod->getN(), 6);
@@ -99,14 +104,19 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE(bsiftDescription != nullptr);
         BOOST_REQUIRE_EQUAL(bsiftDescription->getDatabasePath(), "database_path");
         BOOST_REQUIRE_EQUAL(bsiftDescription->getResultFile(), "result_file");
-        BOOST_REQUIRE_EQUAL(bsiftDescription->getVocabularyPath(), "vocabulary_path");
-        BOOST_REQUIRE_EQUAL(bsiftDescription->getVocabularyType(), "vocabulary_type");
         BOOST_REQUIRE_EQUAL_COLLECTIONS(bsiftDescription->getASet().begin(), bsiftDescription->getASet().end(),
                 aSet.begin(), aSet.end());
         BOOST_REQUIRE_EQUAL_COLLECTIONS(bsiftDescription->getBSet().begin(), bsiftDescription->getBSet().end(),
                 bSet.begin(), bSet.end());
         BOOST_REQUIRE(!bsiftDescription->isMeasureTime());
-        auto bsiftMethod = bsiftDescription->getMethodDescription();
+        auto algorithm = bsiftDescription->getAlgorithm();
+        BOOST_REQUIRE(algorithm != nullptr);
+        BOOST_REQUIRE_EQUAL(algorithm->getDatabasePath(), "algorithm_database_path");
+        BOOST_REQUIRE_EQUAL(algorithm->getVocabularyType(), "algorithm_vocabulary_type");
+        BOOST_REQUIRE_EQUAL(algorithm->getVocabularyPath(), "algorithm_vocabulary_path");
+
+        auto bsiftMethod = algorithm->getBsiftMethod();
+        BOOST_REQUIRE(bsiftMethod != nullptr);
         BOOST_REQUIRE_EQUAL(bsiftMethod->getMethod(), "method");
         BOOST_REQUIRE_EQUAL(bsiftMethod->getL(), 1);
         BOOST_REQUIRE_EQUAL(bsiftMethod->getT(), 2);
@@ -125,7 +135,6 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         auto indexerDescription = scenario->getIndexerBenchmarkDescriptions()[0];
         BOOST_REQUIRE(indexerDescription != nullptr);
         BOOST_REQUIRE_EQUAL(indexerDescription->getDatabasePath(), "database_path");
-        BOOST_REQUIRE_EQUAL(indexerDescription->getMatchingFunc(), "matching_func");
         BOOST_REQUIRE_EQUAL(indexerDescription->getResultFile(), "result_file");
 
         auto indexerMethod = indexerDescription->getMethod();
@@ -133,6 +142,7 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE_EQUAL(indexerMethod->getMethodName(), "indexer_method");
         BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyPath(), "method_vocabulary_path");
         BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyType(), "method_vocabulary_type");
+        BOOST_REQUIRE_EQUAL(indexerMethod->getMatchingFunc(), "matching_func");
         BOOST_REQUIRE_EQUAL(indexerMethod->getTreshold(), 4);
         BOOST_REQUIRE_EQUAL(indexerMethod->getK(), 5);
         BOOST_REQUIRE_EQUAL(indexerMethod->getN(), 6);

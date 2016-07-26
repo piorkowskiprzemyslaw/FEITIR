@@ -3,16 +3,16 @@ set(BENCHMARK_SOURCE_FILES
         BenchmarkScenarioRunner.h
         BenchmarkScenario.cpp
         BenchmarkScenario.h
-        benchmark_description/bsift/BSIFTMethodDescription.cpp
-        benchmark_description/bsift/BSIFTMethodDescription.h
-        benchmark_description/bsift/BSIFTBenchmarkDescription.cpp
-        benchmark_description/bsift/BSIFTBenchmarkDescription.h
+        benchmark_description/bsift/BSIFTMethod.cpp
+        benchmark_description/bsift/BSIFTMethod.h
+        benchmark_description/bsift/BSIFTBenchmark.cpp
+        benchmark_description/bsift/BSIFTBenchmark.h
         benchmark_description/indexer/IndexerBenchmark.cpp
         benchmark_description/indexer/IndexerBenchmark.h
         benchmark_description/indexer/IndexerMethod.cpp
         benchmark_description/indexer/IndexerBenchmark.h
-        benchmark_description/indexer/BSIFTAlgorithm.h
-        benchmark_description/indexer/BSIFTAlgorithm.cpp)
+        benchmark_description/bsift/BSIFTAlgorithm.h
+        benchmark_description/bsift/BSIFTAlgorithm.cpp)
 
 add_library(benchmark STATIC ${BENCHMARK_SOURCE_FILES})
 

@@ -6,18 +6,19 @@
 #define FEITIR_BSIFTBENCHMARKDESCRIPTION_H
 
 #include "src/main/util/JSON/JSONObject.h"
-#include "BSIFTMethodDescription.h"
+#include "BSIFTMethod.h"
+#include "BSIFTAlgorithm.h"
 
 namespace feitir {
 
-    class BSIFTBenchmarkDescription : public JSONObject {
+    class BSIFTBenchmark : public JSONObject {
     public:
         const string & getDatabasePath() const;
-        const string & getVocabularyPath() const;
-        const string & getVocabularyType() const;
         boolean isMeasureTime() const;
+
+        const BSIFTAlgorithmPtr &getAlgorithm() const;
+
         const string & getResultFile() const;
-        BSIFTMethodDescriptionPtr getMethodDescription() const;
         const std::vector<number> & getASet() const;
         const std::vector<number> & getBSet() const;
 
@@ -31,19 +32,17 @@ namespace feitir {
 
     private:
         static const std::vector<std::string> FIELD_NAMES;
-        static const std::string BSIFT_METHOD;
+        static const std::string BSIFT_ALGORITHM;
 
         string databasePath;
-        string vocabularyPath;
-        string vocabularyType;
         boolean measureTime;
         string resultFile;
-        BSIFTMethodDescriptionPtr methodDescription;
+        BSIFTAlgorithmPtr algorithm;
         std::vector<number> aSet;
         std::vector<number> bSet;
     };
 
-    using BSIFTBenchmarkDescriptionPtr = std::shared_ptr<BSIFTBenchmarkDescription>;
+    using BSIFTBenchmarkPtr = std::shared_ptr<BSIFTBenchmark>;
 }
 
 

@@ -64,10 +64,8 @@ BOOST_FIXTURE_TEST_SUITE(SupportingWordsInvertedFileIndexer_TEST, SupportingWord
         SupportingWordsInvertedFileIndexer indexer(
                 std::make_shared<SWIFParameters>(3, 30, 2, transformedDatabase, vocabulary, matchingFunction));
 
-        auto result = indexer.query(
-                std::make_shared<SWIFQuery>(image,
-                                            std::dynamic_pointer_cast<ImageBSIFT>(
-                                                    databaseTranslator->transformImage(vocabulary, image))));
+        auto result = indexer.query(std::make_shared<SWIFQuery>(image, std::dynamic_pointer_cast<ImageBSIFT>(
+                databaseTranslator->transformImage(vocabulary, image))));
 
         BOOST_REQUIRE(result != nullptr);
         BOOST_REQUIRE_EQUAL(result->getResultList().size(), 11);

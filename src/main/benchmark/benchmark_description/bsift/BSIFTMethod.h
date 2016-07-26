@@ -9,7 +9,7 @@
 
 namespace feitir {
 
-    class BSIFTMethodDescription : public JSONObject {
+    class BSIFTMethod : public JSONObject {
     public:
         const string & getMethod() const;
         number getL() const;
@@ -29,7 +29,7 @@ namespace feitir {
         number N;
     };
 
-    using BSIFTMethodDescriptionPtr = std::shared_ptr<BSIFTMethodDescription>;
+    using BSIFTMethodPtr = std::shared_ptr<BSIFTMethod>;
 }
 
 

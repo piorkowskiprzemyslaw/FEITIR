@@ -13,38 +13,40 @@
 
 namespace feitir {
     void BenchmarkScenarioRunner::runScenario(BenchmarkScenarioPtr scenario) {
+        int globalTestCounter = 0;
+        auto allTestNumber = scenario->getBsiftBenchmarkDescriptions().size() +
+                             scenario->getIndexerBenchmarkDescriptions().size();
+
         BOOST_LOG_TRIVIAL(info) << "Faculty of Electronics Benchmark Scenario Runner";
         for (int i = 0; i < scenario->getBsiftBenchmarkDescriptions().size(); ++i) {
-            BOOST_LOG_TRIVIAL(info) << "Running BSIFT benchmark " << i + 1
-                                    << " of " << scenario->getBsiftBenchmarkDescriptions().size();
+            BOOST_LOG_TRIVIAL(info) << "Running BSIFT benchmark " << ++globalTestCounter << " of " << allTestNumber;
             runBSIFTDescription(scenario->getBsiftBenchmarkDescriptions()[i]);
         }
 
         for (int i = 0; i < scenario->getIndexerBenchmarkDescriptions().size(); ++i) {
-            BOOST_LOG_TRIVIAL(info) << "Running Indexer benchmark " << i + 1
-                                    << " of " << scenario->getIndexerBenchmarkDescriptions().size();
+            BOOST_LOG_TRIVIAL(info) << "Running Indexer benchmark " << ++globalTestCounter << " of " << allTestNumber;
             runIndexerDescription(scenario->getIndexerBenchmarkDescriptions()[i]);
         }
     }
 
-    void BenchmarkScenarioRunner::runBSIFTDescription(BSIFTBenchmarkDescriptionPtr description) {
-        BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark " + description->getMethodDescription()->getMethod();
+    void BenchmarkScenarioRunner::runBSIFTDescription(BSIFTBenchmarkPtr description) {
+        BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark " + description->getAlgorithm()->getBsiftMethod()->getMethod();
         std::vector<SingleResult> resultVector;
-        std::chrono::high_resolution_clock::time_point t1;
+        std::chrono::high_resolution_clock::time_point testStart;
+        auto bsiftExtractor = setupExtractor(description->getAlgorithm());
         auto database = databaseFactory.createDatabase(description->getDatabasePath());
-        auto vocabulary = setupVocabulary(description->getVocabularyType(), description->getVocabularyPath());
-        BSIFTExtractorPtr bsiftExtractor = setupExtractor(description->getMethodDescription(), database, vocabulary);
 
         if (description->isMeasureTime()) {
-            t1 = std::chrono::high_resolution_clock::now();
+            testStart = std::chrono::high_resolution_clock::now();
         }
 
         database = bsiftExtractor->extractDatabaseBSIFT(database);
 
         if (description->isMeasureTime()) {
-            std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-            BOOST_LOG_TRIVIAL(info) << description->getMethodDescription()->getMethod() + " extraction time: " << duration;
+            std::chrono::high_resolution_clock::time_point testEnd = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(testEnd - testStart).count();
+            BOOST_LOG_TRIVIAL(info) << description->getAlgorithm()->getBsiftMethod()->getMethod()
+                                       + " extraction time: " << duration;
         }
 
         auto aSet = getDescriptorVector(database, description->getASet());
@@ -64,6 +66,7 @@ namespace feitir {
     void BenchmarkScenarioRunner::runIndexerDescription(IndexerBenchmarkPtr description) {
         BOOST_LOG_TRIVIAL(info) << "Indexer benchmark";
         auto database = databaseFactory.createDatabase(description->getDatabasePath());
+        auto extractor = setupExtractor(description->getBsiftAlgorithm());
     }
 
     VocabularyTypePtr BenchmarkScenarioRunner::setupVocabulary(std::string vocabularyType, std::string vocabularyPath) {
@@ -75,7 +78,13 @@ namespace feitir {
         throw std::invalid_argument(vocabularyType + " has no meaning as vocabulary type");
     }
 
-    BSIFTExtractorPtr BenchmarkScenarioRunner::setupExtractor(BSIFTMethodDescriptionPtr method, DatabasePtr database,
+    BSIFTExtractorPtr BenchmarkScenarioRunner::setupExtractor(BSIFTAlgorithmPtr algorithm) {
+        auto database = databaseFactory.createDatabase(algorithm->getDatabasePath());
+        auto vocabulary = setupVocabulary(algorithm->getVocabularyType(), algorithm->getVocabularyPath());
+        return setupExtractor(algorithm->getBsiftMethod(), database, vocabulary);
+    }
+
+    BSIFTExtractorPtr BenchmarkScenarioRunner::setupExtractor(BSIFTMethodPtr method, DatabasePtr database,
                                                               VocabularyTypePtr vocabularyTypePtr) {
         std::string methodName = method->getMethod();
         if (!methodName.compare("comparison_array")) {
@@ -85,7 +94,8 @@ namespace feitir {
         } else if (!methodName.compare("descriptor_position_median")) {
             return std::make_shared<DescriptorPositionMedianBSIFTExtractor>();
         } else if (!methodName.compare("descriptor_voronoi_position")) {
-            return std::make_shared<DescriptorVoronoiPositionBSIFTExtractor>(method->getN(), vocabularyTypePtr, database);
+            return std::make_shared<DescriptorVoronoiPositionBSIFTExtractor>(
+                    method->getN(), vocabularyTypePtr, database);
         } else if (!methodName.compare("locality_sensitive_hashing")) {
             auto hashFunctions = LocalitySensitiveHashingBSIFTExtractor::generateRandomHashFunctions(method->getN());
             return std::make_shared<LocalitySensitiveHashingBSIFTExtractor>(method->getN(), hashFunctions);
@@ -146,9 +156,9 @@ namespace feitir {
         return concatenated;
     }
 
-    MatchingFunc BenchmarkScenarioRunner::generateMatchingFunction(const std::string &matchingFunctionType,
-                                                                   const DatabasePtr database,
-                                                                   const VocabularyTypePtr vocabulary) {
+    MatchingFunc BenchmarkScenarioRunner::setupMatchingFunction(const std::string &matchingFunctionType,
+                                                                const DatabasePtr database,
+                                                                const VocabularyTypePtr vocabulary) {
         return feitir::MatchingFunc();
     }
 
