@@ -46,7 +46,7 @@ namespace feitir {
         std::vector<ImageBSIFT::BSIFT> concatenateBSIFT(const DatabasePtr database);
         cv::Mat concatenateSIFT(const DatabasePtr database);
 
-
+        Indexer setupIndexer(const IndexerMethodPtr indexerMethod);
 
         MatchingFunc setupMatchingFunction(const std::string &matchingFunctionType, const DatabasePtr database,
                                            const VocabularyTypePtr vocabulary);

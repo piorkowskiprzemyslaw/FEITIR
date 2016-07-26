@@ -4,6 +4,10 @@
 
 #include "BenchmarkScenarioRunner.h"
 #include <chrono>
+#include <src/main/algorithm/indexer/inverted_file/InvertedFileIndexer.h>
+#include <src/main/algorithm/indexer/cross_indexer/CrossIndexer.h>
+#include <src/main/algorithm/indexer/binary_inverted_file/BinaryInvertedFileIndexer.h>
+#include <src/main/algorithm/indexer/supporting_words_inverted_file/SupportingWordsInvertedFileIndexer.h>
 #include "src/main/algorithm/BSIFT/descriptor_median/DescriptorMedianBSIFTExtractor.h"
 #include "src/main/algorithm/BSIFT/locality_sensitive_hashing/LocalitySensitiveHashingBSIFTExtractor.h"
 #include "src/main/algorithm/BSIFT/vectors_compare/VectorsCompareBSIFTExtractor.h"
@@ -64,9 +68,10 @@ namespace feitir {
     }
 
     void BenchmarkScenarioRunner::runIndexerDescription(IndexerBenchmarkPtr description) {
-        BOOST_LOG_TRIVIAL(info) << "Indexer benchmark";
+        BOOST_LOG_TRIVIAL(info) << "Indexer benchmark " + description->getMethod()->getMethodName();
         auto database = databaseFactory.createDatabase(description->getDatabasePath());
         auto extractor = setupExtractor(description->getBsiftAlgorithm());
+        auto indexer = setupIndexer(description->getMethod());
     }
 
     VocabularyTypePtr BenchmarkScenarioRunner::setupVocabulary(std::string vocabularyType, std::string vocabularyPath) {
@@ -160,6 +165,32 @@ namespace feitir {
                                                                 const DatabasePtr database,
                                                                 const VocabularyTypePtr vocabulary) {
         return feitir::MatchingFunc();
+    }
+
+    Indexer BenchmarkScenarioRunner::setupIndexer(const IndexerMethodPtr indexerMethod) {
+        auto vocabulary = setupVocabulary(indexerMethod->getVocabularyPath(), indexerMethod->getVocabularyType());
+        auto database = databaseFactory.createDatabase(indexerMethod->getDatabasePath());
+        auto matchingFunction = setupMatchingFunction(indexerMethod->getMethodName(),
+                                                      database, vocabulary);
+        const auto & methodName = indexerMethod->getMethodName();
+
+        if (!methodName.compare("inverted_file")) {
+            return InvertedFileIndexer(std::make_shared<IFParameters>(database, matchingFunction));
+        } else if (!methodName.compare("cross_indexer")) {
+            return CrossIndexer(database, vocabulary, matchingFunction,
+                                indexerMethod->getN(), indexerMethod->getTreshold(),
+                                indexerMethod->getR(), indexerMethod->getCodeWordSize());
+        } else if (!methodName.compare("binary_inverted_file")) {
+            return BinaryInvertedFileIndexer(
+                    std::make_shared<BIFParameters>(database, indexerMethod->getTreshold(), matchingFunction));
+        } else if (!methodName.compare("supporting_words_inverted_file")) {
+            return SupportingWordsInvertedFileIndexer(
+                    std::make_shared<SWIFParameters>(database, vocabulary, matchingFunction,
+                                                     indexerMethod->getR(), indexerMethod->getK(),
+                                                     indexerMethod->getTreshold()));
+        }
+
+        throw std::invalid_argument(methodName + " does not cast to any available indexer type");
     }
 
 }

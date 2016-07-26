@@ -23,13 +23,13 @@ namespace feitir {
         cv::BFMatcher matcher;
 
         // algorithm parameter
-        std::size_t p;
+        int p;
 
         // algorithm parameter
-        std::size_t K;
+        int K;
 
         // hamming distance threshold below which pair is marked as a match.
-        std::size_t distanceTreshold;
+        int distanceTreshold;
 
         // Transformed database - database transformed with vocabulary - does not include original SIFT descriptor
         // value, but includes mapping from particular descriptor to VisualWord.

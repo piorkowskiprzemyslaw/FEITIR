@@ -14,10 +14,12 @@ namespace feitir {
         const string &getVocabularyPath() const;
         const string &getVocabularyType() const;
         const string &getMatchingFunc() const;
+        const string &getDatabasePath() const;
         number getTreshold() const;
         number getK() const;
         number getN() const;
         number getR() const;
+        number getP() const;
         number getCodeWordSize() const;
 
     protected:
@@ -33,10 +35,12 @@ namespace feitir {
         string vocabularyPath;
         string vocabularyType;
         string matchingFunc;
+        string databasePath;
         number treshold;
         number K;
         number N;
         number R;
+        number P;
         number codeWordSize;
 
     };

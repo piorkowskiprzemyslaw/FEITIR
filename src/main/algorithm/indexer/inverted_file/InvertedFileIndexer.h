@@ -27,7 +27,7 @@ namespace feitir {
         void processImage(const ImagePtr img);
 
     public:
-        InvertedFileIndexer(const IFParametersPtr parameters);
+        explicit InvertedFileIndexer(const IFParametersPtr parameters);
         virtual ~InvertedFileIndexer();
         virtual IndexerResultPtr query(IndexerQueryPtr queryPtr) override;
         virtual IFResultPtr query(IFQueryPtr query);

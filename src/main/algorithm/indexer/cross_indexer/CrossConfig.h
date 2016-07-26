@@ -17,15 +17,15 @@ namespace feitir {
         DatabasePtr database;
         VocabularyTypePtr vocabulary;
         int N;
-        size_t R;
-        size_t codeWordSize;
-        size_t binaryTreshold;
+        int R;
+        int codeWordSize;
+        int binaryTreshold;
         MatchingFunc matchingFunc;
 
     public:
         CrossParameters(const DatabasePtr &database, const VocabularyTypePtr vocabulary,
-                        const MatchingFunc &matchingFunction, const int N, const size_t binaryTreshold,
-                        const size_t R = 1, const size_t codeWordSize = 32);
+                        const MatchingFunc &matchingFunction, const int N, const int binaryTreshold,
+                        const int R = 1, const int codeWordSize = 32);
         const DatabasePtr & getDatabase() const;
         int getN() const;
         size_t getR() const;

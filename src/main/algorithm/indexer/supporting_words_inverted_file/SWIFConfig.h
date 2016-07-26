@@ -17,21 +17,21 @@ namespace feitir {
 
     class SWIFParameters : public IndexerParameters {
     private:
-        std::size_t p;
-        std::size_t distanceTreshold;
-        std::size_t K;
+        int p;
+        int distanceTreshold;
+        int K;
         DatabasePtr transformedDb;
         VocabularyTypePtr vocabulary;
         MatchingFunc matchingFunc;
 
     public:
-        SWIFParameters(size_t p, size_t distanceTreshold, size_t K, DatabasePtr transformedDb,
-                       VocabularyTypePtr vocabulary, const MatchingFunc& matchingFunc);
-        size_t getP() const;
-        size_t getDistanceTreshold() const;
+        SWIFParameters(DatabasePtr transformedDb, VocabularyTypePtr vocabulary, const MatchingFunc &matchingFunc,
+                       int p, int K, int distanceTreshold);
+        int getP() const;
+        int getDistanceTreshold() const;
         const DatabasePtr getTransformedDb() const;
         const VocabularyTypePtr getVocabulary() const;
-        size_t getK() const;
+        int getK() const;
         const MatchingFunc & getMatchingFunc() const;
     };
 

@@ -7,7 +7,7 @@
 namespace feitir {
 
     CrossParameters::CrossParameters(const DatabasePtr &database, const VocabularyTypePtr vocabulary, const MatchingFunc &matchingFunc,
-                                         const int N, const size_t binaryTreshold, const size_t R, const size_t codeWordSize)
+                                         const int N, const int binaryTreshold, const int R, const int codeWordSize)
             : database{database},
               vocabulary{vocabulary},
               N{N},

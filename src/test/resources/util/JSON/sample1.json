@@ -29,10 +29,12 @@
           "vocabulary_path": "method_vocabulary_path",
           "vocabulary_type": "method_vocabulary_type",
           "matching_func": "matching_func",
+          "database_path": "method_database_path",
           "treshold": "4",
           "K": "5",
           "N": "6",
           "R": "7",
+          "P": "12",
           "code_word_size": "8"
         },
         "bsift_algorithm": {
