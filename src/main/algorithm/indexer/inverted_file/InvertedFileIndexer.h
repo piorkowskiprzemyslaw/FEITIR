@@ -17,7 +17,7 @@ namespace feitir {
     /**
      * Standard implementation of inverted file indexer.
      */
-    class InvertedFileIndexer : public Indexer<IFResultPtr, IFQueryPtr, IFParametersPtr> {
+    class InvertedFileIndexer : public Indexer {
     private:
         MatchingFunc matchingFunction;
         std::unordered_multimap<int, ImagePtr> invertedFile;
@@ -27,8 +27,9 @@ namespace feitir {
         void processImage(const ImagePtr img);
 
     public:
-        InvertedFileIndexer(const IFParametersPtr &parameters);
+        InvertedFileIndexer(const IFParametersPtr parameters);
         virtual ~InvertedFileIndexer();
+        virtual IndexerResultPtr query(IndexerQueryPtr queryPtr) override;
         virtual IFResultPtr query(IFQueryPtr query);
 
     };

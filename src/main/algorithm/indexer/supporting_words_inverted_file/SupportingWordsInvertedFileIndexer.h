@@ -18,7 +18,7 @@ namespace feitir {
     /**
      * Implementation of binary inverted file indexer which uses supporting words map.
      */
-    class SupportingWordsInvertedFileIndexer : public Indexer<SWIFResultPtr,  SWIFQueryPtr, SWIFParametersPtr> {
+    class SupportingWordsInvertedFileIndexer : public Indexer {
     private:
         cv::BFMatcher matcher;
 
@@ -121,12 +121,9 @@ namespace feitir {
 
     public:
         explicit SupportingWordsInvertedFileIndexer(const SWIFParametersPtr &parameters)
-                : Indexer<SWIFResultPtr, SWIFQueryPtr, SWIFParametersPtr>{parameters},
-                  transformedDb{parameters->getTransformedDb()},
-                  p{parameters->getP()},
-                  distanceTreshold{parameters->getDistanceTreshold()},
-                  K{parameters->getK()},
-                  vocabulary{parameters->getVocabulary()},
+                : Indexer{parameters}, transformedDb{parameters->getTransformedDb()},
+                  p{parameters->getP()}, distanceTreshold{parameters->getDistanceTreshold()},
+                  K{parameters->getK()}, vocabulary{parameters->getVocabulary()},
                   matchingFunc{parameters->getMatchingFunc()} {
 
             for (auto img : *transformedDb) {
@@ -136,7 +133,7 @@ namespace feitir {
             computeSupportingWords();
         }
 
-        virtual SWIFResultPtr query(SWIFQueryPtr query) override {
+        virtual SWIFResultPtr query(SWIFQueryPtr query) {
             std::unordered_map<boost::uuids::uuid, int32_t> uuidToResult;
             SWIFResultPtr resultPtr = std::make_shared<SWIFResult>();
             ImageBSIFTPtr transformedImage = query->getTransformedImage();
@@ -178,6 +175,10 @@ namespace feitir {
         }
 
         virtual ~SupportingWordsInvertedFileIndexer() override = default;
+
+        virtual IndexerResultPtr query(IndexerQueryPtr queryPtr) override {
+            return query(std::static_pointer_cast<SWIFQuery>(queryPtr));
+        }
 
     };
 

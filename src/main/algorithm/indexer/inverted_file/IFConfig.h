@@ -7,13 +7,14 @@
 
 #include <iostream>
 #include <vector>
+#include "src/main/algorithm/indexer/IndexerConfig.h"
 #include "src/main/algorithm/vocabulary/VocabularyConfig.h"
 #include "src/main/algorithm/indexer/Indexer.h"
 #include "src/main/database/Database.h"
 
 namespace feitir {
 
-    class IFParameters {
+    class IFParameters : public IndexerParameters {
     public:
 
     private:
@@ -24,23 +25,26 @@ namespace feitir {
         IFParameters(const DatabasePtr &database, const MatchingFunc &matchingFunction);
         const DatabasePtr & getDatabase() const;
         MatchingFunc getMatchingFunction() const;
+        virtual ~IFParameters() = default;
     };
 
-    class IFQuery {
+    class IFQuery : public IndexerQuery {
     private:
         ImagePtr img;
     public:
         IFQuery(const ImagePtr &img);
         const ImagePtr getImg() const;
+        virtual ~IFQuery() = default;
     };
 
-    class IFResult {
+    class IFResult : public IndexerResult {
     private:
         std::vector<std::pair<ImagePtr, float>> images;
     public:
         IFResult();
         void addResultEntry(std::pair<ImagePtr, float> element);
         const std::vector<std::pair<ImagePtr, float>> & getImages() const;
+        virtual ~IFResult() = default;
     };
 
     typedef std::pair<ImagePtr, float> IFResultEntry;
@@ -49,7 +53,7 @@ namespace feitir {
 
     typedef std::shared_ptr<IFQuery> IFQueryPtr;
 
-    typedef std::shared_ptr<IFParameters> IFParametersPtr;
+    using IFParametersPtr = std::shared_ptr<IFParameters>;
 }
 
 

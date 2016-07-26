@@ -12,7 +12,7 @@
 
 namespace feitir {
 
-    class CrossParameters {
+    class CrossParameters : public IndexerParameters {
     private:
         DatabasePtr database;
         VocabularyTypePtr vocabulary;
@@ -33,24 +33,27 @@ namespace feitir {
         size_t getCodeWordSize() const;
         size_t getBinaryTreshold() const;
         const MatchingFunc & getMatchingFunc() const;
+        virtual ~CrossParameters() = default;
     };
 
-    class CrossQuery {
+    class CrossQuery : public IndexerQuery {
     private:
         ImageBSIFTPtr img;
 
     public:
         CrossQuery(const ImageBSIFTPtr &img);
         const ImageBSIFTPtr getImg() const;
+        virtual ~CrossQuery() = default;
     };
 
-    class CrossResult {
+    class CrossResult : public IndexerResult {
     private:
         std::vector<std::pair<ImagePtr, float>> images;
     public:
         CrossResult() = default;
         void addResultEntry(std::pair<ImagePtr, float> element);
         const std::vector<std::pair<ImagePtr, float>> & getImages() const;
+        virtual ~CrossResult() = default;
     };
 
     typedef std::pair<ImagePtr, float> CrossResultEntry;

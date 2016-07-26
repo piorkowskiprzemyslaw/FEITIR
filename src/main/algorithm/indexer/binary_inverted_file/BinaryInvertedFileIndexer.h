@@ -14,7 +14,7 @@
 
 namespace feitir {
 
-    class BinaryInvertedFileIndexer : public Indexer<BIFResultPtr, BIFQueryPtr, BIFParametersPtr> {
+    class BinaryInvertedFileIndexer : public Indexer {
     private:
         const std::size_t treshold;
         MatchingFunc matchingFunc;
@@ -35,13 +35,17 @@ namespace feitir {
         }
 
     public:
-        BinaryInvertedFileIndexer(const BIFParametersPtr &parameters) : Indexer<BIFResultPtr, BIFQueryPtr, BIFParametersPtr>{parameters},
+        BinaryInvertedFileIndexer(const BIFParametersPtr &parameters) : Indexer{parameters},
                                                                         treshold{parameters->getTreshold()},
                                                                         matchingFunc{parameters->getMatchingFunction()} {
             DatabasePtr database = parameters->getDatabase();
             for (auto image : *database) {
                 processImage(image);
             }
+        }
+
+        virtual IndexerResultPtr query(IndexerQueryPtr queryPtr) override {
+            return query(std::static_pointer_cast<BIFQuery>(queryPtr));
         }
 
         virtual BIFResultPtr query(BIFQueryPtr query) {

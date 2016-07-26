@@ -13,7 +13,7 @@
 
 namespace feitir {
 
-    class BIFParameters {
+    class BIFParameters : public IndexerParameters {
     private:
         const DatabasePtr database;
         const std::size_t treshold;
@@ -25,9 +25,10 @@ namespace feitir {
         const DatabasePtr getDatabase() const;
         const size_t getTreshold() const;
         const MatchingFunc & getMatchingFunction() const;
+        virtual ~BIFParameters() = default;
     };
 
-    class BIFQuery {
+    class BIFQuery : public IndexerQuery {
     private:
         ImageBSIFTPtr img;
     public:
@@ -43,11 +44,13 @@ namespace feitir {
         const ImageBSIFTPtr getImg() const {
             return img;
         }
+
+        virtual ~BIFQuery() = default;
     };
 
     using BIFResultEntry = std::pair<ImageBSIFTPtr, std::size_t>;
 
-    class BIFResult {
+    class BIFResult : public IndexerResult {
     private:
         std::vector<BIFResultEntry> resultList;
     public:
@@ -60,6 +63,8 @@ namespace feitir {
         const std::vector<BIFResultEntry>& getResultList() const {
             return resultList;
         }
+
+        virtual ~BIFResult() = default;
     };
 
     using BIFResultPtr = std::shared_ptr<BIFResult>;

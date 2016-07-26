@@ -7,15 +7,14 @@
 
 #include <functional>
 #include <boost/uuid/uuid.hpp>
+#include "IndexerConfig.h"
 
 namespace feitir {
 
-    template <class Result, class Query, class Parameters>
     class Indexer {
-
     public:
-        explicit Indexer(Parameters parameters) { };
-        virtual Result query(Query query) = 0;
+        explicit Indexer(const IndexerParametersPtr parameters) { };
+        virtual IndexerResultPtr query(IndexerQueryPtr query) = 0;
         virtual ~Indexer() = default;
     };
 

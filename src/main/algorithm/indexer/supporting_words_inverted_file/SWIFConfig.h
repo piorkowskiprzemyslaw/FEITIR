@@ -15,7 +15,7 @@
 
 namespace feitir {
 
-    class SWIFParameters {
+    class SWIFParameters : public IndexerParameters {
     private:
         std::size_t p;
         std::size_t distanceTreshold;
@@ -35,7 +35,7 @@ namespace feitir {
         const MatchingFunc & getMatchingFunc() const;
     };
 
-    class SWIFQuery {
+    class SWIFQuery : public IndexerQuery {
     private:
         ImagePtr originalImage;
         ImageBSIFTPtr transformedImage;
@@ -55,7 +55,7 @@ namespace feitir {
 
     using SWIFResultEntry = std::pair<ImageBSIFTPtr, std::size_t>;
 
-    class SWIFResult {
+    class SWIFResult : public IndexerResult {
     private:
         std::vector<SWIFResultEntry> resultList;
 

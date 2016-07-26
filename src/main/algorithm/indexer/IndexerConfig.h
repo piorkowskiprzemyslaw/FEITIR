@@ -13,6 +13,8 @@ namespace feitir {
         virtual ~IndexerParameters() = 0;
     };
 
+    inline IndexerParameters::~IndexerParameters() { }
+
     using IndexerParametersPtr = std::shared_ptr<IndexerParameters>;
 
     class IndexerQuery {
@@ -20,12 +22,16 @@ namespace feitir {
         virtual ~IndexerQuery() = 0;
     };
 
+    inline IndexerQuery::~IndexerQuery() { }
+
     using IndexerQueryPtr = std::shared_ptr<IndexerQuery>;
 
     class IndexerResult {
     public:
         virtual ~IndexerResult() = 0;
     };
+
+    inline IndexerResult::~IndexerResult() { }
 
     using IndexerResultPtr = std::shared_ptr<IndexerResult>;
 }

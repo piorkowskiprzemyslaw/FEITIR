@@ -6,7 +6,7 @@
 #include "InvertedFileIndexer.h"
 
 namespace feitir {
-    InvertedFileIndexer::InvertedFileIndexer(const IFParametersPtr &parameters)
+    InvertedFileIndexer::InvertedFileIndexer(const IFParametersPtr parameters)
             : Indexer{parameters}, matchingFunction{parameters->getMatchingFunction()} {
         DatabasePtr database = parameters->getDatabase();
 
@@ -54,6 +54,10 @@ namespace feitir {
         for (auto& match : img->getMatches()) {
             invertedFile.emplace(match.trainIdx, img);
         }
+    }
+
+    IndexerResultPtr InvertedFileIndexer::query(IndexerQueryPtr queryPtr) {
+        return query(std::static_pointer_cast<IFQuery>(queryPtr));
     }
 
 }

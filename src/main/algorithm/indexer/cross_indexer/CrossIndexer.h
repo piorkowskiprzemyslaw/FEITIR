@@ -17,7 +17,7 @@ namespace feitir {
     /**
      * Implementation of Cross Indexer algorithm
      */
-    class CrossIndexer : public Indexer<CrossResultPtr, CrossQueryPtr, CrossParametersPtr> {
+    class CrossIndexer : public Indexer {
     public:
         template <typename... Ts> CrossIndexer(Ts&&... args)
                 : Indexer{std::make_shared<CrossParameters>(std::forward<Ts>(args)...)},
@@ -27,7 +27,9 @@ namespace feitir {
 
         explicit CrossIndexer(const CrossParametersPtr &parameters);
 
-        virtual CrossResultPtr query(CrossQueryPtr query) override;
+        virtual IndexerResultPtr query(IndexerQueryPtr queryPtr) override;
+
+        virtual CrossResultPtr query(CrossQueryPtr query);
 
         /**
          * Extracts codeword from binary SIFT descriptor value. Length depends on indexer parameter - codeWordSize.

@@ -167,4 +167,8 @@ namespace feitir {
         return returnSet;
     }
 
+    IndexerResultPtr CrossIndexer::query(IndexerQueryPtr queryPtr) {
+        return query(std::static_pointer_cast<CrossQuery>(queryPtr));
+    }
+
 }
