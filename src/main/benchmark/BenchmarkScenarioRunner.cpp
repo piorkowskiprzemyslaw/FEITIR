@@ -178,16 +178,16 @@ namespace feitir {
             return InvertedFileIndexer(std::make_shared<IFParameters>(database, matchingFunction));
         } else if (!methodName.compare("cross_indexer")) {
             return CrossIndexer(database, vocabulary, matchingFunction,
-                                indexerMethod->getN(), indexerMethod->getTreshold(),
+                                indexerMethod->getN(), indexerMethod->getThreshold(),
                                 indexerMethod->getR(), indexerMethod->getCodeWordSize());
         } else if (!methodName.compare("binary_inverted_file")) {
             return BinaryInvertedFileIndexer(
-                    std::make_shared<BIFParameters>(database, indexerMethod->getTreshold(), matchingFunction));
+                    std::make_shared<BIFParameters>(database, indexerMethod->getThreshold(), matchingFunction));
         } else if (!methodName.compare("supporting_words_inverted_file")) {
             return SupportingWordsInvertedFileIndexer(
                     std::make_shared<SWIFParameters>(database, vocabulary, matchingFunction,
                                                      indexerMethod->getR(), indexerMethod->getK(),
-                                                     indexerMethod->getTreshold()));
+                                                     indexerMethod->getThreshold()));
         }
 
         throw std::invalid_argument(methodName + " does not cast to any available indexer type");

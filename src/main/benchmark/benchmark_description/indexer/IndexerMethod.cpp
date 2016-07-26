@@ -12,7 +12,7 @@ namespace feitir {
                                                                   /* 2 */ "vocabulary_type",
                                                                   /* 3 */ "matching_func",
                                                                   /* 4 */ "database_path",
-                                                                  /* 5 */ "treshold",
+                                                                  /* 5 */ "threshold",
                                                                   /* 6 */ "K",
                                                                   /* 7 */ "N",
                                                                   /* 8 */ "R",
@@ -33,7 +33,7 @@ namespace feitir {
         if (valuesMap.count(FIELD_NAMES[2])) vocabularyType = valuesMap.at(FIELD_NAMES[2]);
         if (valuesMap.count(FIELD_NAMES[3])) matchingFunc = valuesMap.at(FIELD_NAMES[3]);
         if (valuesMap.count(FIELD_NAMES[4])) databasePath = valuesMap.at(FIELD_NAMES[4]);
-        if (valuesMap.count(FIELD_NAMES[5])) treshold = boost::lexical_cast<number>(valuesMap.at(FIELD_NAMES[5]));
+        if (valuesMap.count(FIELD_NAMES[5])) threshold = boost::lexical_cast<number>(valuesMap.at(FIELD_NAMES[5]));
         if (valuesMap.count(FIELD_NAMES[6])) K = boost::lexical_cast<number>(valuesMap.at(FIELD_NAMES[6]));
         if (valuesMap.count(FIELD_NAMES[7])) N = boost::lexical_cast<number>(valuesMap.at(FIELD_NAMES[7]));
         if (valuesMap.count(FIELD_NAMES[8])) R = boost::lexical_cast<number>(valuesMap.at(FIELD_NAMES[8]));
@@ -53,8 +53,8 @@ namespace feitir {
         return vocabularyType;
     }
 
-    JSONObject::number IndexerMethod::getTreshold() const {
-        return treshold;
+    JSONObject::number IndexerMethod::getThreshold() const {
+        return threshold;
     }
 
     JSONObject::number IndexerMethod::getK() const {
