@@ -5,12 +5,12 @@
         "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
         "measure_time": "1",
         "result_file": "/home/przemek/Documents/school/master/results/comparison_array_64_20_64.csv",
-        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/a.set",
-        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/b.set",
+        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/a.set",
+        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/b.set",
         "bsift_algorithm": {
           "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
           "vocabulary_type": "kmeans",
-          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/kmeans_1000_wang_small.yml",
+          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/vocabulary/kmeans_1000_wang_small.yml",
           "bsift_method" : {
             "method": "comparison_array",
             "L": "64",
@@ -23,12 +23,12 @@
         "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
         "measure_time": "1",
         "result_file": "/home/przemek/Documents/school/master/results/descriptor_median.csv",
-        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/a.set",
-        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/b.set",
+        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/a.set",
+        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/b.set",
         "bsift_algorithm": {
           "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
           "vocabulary_type": "kmeans",
-          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/kmeans_1000_wang_small.yml",
+          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/vocabulary/kmeans_1000_wang_small.yml",
           "bsift_method" : {
             "method": "descriptor_median"
           }
@@ -38,12 +38,12 @@
         "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
         "measure_time": "1",
         "result_file": "/home/przemek/Documents/school/master/results/descriptor_position_median.csv",
-        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/a.set",
-        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/b.set",
+        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/a.set",
+        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/b.set",
         "bsift_algorithm": {
           "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
           "vocabulary_type": "kmeans",
-          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/kmeans_1000_wang_small.yml",
+          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/vocabulary/kmeans_1000_wang_small.yml",
           "bsift_method" : {
             "method": "descriptor_position_median"
           }
@@ -53,12 +53,12 @@
         "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
         "measure_time": "1",
         "result_file": "/home/przemek/Documents/school/master/results/descriptor_voronoi_position_64.csv",
-        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/a.set",
-        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/b.set",
+        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/a.set",
+        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/b.set",
         "bsift_algorithm": {
           "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
           "vocabulary_type": "kmeans",
-          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/kmeans_1000_wang_small.yml",
+          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/vocabulary/kmeans_1000_wang_small.yml",
           "bsift_method" : {
             "method": "descriptor_voronoi_position",
             "N": "64"
@@ -69,12 +69,12 @@
         "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
         "measure_time": "1",
         "result_file": "/home/przemek/Documents/school/master/results/locality_sensitive_hashing_128.csv",
-        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/a.set",
-        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/b.set",
+        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/a.set",
+        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/b.set",
         "bsift_algorithm": {
           "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
           "vocabulary_type": "kmeans",
-          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/kmeans_1000_wang_small.yml",
+          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/vocabulary/kmeans_1000_wang_small.yml",
           "bsift_method" : {
             "method": "locality_sensitive_hashing",
             "N": "128"
@@ -85,12 +85,12 @@
         "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
         "measure_time": "1",
         "result_file": "/home/przemek/Documents/school/master/results/vectors_compare.csv",
-        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/a.set",
-        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/b.set",
+        "a_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/a.set",
+        "b_set_file": "/home/przemek/Development/feitir/src/test/resources/random_set/b.set",
         "bsift_algorithm": {
           "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
           "vocabulary_type": "kmeans",
-          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/kmeans_1000_wang_small.yml",
+          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/vocabulary/kmeans_1000_wang_small.yml",
           "bsift_method" : {
             "method": "vectors_compare"
           }
