@@ -80,6 +80,8 @@ namespace feitir {
 
     };
 
+    using BinaryInvertedFileIndexerPtr = std::shared_ptr<BinaryInvertedFileIndexer>;
+
 }
 
 #endif //FEITIR_BINARYINVERTEDFILEINDEXER_H

@@ -18,6 +18,8 @@ namespace feitir {
         virtual ~Indexer() = default;
     };
 
+    using IndexerPtr = std::shared_ptr<Indexer>;
+
     using MatchingFunc = std::function<float(int, const boost::uuids::uuid&)>;
 }
 

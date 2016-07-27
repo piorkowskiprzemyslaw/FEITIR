@@ -81,6 +81,8 @@ namespace feitir {
         std::set<size_t> allPositionsSet() const;
     };
 
+    using CrossIndexerPtr = std::shared_ptr<CrossIndexer>;
+
 }
 
 

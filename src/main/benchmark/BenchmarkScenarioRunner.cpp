@@ -167,7 +167,7 @@ namespace feitir {
         return feitir::MatchingFunc();
     }
 
-    Indexer BenchmarkScenarioRunner::setupIndexer(const IndexerMethodPtr indexerMethod) {
+    IndexerPtr BenchmarkScenarioRunner::setupIndexer(const IndexerMethodPtr indexerMethod) {
         auto vocabulary = setupVocabulary(indexerMethod->getVocabularyPath(), indexerMethod->getVocabularyType());
         auto database = databaseFactory.createDatabase(indexerMethod->getDatabasePath());
         auto matchingFunction = setupMatchingFunction(indexerMethod->getMethodName(),
@@ -175,16 +175,16 @@ namespace feitir {
         const auto & methodName = indexerMethod->getMethodName();
 
         if (!methodName.compare("inverted_file")) {
-            return InvertedFileIndexer(std::make_shared<IFParameters>(database, matchingFunction));
+            return std::make_shared<InvertedFileIndexer>(std::make_shared<IFParameters>(database, matchingFunction));
         } else if (!methodName.compare("cross_indexer")) {
-            return CrossIndexer(database, vocabulary, matchingFunction,
+            return std::make_shared<CrossIndexer>(database, vocabulary, matchingFunction,
                                 indexerMethod->getN(), indexerMethod->getThreshold(),
                                 indexerMethod->getR(), indexerMethod->getCodeWordSize());
         } else if (!methodName.compare("binary_inverted_file")) {
-            return BinaryInvertedFileIndexer(
+            return std::make_shared<BinaryInvertedFileIndexer>(
                     std::make_shared<BIFParameters>(database, indexerMethod->getThreshold(), matchingFunction));
         } else if (!methodName.compare("supporting_words_inverted_file")) {
-            return SupportingWordsInvertedFileIndexer(
+            return std::make_shared<SupportingWordsInvertedFileIndexer>(
                     std::make_shared<SWIFParameters>(database, vocabulary, matchingFunction,
                                                      indexerMethod->getR(), indexerMethod->getK(),
                                                      indexerMethod->getThreshold()));

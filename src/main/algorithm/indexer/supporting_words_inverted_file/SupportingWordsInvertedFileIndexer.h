@@ -182,6 +182,8 @@ namespace feitir {
 
     };
 
+    using SupportingWordsInvertedFileIndexerPtr = std::shared_ptr<SupportingWordsInvertedFileIndexer>;
+
 }
 
 

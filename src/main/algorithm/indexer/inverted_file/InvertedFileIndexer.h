@@ -34,6 +34,8 @@ namespace feitir {
 
     };
 
+    using InvertedFileIndexerPtr = std::shared_ptr<InvertedFileIndexer>;
+
 }
 
 

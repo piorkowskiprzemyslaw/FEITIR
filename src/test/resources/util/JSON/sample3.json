@@ -11,7 +11,7 @@
           "vocabulary_type": "method_vocabulary_type",
           "matching_func": "matching_func",
           "database_path": "method_database_path",
-          "treshold": "4",
+          "threshold": "4",
           "K": "5",
           "N": "6",
           "R": "7",
