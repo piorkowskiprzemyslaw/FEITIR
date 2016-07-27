@@ -22,3 +22,5 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 enable_testing()
 
 add_subdirectory(src)
+
+configure_file(benchmarkScenario.json.in ${PROJECT_SOURCE_DIR}/benchmarkScenario.json)
