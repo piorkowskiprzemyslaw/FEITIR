@@ -7,9 +7,9 @@
 
 namespace feitir {
     const std::vector<std::string> BSIFTMethod::FIELD_NAMES = {/* 0 */ "method",
-                                                                          /* 1 */ "L",
-                                                                          /* 2 */ "T",
-                                                                          /* 3 */ "N"};
+                                                               /* 1 */ "L",
+                                                               /* 2 */ "T",
+                                                               /* 3 */ "N"};
 
     const JSONObject::string &BSIFTMethod::getMethod() const {
         return method;

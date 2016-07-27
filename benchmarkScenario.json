@@ -2,16 +2,19 @@
   "scenario": {
     "bsift_benchmarks": [
       {
-        "bsift_method": {
-          "method": "descriptor_position_median"
+        "bsift_algorithm" : {
+          "database_path" : "/home/przemek/Documents/school/master/dbs/wang_small/",
+          "vocabulary_type": "kmeans",
+          "vocabulary_path": "/home/przemek/Development/feitir/src/test/resources/vocabulary/kmeans_1000_wang_small.yml",
+          "bsift_method" : {
+            "method": "descriptor_median"
+          }
         },
-        "database_path": "/Users/Przemek/Development/ClionProjects/imgDB/wang_small/",
-        "vocabulary_type": "kmeans",
-        "vocabulary_path": "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/vocabulary/kmeans_1000_wang_small.yml",
+        "database_path": "/home/przemek/Documents/school/master/dbs/wang_small/",
         "measure_time": "1",
-        "result_file": "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/descriptor_position_median.csv",
-        "a_set_file" : "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/random_set/a_test.set",
-        "b_set_file" : "/Users/Przemek/Development/ClionProjects/FEITIR/src/test/resources/random_set/b_test.set"
+        "result_file": "/home/przemek/Documents/school/master/descriptor_median.csv",
+        "a_set_file" : "/home/przemek/Development/feitir/src/test/resources/random_set/a.set",
+        "b_set_file" : "/home/przemek/Development/feitir/src/test/resources/random_set/b.set"
       }
     ]
   }
