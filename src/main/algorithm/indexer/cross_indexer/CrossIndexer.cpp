@@ -20,8 +20,11 @@ namespace feitir {
         visualWordIndex.clear();
         for (auto img : *(parameters->getDatabase())) {
             auto bsiftImg  = std::dynamic_pointer_cast<ImageBSIFT>(img);
-            if (nullptr == bsiftImg)
+
+            if (nullptr == bsiftImg) {
                 throw std::invalid_argument("use database translator to transform database first!");
+            }
+
             uuidToImg.emplace(img->getUuid(), bsiftImg);
             for (auto &match : bsiftImg->getMatches()) {
                 visualWordIndex.emplace(match.trainIdx,
@@ -45,13 +48,14 @@ namespace feitir {
 
     CrossResultPtr CrossIndexer::query(CrossQueryPtr query) {
         CrossResultPtr result = std::make_shared<CrossResult>();
-        std::unordered_map<boost::uuids::uuid, float> uuidToResult;
+        std::unordered_map<boost::uuids::uuid, ResultCountT> uuidToResult;
 
         for (auto i = 0; i < query->getImg()->getMatches().size(); ++i) {
             std::unordered_set<int> V;
             std::unordered_set<int> visitedV;
             std::unordered_set<ImageBSIFT::BSIFT> C;
             std::unordered_set<ImageBSIFT::BSIFT> visitedC;
+
             const auto queryBSIFT = query->getImg()->getBsift()[query->getImg()->getMatches()[i].queryIdx];
 
             // add n nearest visual words to V map.
@@ -76,12 +80,11 @@ namespace feitir {
                             std::tie(imageBSIFTPtr, bsift) = it->second;
 
                             if (Util::hammingDistance(bsift, queryBSIFT) <= parameters->getBinaryTreshold()) {
-                                auto matchWeight = parameters->getMatchingFunc()(it->first, imageBSIFTPtr->getUuid());
-
                                 if (uuidToResult.find(imageBSIFTPtr->getUuid()) == uuidToResult.end()) {
                                     uuidToResult[imageBSIFTPtr->getUuid()] = 0;
                                 }
-                                uuidToResult[imageBSIFTPtr->getUuid()] += matchWeight;
+
+                                uuidToResult[imageBSIFTPtr->getUuid()] += 1;
 
                                 Util::customInsert(C, visitedC, generateCodeWord(bsift));
                             }
@@ -145,7 +148,7 @@ namespace feitir {
     }
 
     std::vector<ImageBSIFT::BSIFT> CrossIndexer::expandCodeWord(const ImageBSIFT::BSIFT &codeWord,
-                                                                const size_t expansionSize) {
+                                                                const int expansionSize) {
         std::vector<ImageBSIFT::BSIFT> result;
         auto subsets = Util::generateAllSubsets<size_t>(allPositionsSet(), expansionSize);
         std::transform(subsets.begin(), subsets.end(), back_inserter(result),

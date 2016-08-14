@@ -6,14 +6,13 @@
 
 namespace feitir {
 
-    CrossParameters::CrossParameters(const DatabasePtr &database, const VocabularyTypePtr vocabulary, const MatchingFunc &matchingFunc,
-                                         const int N, const int binaryTreshold, const int R, const int codeWordSize)
+    CrossParameters::CrossParameters(const DatabasePtr &database, const VocabularyTypePtr vocabulary, const int N,
+                                     const int binaryTreshold, const int R, const int codeWordSize)
             : database{database},
               vocabulary{vocabulary},
               N{N},
               R{R},
               codeWordSize{codeWordSize},
-              matchingFunc{matchingFunc},
               binaryTreshold{binaryTreshold} { }
 
     const DatabasePtr &CrossParameters::getDatabase() const {
@@ -24,7 +23,7 @@ namespace feitir {
         return N;
     }
 
-    size_t CrossParameters::getR() const {
+    int CrossParameters::getR() const {
         return R;
     }
 
@@ -32,12 +31,8 @@ namespace feitir {
         return vocabulary;
     }
 
-    size_t CrossParameters::getCodeWordSize() const {
+    int CrossParameters::getCodeWordSize() const {
         return codeWordSize;
-    }
-
-    const MatchingFunc &CrossParameters::getMatchingFunc() const {
-        return matchingFunc;
     }
 
     CrossQuery::CrossQuery(const ImageBSIFTPtr &img) : img{img} { }
@@ -47,14 +42,14 @@ namespace feitir {
     }
 
     void CrossResult::addResultEntry(CrossResultEntry element) {
-        images.push_back(element);
+        images.push_back(std::move(element));
     }
 
-    const std::vector<std::pair<ImagePtr, float>> & CrossResult::getImages() const {
+    const std::vector<CrossResultEntry> & CrossResult::getImages() const {
         return images;
     }
 
-    size_t CrossParameters::getBinaryTreshold() const {
+    int CrossParameters::getBinaryTreshold() const {
         return binaryTreshold;
     }
 }

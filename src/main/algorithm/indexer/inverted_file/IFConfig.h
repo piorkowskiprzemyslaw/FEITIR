@@ -19,12 +19,10 @@ namespace feitir {
 
     private:
         DatabasePtr database;
-        MatchingFunc matchingFunction;
 
     public:
-        IFParameters(const DatabasePtr &database, const MatchingFunc &matchingFunction);
+        IFParameters(const DatabasePtr &database);
         const DatabasePtr & getDatabase() const;
-        MatchingFunc getMatchingFunction() const;
         virtual ~IFParameters() = default;
     };
 
@@ -37,17 +35,17 @@ namespace feitir {
         virtual ~IFQuery() = default;
     };
 
+    typedef std::pair<ImagePtr, ResultCountT> IFResultEntry;
+
     class IFResult : public IndexerResult {
     private:
-        std::vector<std::pair<ImagePtr, float>> images;
+        std::vector<IFResultEntry> images;
     public:
         IFResult();
-        void addResultEntry(std::pair<ImagePtr, float> element);
-        const std::vector<std::pair<ImagePtr, float>> & getImages() const;
+        void addResultEntry(IFResultEntry element);
+        const std::vector<IFResultEntry> & getImages() const;
         virtual ~IFResult() = default;
     };
-
-    typedef std::pair<ImagePtr, float> IFResultEntry;
 
     typedef std::shared_ptr<IFResult> IFResultPtr;
 

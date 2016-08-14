@@ -73,7 +73,6 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE_EQUAL(indexerMethod->getMethodName(), "indexer_method");
         BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyPath(), "method_vocabulary_path");
         BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyType(), "method_vocabulary_type");
-        BOOST_REQUIRE_EQUAL(indexerMethod->getMatchingFunc(), "matching_func");
         BOOST_REQUIRE_EQUAL(indexerMethod->getDatabasePath(), "method_database_path");
         BOOST_REQUIRE_EQUAL(indexerMethod->getThreshold(), 4);
         BOOST_REQUIRE_EQUAL(indexerMethod->getK(), 5);
@@ -144,7 +143,6 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE_EQUAL(indexerMethod->getMethodName(), "indexer_method");
         BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyPath(), "method_vocabulary_path");
         BOOST_REQUIRE_EQUAL(indexerMethod->getVocabularyType(), "method_vocabulary_type");
-        BOOST_REQUIRE_EQUAL(indexerMethod->getMatchingFunc(), "matching_func");
         BOOST_REQUIRE_EQUAL(indexerMethod->getDatabasePath(), "method_database_path");
         BOOST_REQUIRE_EQUAL(indexerMethod->getThreshold(), 4);
         BOOST_REQUIRE_EQUAL(indexerMethod->getK(), 5);

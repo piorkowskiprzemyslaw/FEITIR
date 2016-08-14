@@ -19,8 +19,6 @@ namespace feitir {
     };
 
     using IndexerPtr = std::shared_ptr<Indexer>;
-
-    using MatchingFunc = std::function<float(int, const boost::uuids::uuid&)>;
 }
 
 #endif //FEITIR_INDEXER_H

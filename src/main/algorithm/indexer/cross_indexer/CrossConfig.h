@@ -20,19 +20,16 @@ namespace feitir {
         int R;
         int codeWordSize;
         int binaryTreshold;
-        MatchingFunc matchingFunc;
 
     public:
-        CrossParameters(const DatabasePtr &database, const VocabularyTypePtr vocabulary,
-                        const MatchingFunc &matchingFunction, const int N, const int binaryTreshold,
-                        const int R = 1, const int codeWordSize = 32);
+        CrossParameters(const DatabasePtr &database, const VocabularyTypePtr vocabulary, const int N,
+                        const int binaryTreshold, const int R = 1, const int codeWordSize = 32);
         const DatabasePtr & getDatabase() const;
         int getN() const;
-        size_t getR() const;
+        int getR() const;
         VocabularyTypePtr getVocabulary() const;
-        size_t getCodeWordSize() const;
-        size_t getBinaryTreshold() const;
-        const MatchingFunc & getMatchingFunc() const;
+        int getCodeWordSize() const;
+        int getBinaryTreshold() const;
         virtual ~CrossParameters() = default;
     };
 
@@ -46,17 +43,18 @@ namespace feitir {
         virtual ~CrossQuery() = default;
     };
 
+    typedef std::pair<ImagePtr, ResultCountT> CrossResultEntry;
+
     class CrossResult : public IndexerResult {
     private:
-        std::vector<std::pair<ImagePtr, float>> images;
+        std::vector<CrossResultEntry> images;
     public:
         CrossResult() = default;
-        void addResultEntry(std::pair<ImagePtr, float> element);
-        const std::vector<std::pair<ImagePtr, float>> & getImages() const;
+        void addResultEntry(CrossResultEntry element);
+        const std::vector<CrossResultEntry> & getImages() const;
         virtual ~CrossResult() = default;
     };
 
-    typedef std::pair<ImagePtr, float> CrossResultEntry;
 
     typedef std::shared_ptr<CrossResult> CrossResultPtr;
 

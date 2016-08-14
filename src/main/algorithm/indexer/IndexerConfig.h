@@ -33,6 +33,8 @@ namespace feitir {
 
     inline IndexerResult::~IndexerResult() { }
 
+    using ResultCountT = u_int64_t;
+
     using IndexerResultPtr = std::shared_ptr<IndexerResult>;
 }
 

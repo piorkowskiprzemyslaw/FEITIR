@@ -52,7 +52,7 @@ namespace feitir {
          * @param expansionSize
          * @return
          */
-        std::vector<ImageBSIFT::BSIFT> expandCodeWord(const ImageBSIFT::BSIFT &codeWord, const size_t expansionSize);
+        std::vector<ImageBSIFT::BSIFT> expandCodeWord(const ImageBSIFT::BSIFT &codeWord, const int expansionSize);
 
     protected:
         /**

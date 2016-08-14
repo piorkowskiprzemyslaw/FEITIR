@@ -42,12 +42,6 @@ namespace feitir {
         const string &getVocabularyType() const;
 
         /**
-         * String holding matching function type
-         * @return matchingFunc
-         */
-        const string &getMatchingFunc() const;
-
-        /**
          * String holding path to training dataset
          * @return databasePath
          */
@@ -102,7 +96,6 @@ namespace feitir {
         string methodName;
         string vocabularyPath;
         string vocabularyType;
-        string matchingFunc;
         string databasePath;
         number threshold;
         number K;

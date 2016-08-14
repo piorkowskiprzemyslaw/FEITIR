@@ -47,18 +47,13 @@ BOOST_FIXTURE_TEST_SUITE(CrossIndexer_TEST, CrossIndexerFixture)
                                                                    extractor.extractDatabaseBSIFT(database));
         BOOST_REQUIRE(transformedDb != nullptr);
 
-        auto matchingFunction = [] (int vwIdx, const boost::uuids::uuid& imUUID) {
-            return 1;
-        };
-
-        CrossIndexer indexer(transformedDb, vocabulary, matchingFunction, 5, 30);
+        CrossIndexer indexer(transformedDb, vocabulary, 5, 30);
 
         auto queryImage = extractor.extractImageBSIFT(imageFactory.createImage(resourcePath + imagePath));
         BOOST_REQUIRE(queryImage != nullptr);
 
         auto result = indexer.query(std::make_shared<CrossQuery>(std::dynamic_pointer_cast<ImageBSIFT>(
                 databaseTranslator->transformImage(vocabulary, queryImage))));
-
 
         BOOST_REQUIRE(result != nullptr);
     }
@@ -75,8 +70,7 @@ BOOST_FIXTURE_TEST_SUITE(CrossIndexer_TEST, CrossIndexerFixture)
                                                                    extractor.extractDatabaseBSIFT(database));
         BOOST_REQUIRE(transformedDb != nullptr);
 
-        CrossIndexer indexer(transformedDb, vocabulary,
-                             [] (int vwIdx, const boost::uuids::uuid& imUUID) { return 1; }, 0,0, 2, 4);
+        CrossIndexer indexer(transformedDb, vocabulary, 0, 0, 2, 4);
 
         std::vector<std::string> codeWordStrings = { "1010", "0010", "1110", "1000", "1011", "0110",
                                                      "0000", "0011", "1100", "1111", "1001"};
@@ -103,8 +97,7 @@ BOOST_FIXTURE_TEST_SUITE(CrossIndexer_TEST, CrossIndexerFixture)
                                                                    extractor.extractDatabaseBSIFT(database));
         BOOST_REQUIRE(transformedDb != nullptr);
 
-        CrossIndexer indexer(transformedDb, vocabulary,
-                             [] (int vwIdx, const boost::uuids::uuid& imUUID) { return 1; }, 0,0, 2, 6);
+        CrossIndexer indexer(transformedDb, vocabulary, 0,0, 2, 6);
 
         std::vector<std::string> codeWordStrings = { "111111000000",
                                                      "000000111111",

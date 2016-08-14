@@ -48,9 +48,6 @@ namespace feitir {
 
         IndexerPtr setupIndexer(const IndexerMethodPtr indexerMethod);
 
-        MatchingFunc setupMatchingFunction(const std::string &matchingFunctionType, const DatabasePtr database,
-                                           const VocabularyTypePtr vocabulary);
-
         DatabaseFactory databaseFactory;
         KMeansVocabularyBuilder kMeansVocabularyBuilder;
         HKMeansVocabularyBuilder hkMeansVocabularyBuilder;

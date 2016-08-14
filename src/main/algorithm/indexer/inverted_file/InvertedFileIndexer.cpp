@@ -6,8 +6,7 @@
 #include "InvertedFileIndexer.h"
 
 namespace feitir {
-    InvertedFileIndexer::InvertedFileIndexer(const IFParametersPtr parameters)
-            : Indexer{parameters}, matchingFunction{parameters->getMatchingFunction()} {
+    InvertedFileIndexer::InvertedFileIndexer(const IFParametersPtr parameters) : Indexer{parameters} {
         DatabasePtr database = parameters->getDatabase();
 
         for (auto image : database->getImages()) {
@@ -22,19 +21,18 @@ namespace feitir {
     }
 
     IFResultPtr InvertedFileIndexer::query(IFQueryPtr query) {
-        std::unordered_map<boost::uuids::uuid, float> uuidToResult;
+        std::unordered_map<boost::uuids::uuid, ResultCountT> uuidToResult;
 
         IFResultPtr resultPtr = std::make_shared<IFResult>();
         ImagePtr img = query->getImg();
         for (auto& match : img->getMatches()) {
             auto range = invertedFile.equal_range(match.trainIdx);
             for (auto dbImage = range.first; dbImage != range.second; ++dbImage) {
-                auto matchWeight = matchingFunction(match.trainIdx, dbImage->second->getUuid());
                 if (uuidToResult.find(dbImage->second->getUuid()) == uuidToResult.end()) {
                     uuidToResult[dbImage->second->getUuid()] = 0;
                 }
 
-                uuidToResult[dbImage->second->getUuid()] += matchWeight;
+                uuidToResult[dbImage->second->getUuid()] += 1;
             }
         }
 

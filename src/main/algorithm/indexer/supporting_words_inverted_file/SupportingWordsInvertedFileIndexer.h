@@ -45,9 +45,6 @@ namespace feitir {
         // supporting words multimap
         std::unordered_multimap<int, int> supportingWordsMap;
 
-        // matching function
-        MatchingFunc matchingFunc;
-
     protected:
         void processImage(ImagePtr img) {
             auto bsiftImg = std::dynamic_pointer_cast<ImageBSIFT>(img);
@@ -123,8 +120,7 @@ namespace feitir {
         explicit SupportingWordsInvertedFileIndexer(const SWIFParametersPtr &parameters)
                 : Indexer{parameters}, transformedDb{parameters->getTransformedDb()},
                   p{parameters->getP()}, distanceTreshold{parameters->getDistanceTreshold()},
-                  K{parameters->getK()}, vocabulary{parameters->getVocabulary()},
-                  matchingFunc{parameters->getMatchingFunc()} {
+                  K{parameters->getK()}, vocabulary{parameters->getVocabulary()} {
 
             for (auto img : *transformedDb) {
                 processImage(img);
@@ -134,7 +130,7 @@ namespace feitir {
         }
 
         virtual SWIFResultPtr query(SWIFQueryPtr query) {
-            std::unordered_map<boost::uuids::uuid, int32_t> uuidToResult;
+            std::unordered_map<boost::uuids::uuid, ResultCountT> uuidToResult;
             SWIFResultPtr resultPtr = std::make_shared<SWIFResult>();
             ImageBSIFTPtr transformedImage = query->getTransformedImage();
             ImagePtr originalImage = query->getOriginalImage();
@@ -143,11 +139,8 @@ namespace feitir {
 
             for (auto match : transformedImage->getMatches()) {
                 cv::Mat qFeature = originalImage->getDescriptors().row(match.queryIdx);
-                std::vector<unsigned> nearestVWs = findKNearestVisualWords(qFeature,
-                                                                           findKNearestVisualWords(qFeature,
-                                                                                                   match.trainIdx,
-                                                                                                   1)[0],
-                                                                           K);
+                std::vector<unsigned> nearestVWs =
+                        findKNearestVisualWords(qFeature, findKNearestVisualWords(qFeature, match.trainIdx, 1)[0], K);
 
                 for (auto vwIdx : nearestVWs) {
                     auto range = invertedFile.equal_range(vwIdx);
@@ -155,13 +148,11 @@ namespace feitir {
                         std::tie(imgPtr, bsift) = dbImage->second;
                         auto distance = Util::hammingDistance(transformedImage->getBsift()[match.imgIdx], bsift);
                         if (distance <= distanceTreshold) {
-                            auto matchWeight = matchingFunc(match.trainIdx, imgPtr->getUuid());
-
                             if (uuidToResult.find(imgPtr->getUuid()) == uuidToResult.end()) {
                                 uuidToResult[imgPtr->getUuid()] = 0;
                             }
 
-                            uuidToResult[imgPtr->getUuid()] += matchWeight;
+                            uuidToResult[imgPtr->getUuid()] += 1;
                         }
                     }
                 }

@@ -58,11 +58,8 @@ BOOST_FIXTURE_TEST_SUITE(InvertedFileIndexer_TEST, InvertedFileIndexerFixture)
         BOOST_REQUIRE(image != nullptr);
         auto vocabulary = vocabularyBuilder.build(std::make_shared<KMeansParameter>(database, means));
         auto transformedDatabase = databaseTranslator.transformDatabase(vocabulary, database);
-        auto matchingFunction = [] (int vwIdx, const boost::uuids::uuid& imUUID) {
-            return 1;
-        };
 
-        InvertedFileIndexer indexer(std::make_shared<IFParameters>(transformedDatabase, matchingFunction));
+        InvertedFileIndexer indexer(std::make_shared<IFParameters>(transformedDatabase));
         auto result = indexer.query(std::make_shared<IFQuery>(databaseTranslator.transformImage(vocabulary, image)));
         BOOST_REQUIRE(result != nullptr);
         BOOST_REQUIRE_EQUAL(result->getImages().size(), 11);

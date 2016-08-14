@@ -28,7 +28,6 @@
           "method": "indexer_method",
           "vocabulary_path": "method_vocabulary_path",
           "vocabulary_type": "method_vocabulary_type",
-          "matching_func": "matching_func",
           "database_path": "method_database_path",
           "threshold": "4",
           "K": "5",

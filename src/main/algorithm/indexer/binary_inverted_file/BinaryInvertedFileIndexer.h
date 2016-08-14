@@ -16,8 +16,7 @@ namespace feitir {
 
     class BinaryInvertedFileIndexer : public Indexer {
     private:
-        const std::size_t treshold;
-        MatchingFunc matchingFunc;
+        const int treshold;
         std::unordered_multimap<int, std::tuple<ImageBSIFTPtr, typename ImageBSIFT::BSIFT>> binaryInvertedFile;
         std::unordered_map<boost::uuids::uuid, ImageBSIFTPtr> uuidToImageMap;
 
@@ -36,8 +35,7 @@ namespace feitir {
 
     public:
         BinaryInvertedFileIndexer(const BIFParametersPtr &parameters) : Indexer{parameters},
-                                                                        treshold{parameters->getTreshold()},
-                                                                        matchingFunc{parameters->getMatchingFunction()} {
+                                                                        treshold{parameters->getTreshold()} {
             DatabasePtr database = parameters->getDatabase();
             for (auto image : *database) {
                 processImage(image);
@@ -49,7 +47,7 @@ namespace feitir {
         }
 
         virtual BIFResultPtr query(BIFQueryPtr query) {
-            std::unordered_map<boost::uuids::uuid, int32_t> uuidToResult;
+            std::unordered_map<boost::uuids::uuid, ResultCountT> uuidToResult;
             BIFResultPtr resultPtr = std::make_shared<BIFResult>();
             typename ImageBSIFT::BSIFT bsift;
             ImageBSIFTPtr imgPtr;
@@ -60,13 +58,11 @@ namespace feitir {
                 for (auto dbImage = range.first; dbImage != range.second; ++dbImage) {
                     std::tie(imgPtr, bsift) = dbImage->second;
                     if (Util::hammingDistance(img->getBsift()[match.imgIdx], bsift) <= treshold) {
-                        auto matchWeight = matchingFunc(match.trainIdx, imgPtr->getUuid());
-
                         if (uuidToResult.find(imgPtr->getUuid()) == uuidToResult.end()) {
                             uuidToResult[imgPtr->getUuid()] = 0;
                         }
 
-                        uuidToResult[imgPtr->getUuid()] += matchWeight;
+                        uuidToResult[imgPtr->getUuid()] += 1;
                     }
                 }
             }

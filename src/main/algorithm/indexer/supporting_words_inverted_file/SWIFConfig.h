@@ -22,17 +22,14 @@ namespace feitir {
         int K;
         DatabasePtr transformedDb;
         VocabularyTypePtr vocabulary;
-        MatchingFunc matchingFunc;
 
     public:
-        SWIFParameters(DatabasePtr transformedDb, VocabularyTypePtr vocabulary, const MatchingFunc &matchingFunc,
-                       int p, int K, int distanceTreshold);
+        SWIFParameters(DatabasePtr transformedDb, VocabularyTypePtr vocabulary, int p, int K, int distanceTreshold);
         int getP() const;
         int getDistanceTreshold() const;
         const DatabasePtr getTransformedDb() const;
         const VocabularyTypePtr getVocabulary() const;
         int getK() const;
-        const MatchingFunc & getMatchingFunc() const;
     };
 
     class SWIFQuery : public IndexerQuery {
@@ -53,7 +50,7 @@ namespace feitir {
         }
     };
 
-    using SWIFResultEntry = std::pair<ImageBSIFTPtr, std::size_t>;
+    using SWIFResultEntry = std::pair<ImageBSIFTPtr, ResultCountT>;
 
     class SWIFResult : public IndexerResult {
     private:

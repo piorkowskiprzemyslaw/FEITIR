@@ -6,22 +6,15 @@
 
 namespace feitir {
 
-    BIFParameters::BIFParameters(const DatabasePtr database,
-                                 const std::size_t treshold,
-                                 const MatchingFunc &matchingFunction) : database{database},
-                                                                         treshold{treshold},
-                                                                         matchingFunction{matchingFunction} { }
+    BIFParameters::BIFParameters(const DatabasePtr database, const int treshold) : database{database},
+                                                                                   treshold{treshold} { }
 
     const DatabasePtr BIFParameters::getDatabase() const {
         return database;
     }
 
-    const size_t BIFParameters::getTreshold() const {
+    const int BIFParameters::getTreshold() const {
         return treshold;
-    }
-
-    const MatchingFunc& BIFParameters::getMatchingFunction() const {
-        return matchingFunction;
     }
 }
 

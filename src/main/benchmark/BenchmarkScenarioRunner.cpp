@@ -161,32 +161,24 @@ namespace feitir {
         return concatenated;
     }
 
-    MatchingFunc BenchmarkScenarioRunner::setupMatchingFunction(const std::string &matchingFunctionType,
-                                                                const DatabasePtr database,
-                                                                const VocabularyTypePtr vocabulary) {
-        return feitir::MatchingFunc();
-    }
-
     IndexerPtr BenchmarkScenarioRunner::setupIndexer(const IndexerMethodPtr indexerMethod) {
         auto vocabulary = setupVocabulary(indexerMethod->getVocabularyPath(), indexerMethod->getVocabularyType());
         auto database = databaseFactory.createDatabase(indexerMethod->getDatabasePath());
-        auto matchingFunction = setupMatchingFunction(indexerMethod->getMethodName(), database, vocabulary);
         const auto & methodName = indexerMethod->getMethodName();
 
         if (!methodName.compare("inverted_file")) {
-            return std::make_shared<InvertedFileIndexer>(std::make_shared<IFParameters>(database, matchingFunction));
+            return std::make_shared<InvertedFileIndexer>(std::make_shared<IFParameters>(database));
         } else if (!methodName.compare("cross_indexer")) {
-            return std::make_shared<CrossIndexer>(database, vocabulary, matchingFunction,
-                                indexerMethod->getN(), indexerMethod->getThreshold(),
-                                indexerMethod->getR(), indexerMethod->getCodeWordSize());
+            return std::make_shared<CrossIndexer>(database, vocabulary, indexerMethod->getN(),
+                                                  indexerMethod->getThreshold(), indexerMethod->getR(),
+                                                  indexerMethod->getCodeWordSize());
         } else if (!methodName.compare("binary_inverted_file")) {
             return std::make_shared<BinaryInvertedFileIndexer>(
-                    std::make_shared<BIFParameters>(database, indexerMethod->getThreshold(), matchingFunction));
+                    std::make_shared<BIFParameters>(database, indexerMethod->getThreshold()));
         } else if (!methodName.compare("supporting_words_inverted_file")) {
             return std::make_shared<SupportingWordsInvertedFileIndexer>(
-                    std::make_shared<SWIFParameters>(database, vocabulary, matchingFunction,
-                                                     indexerMethod->getR(), indexerMethod->getK(),
-                                                     indexerMethod->getThreshold()));
+                    std::make_shared<SWIFParameters>(database, vocabulary, indexerMethod->getR(),
+                                                     indexerMethod->getK(), indexerMethod->getThreshold()));
         }
 
         throw std::invalid_argument(methodName + " does not cast to any available indexer type");
