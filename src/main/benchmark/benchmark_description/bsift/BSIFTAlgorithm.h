@@ -9,11 +9,35 @@
 #include <src/main/benchmark/benchmark_description/bsift/BSIFTMethod.h>
 
 namespace feitir {
+
+    /**
+     * Class which represents BSIFT algorithm description.
+     * This class holds all parameteres required for correct setup of any BSIFT extractor algorithm object.
+     */
     class BSIFTAlgorithm : public JSONObject {
     public:
-        const JSONObject::string &getDatabasePath() const;
-        const JSONObject::string &getVocabularyPath() const;
-        const JSONObject::string &getVocabularyType() const;
+        /**
+         * String holding path to train dataset
+         * @return databasePath
+         */
+        const string &getDatabasePath() const;
+
+        /**
+         * String holding path to vocabulary created on train dataset
+         * @return vocabularyPath
+         */
+        const string &getVocabularyPath() const;
+
+        /**
+         * String holding vocabulary type name
+         * @return vocabularyType
+         */
+        const string &getVocabularyType() const;
+
+        /**
+         * Inner object, holds additional methods parameters, method name, etc.
+         * @return BSIFTMethodPtr
+         */
         const BSIFTMethodPtr &getBsiftMethod() const;
 
     protected:

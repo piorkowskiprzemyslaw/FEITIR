@@ -12,11 +12,34 @@
 
 namespace feitir {
 
+    /**
+     * Class which represents description of indexer benchmark
+     */
     class IndexerBenchmark : public JSONObject {
     public:
+
+        /**
+         * Inner object, describes indexer method
+         * @return shared pointer to IndexerMethod object
+         */
         IndexerMethodPtr getMethod() const;
+
+        /**
+         * Path to database usead as test database in test phase
+         * @return path to database
+         */
         const JSONObject::string & getDatabasePath() const;
+
+        /**
+         * Path to file holding test results
+         * @return
+         */
         const JSONObject::string & getResultFile() const;
+
+        /**
+         * Inner object, describes BSIFT algorithm
+         * @return shared pointer to BSIFTAlgorithm object
+         */
         BSIFTAlgorithmPtr getBsiftAlgorithm() const;
 
     protected:
@@ -31,9 +54,24 @@ namespace feitir {
         static const std::vector<std::string> FIELD_NAMES;
         static const std::vector<std::string> OBJECT_NAMES;
 
+        /**
+         * Indexer method description
+         */
         IndexerMethodPtr method;
+
+        /**
+         * BSIFT algorithm description
+         */
         BSIFTAlgorithmPtr bsiftAlgorithm;
+
+        /**
+         * Test database path, each image in this database will be used as query during test run
+         */
         string databasePath;
+
+        /**
+         * Path to file where results will be stored
+         */
         string resultFile;
     };
 

@@ -9,11 +9,43 @@
 
 namespace feitir {
 
+    /**
+     * Class which represents BSIFT method description.
+     *
+     * Currently supported methods:
+     *  - comparison_array
+     *  - descriptor_median
+     *  - descriptor_position_median
+     *  - descriptor_voronoi_position
+     *  - locality_sensitive_hashing
+     *  - vectors_compare
+     *
+     */
     class BSIFTMethod : public JSONObject {
     public:
+
+        /**
+         * String holding method name
+         * @return method
+         */
         const string & getMethod() const;
+
+        /**
+         * Number holding L parameter value used in comparison_array
+         * @return L
+         */
         number getL() const;
+
+        /**
+         * Number holding T parameter value used in comparison_array
+         * @return T
+         */
         number getT() const;
+
+        /**
+         * Number holding N parameter value used in comparison_array and locality_sensitive_hashing
+         * @return
+         */
         number getN() const;
 
     protected:

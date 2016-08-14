@@ -8,18 +8,86 @@
 #include <src/main/util/JSON/JSONObject.h>
 
 namespace feitir {
+
+    /**
+     * Class which represents indexer method description.
+     * Holds all parameters required for correct setup of any indexer object.
+     *
+     * Supported indexer methods:
+     *  - inverted_file
+     *  - cross_indexer
+     *  - binary_inverted_file
+     *  - supporting_words_inverted_file
+     *
+     */
     class IndexerMethod : public JSONObject  {
     public:
+
+        /**
+         * String holding indexer method name
+         * @return methodName
+         */
         const string &getMethodName() const;
+
+        /**
+         * String holding path to vocabulary created on training dataset
+         * @return vocabularyPath
+         */
         const string &getVocabularyPath() const;
+
+        /**
+         * String holding vocabulary type
+         * @return vocabularyType
+         */
         const string &getVocabularyType() const;
+
+        /**
+         * String holding matching function type
+         * @return matchingFunc
+         */
         const string &getMatchingFunc() const;
+
+        /**
+         * String holding path to training dataset
+         * @return databasePath
+         */
         const string &getDatabasePath() const;
+
+        /**
+         * Number holding threshold for acceptable distance
+         * between two BSIFT descriptors to treat them as a match.
+         * @return threshold
+         */
         number getThreshold() const;
+
+        /**
+         * Number holding k parameter value used in Supporting Words Inverted File Indexer
+         * @return K
+         */
         number getK() const;
+
+        /**
+         * Number holding N parameter value used in Cross Indexer
+         * @return N
+         */
         number getN() const;
+
+        /**
+         * Number holding R parameter value used in Cross Indexer
+         * @return R
+         */
         number getR() const;
+
+        /**
+         * Number holding P parameter value used in Supporting Words Inverted File Indexer
+         * @return P
+         */
         number getP() const;
+
+        /**
+         * Number holding code word size used in Cross Indexer
+         * @return codeWordSize
+         */
         number getCodeWordSize() const;
 
     protected:
