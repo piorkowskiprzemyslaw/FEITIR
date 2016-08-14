@@ -29,7 +29,8 @@ namespace feitir {
         void runScenario(BenchmarkScenarioPtr scenario);
 
     private:
-        using SingleResult = std::pair<float, int>;
+        using BSIFTBenchmarkSingleResult = std::pair<float, int>;
+        using IndexerBenchmarkSingleResult = std::pair<long int, long long int>;
         using DescriptorPair = std::pair<cv::Mat, ImageBSIFT::BSIFT>;
 
         void runBSIFTDescription(BSIFTBenchmarkPtr description);
@@ -42,11 +43,14 @@ namespace feitir {
         BSIFTExtractorPtr setupExtractor(BSIFTMethodPtr method, DatabasePtr imageDatabase,
                                          VocabularyTypePtr vocabularyTypePtr);
 
-        void writeBSIFTResult(const std::string& filename, const std::vector<SingleResult>& result);
+        void writeBSIFTResult(const std::string& filename, const std::vector<BSIFTBenchmarkSingleResult>& result);
+        void writeIndexerResult(const std::string& filename, const std::vector<IndexerBenchmarkSingleResult>& result);
         std::vector<ImageBSIFT::BSIFT> concatenateBSIFT(const DatabasePtr database);
         cv::Mat concatenateSIFT(const DatabasePtr database);
 
         IndexerPtr setupIndexer(const IndexerMethodPtr indexerMethod);
+        IndexerQueryPtr createQuery(const ImagePtr img, const std::string & methodName,
+                                    const BSIFTExtractorPtr extractor);
 
         DatabaseFactory databaseFactory;
         KMeansVocabularyBuilder kMeansVocabularyBuilder;

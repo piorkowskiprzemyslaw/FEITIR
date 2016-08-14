@@ -35,7 +35,7 @@ namespace feitir {
 
     void BenchmarkScenarioRunner::runBSIFTDescription(BSIFTBenchmarkPtr description) {
         BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark " << description->getAlgorithm()->getBsiftMethod()->getMethod();
-        std::vector<SingleResult> resultVector;
+        std::vector<BSIFTBenchmarkSingleResult> resultVector;
         std::chrono::high_resolution_clock::time_point testStart;
         auto bsiftExtractor = setupExtractor(description->getAlgorithm());
         auto database = databaseFactory.createDatabase(description->getDatabasePath());
@@ -69,9 +69,23 @@ namespace feitir {
 
     void BenchmarkScenarioRunner::runIndexerDescription(IndexerBenchmarkPtr description) {
         BOOST_LOG_TRIVIAL(info) << "Indexer benchmark " + description->getMethod()->getMethodName();
-        auto database = databaseFactory.createDatabase(description->getDatabasePath());
+        std::vector<IndexerBenchmarkSingleResult> result;
+        auto testDatabase = databaseFactory.createDatabase(description->getDatabasePath());
         auto extractor = setupExtractor(description->getBsiftAlgorithm());
         auto indexer = setupIndexer(description->getMethod());
+        long int descriptorNumber = 1;
+        std::chrono::high_resolution_clock::time_point testStart;
+        std::chrono::high_resolution_clock::time_point testEnd;
+
+        for (auto const & img : *testDatabase) {
+            testStart = std::chrono::high_resolution_clock::now();
+            indexer->query(createQuery(img, description->getMethod()->getMethodName(), extractor));
+            testEnd = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(testEnd - testStart).count();
+            result.emplace_back(descriptorNumber++, duration);
+        }
+
+        writeIndexerResult(description->getResultFile(), result);
     }
 
     VocabularyTypePtr BenchmarkScenarioRunner::setupVocabulary(std::string vocabularyType, std::string vocabularyPath) {
@@ -112,7 +126,7 @@ namespace feitir {
     }
 
     void BenchmarkScenarioRunner::writeBSIFTResult(const std::string &filename,
-                                                   const std::vector<SingleResult> &result) {
+                                                   const std::vector<BSIFTBenchmarkSingleResult> &result) {
         std::ofstream resultFile;
         resultFile.open(filename);
         resultFile << "dsift,dbsift" << std::endl;
@@ -182,6 +196,33 @@ namespace feitir {
         }
 
         throw std::invalid_argument(methodName + " does not cast to any available indexer type");
+    }
+
+    IndexerQueryPtr BenchmarkScenarioRunner::createQuery(const ImagePtr img, const std::string & methodName,
+                                                         const BSIFTExtractorPtr extractor) {
+
+        if (!methodName.compare("inverted_file")) {
+            return std::make_shared<IFQuery>(img);
+        } else if (!methodName.compare("cross_indexer")) {
+            return std::make_shared<CrossQuery>(extractor->extractImageBSIFT(img));
+        } else if (!methodName.compare("binary_inverted_file")) {
+            return std::make_shared<BIFQuery>(extractor->extractImageBSIFT(img));
+        } else if (!methodName.compare("supporting_words_inverted_file")) {
+            return std::make_shared<SWIFQuery>(img, extractor->extractImageBSIFT(img));
+        }
+
+        throw std::invalid_argument(methodName + " does not cast to any available indexer type");
+    }
+
+    void BenchmarkScenarioRunner::writeIndexerResult(const std::string &filename,
+                                                     const std::vector<IndexerBenchmarkSingleResult> &result) {
+        std::ofstream resultFile;
+        resultFile.open(filename);
+        resultFile << "descriptorNo,time" << std::endl;
+        for (const auto& r : result) {
+            resultFile << r.first << "," << r.second << std::endl;
+        }
+        resultFile.close();
     }
 
 }
