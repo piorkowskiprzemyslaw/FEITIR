@@ -62,7 +62,7 @@ namespace feitir {
 
             for (unsigned i = 0; i < L; ++i) {
                 auto beginIt = comparisonString.begin() + counter;
-                auto endIt = comparisonString.end();
+                decltype(beginIt) endIt;
                 if (i < rest) {
                     endIt = comparisonString.begin() + counter + partSize + 1;
                     counter = counter + partSize + 1;

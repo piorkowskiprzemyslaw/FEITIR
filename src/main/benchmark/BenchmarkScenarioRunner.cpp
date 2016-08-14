@@ -34,7 +34,7 @@ namespace feitir {
     }
 
     void BenchmarkScenarioRunner::runBSIFTDescription(BSIFTBenchmarkPtr description) {
-        BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark " + description->getAlgorithm()->getBsiftMethod()->getMethod();
+        BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark " << description->getAlgorithm()->getBsiftMethod()->getMethod();
         std::vector<SingleResult> resultVector;
         std::chrono::high_resolution_clock::time_point testStart;
         auto bsiftExtractor = setupExtractor(description->getAlgorithm());
@@ -50,7 +50,7 @@ namespace feitir {
             std::chrono::high_resolution_clock::time_point testEnd = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(testEnd - testStart).count();
             BOOST_LOG_TRIVIAL(info) << description->getAlgorithm()->getBsiftMethod()->getMethod()
-                                       + " extraction time: " << duration;
+                                    << " extraction time: " << duration;
         }
 
         auto aSet = getDescriptorVector(database, description->getASet());
@@ -127,7 +127,7 @@ namespace feitir {
                                                      const std::vector<JSONObject::number> ids) {
         std::vector<BenchmarkScenarioRunner::DescriptorPair> retVec;
         retVec.reserve(ids.size());
-        // place for futher optimizations - perform concatenation only once for A and B set.
+        // place for further optimizations - perform concatenation only once for A and B set.
         std::vector<ImageBSIFT::BSIFT> concatenatedBSIFT = concatenateBSIFT(database);
         cv::Mat concatenatedSIFT = concatenateSIFT(database);
 
@@ -170,8 +170,7 @@ namespace feitir {
     IndexerPtr BenchmarkScenarioRunner::setupIndexer(const IndexerMethodPtr indexerMethod) {
         auto vocabulary = setupVocabulary(indexerMethod->getVocabularyPath(), indexerMethod->getVocabularyType());
         auto database = databaseFactory.createDatabase(indexerMethod->getDatabasePath());
-        auto matchingFunction = setupMatchingFunction(indexerMethod->getMethodName(),
-                                                      database, vocabulary);
+        auto matchingFunction = setupMatchingFunction(indexerMethod->getMethodName(), database, vocabulary);
         const auto & methodName = indexerMethod->getMethodName();
 
         if (!methodName.compare("inverted_file")) {
