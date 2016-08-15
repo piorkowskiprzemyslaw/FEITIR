@@ -29,7 +29,7 @@ namespace feitir {
         explicit InvertedFileIndexer(const IFParametersPtr parameters);
         virtual ~InvertedFileIndexer();
         virtual IndexerResultPtr query(IndexerQueryPtr queryPtr) override;
-        virtual IFResultPtr query(IFQueryPtr query);
+        virtual IndexerResultPtr query(IFQueryPtr query);
 
     };
 

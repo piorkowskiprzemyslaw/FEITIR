@@ -6,6 +6,8 @@
 #define FEITIR_INDEXERCONFIG_H
 
 #include <memory>
+#include <src/main/database/image/Image.h>
+#include <unordered_map>
 
 namespace feitir {
     class IndexerParameters {
@@ -26,14 +28,22 @@ namespace feitir {
 
     using IndexerQueryPtr = std::shared_ptr<IndexerQuery>;
 
-    class IndexerResult {
-    public:
-        virtual ~IndexerResult() = 0;
-    };
-
-    inline IndexerResult::~IndexerResult() { }
-
     using ResultCountT = u_int64_t;
+    using IndexerResultMap = std::unordered_map<int, ResultCountT>;
+    using IndexerResultEntry = std::pair<ImagePtr, IndexerResultMap>;
+
+    class IndexerResult final {
+    private:
+        std::vector<IndexerResultEntry> result;
+    public:
+        void addResultEntry(IndexerResultEntry entry) {
+            result.push_back(std::move(entry));
+        }
+
+        const std::vector<IndexerResultEntry>& getResultList() const {
+            return result;
+        }
+    };
 
     using IndexerResultPtr = std::shared_ptr<IndexerResult>;
 }

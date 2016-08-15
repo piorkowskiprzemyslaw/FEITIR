@@ -95,7 +95,7 @@ namespace feitir {
             return std::make_tuple(result, resultMapping);
         }
 
-        std::vector<unsigned> findKNearestVisualWords(cv::Mat queryFeature, unsigned vwIdx, unsigned K) {
+        std::vector<int> findKNearestVisualWords(cv::Mat queryFeature, int vwIdx, unsigned K) {
             std::vector<cv::DMatch> matches;
             cv::Mat supportingWords;
             std::unordered_map<int, int> resultMapping;
@@ -108,7 +108,7 @@ namespace feitir {
                                  return a.distance < b.distance;
                              });
 
-            std::vector<unsigned> result;
+            std::vector<int> result;
             for (auto it = matches.begin(); it != matches.begin() + K; ++it) {
                 result.push_back(resultMapping[it->queryIdx]);
             }
@@ -129,9 +129,9 @@ namespace feitir {
             computeSupportingWords();
         }
 
-        virtual SWIFResultPtr query(SWIFQueryPtr query) {
-            std::unordered_map<boost::uuids::uuid, ResultCountT> uuidToResult;
-            SWIFResultPtr resultPtr = std::make_shared<SWIFResult>();
+        virtual IndexerResultPtr query(SWIFQueryPtr query) {
+            std::unordered_map<boost::uuids::uuid, IndexerResultMap> uuidToResult;
+            IndexerResultPtr resultPtr = std::make_shared<IndexerResult>();
             ImageBSIFTPtr transformedImage = query->getTransformedImage();
             ImagePtr originalImage = query->getOriginalImage();
             ImageBSIFT::BSIFT bsift;
@@ -139,7 +139,7 @@ namespace feitir {
 
             for (auto match : transformedImage->getMatches()) {
                 cv::Mat qFeature = originalImage->getDescriptors().row(match.queryIdx);
-                std::vector<unsigned> nearestVWs =
+                std::vector<int> nearestVWs =
                         findKNearestVisualWords(qFeature, findKNearestVisualWords(qFeature, match.trainIdx, 1)[0], K);
 
                 for (auto vwIdx : nearestVWs) {
@@ -148,11 +148,13 @@ namespace feitir {
                         std::tie(imgPtr, bsift) = dbImage->second;
                         auto distance = Util::hammingDistance(transformedImage->getBsift()[match.imgIdx], bsift);
                         if (distance <= distanceTreshold) {
+
                             if (uuidToResult.find(imgPtr->getUuid()) == uuidToResult.end()) {
-                                uuidToResult[imgPtr->getUuid()] = 0;
+                                uuidToResult[imgPtr->getUuid()] = {{vwIdx, 1}};
+                            } else {
+                                uuidToResult[imgPtr->getUuid()][vwIdx]++;
                             }
 
-                            uuidToResult[imgPtr->getUuid()] += 1;
                         }
                     }
                 }

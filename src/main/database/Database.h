@@ -32,7 +32,17 @@ namespace feitir {
                     : currentVector{&(database->getImages())},
                       categories{&(database->getCategories())},
                       currentIterator{database->getImages().begin()},
-                      nextCategory{database->getCategories().begin()} { }
+                      nextCategory{database->getCategories().begin()} {
+                if (database->getImages().empty()) {
+                    for (auto it = database->getCategories().begin(); it != database->getCategories().end(); ++it) {
+                        currentIterator = (*it)->getImages().begin();
+                        currentVector = &((*it)->getImages());
+                        nextCategory = it + 1;
+
+                        if (!(*it)->getImages().empty()) break;
+                    }
+                }
+            }
 
             inline const_iterator(const const_iterator& it)
                     : currentVector{it.currentVector},

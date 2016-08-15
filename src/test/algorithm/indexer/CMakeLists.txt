@@ -3,10 +3,10 @@ add_executable(BinaryInvertedFileIndexer_TEST BinaryInvertedFileIndexer_TEST.cpp
 add_executable(SupportingWordsInvertedFileIndexer_TEST SupportingWordsInvertedFileIndexer_TEST.cpp)
 add_executable(CrossIndexer_TEST CrossIndexer_TEST.cpp)
 
-target_link_libraries(InvertedFileIndexer_TEST algorithm database ${Boost_LIBRARIES})
-target_link_libraries(BinaryInvertedFileIndexer_TEST algorithm database ${BOOST_LIBRARIES})
-target_link_libraries(SupportingWordsInvertedFileIndexer_TEST algorithm database ${BOOST_LIBRARIES})
-target_link_libraries(CrossIndexer_TEST algorithm database ${BOOST_LIBRARIES})
+target_link_libraries(InvertedFileIndexer_TEST indexer vocabulary database ${Boost_LIBRARIES})
+target_link_libraries(BinaryInvertedFileIndexer_TEST indexer vocabulary bsift database ${BOOST_LIBRARIES})
+target_link_libraries(SupportingWordsInvertedFileIndexer_TEST indexer vocabulary bsift database ${BOOST_LIBRARIES})
+target_link_libraries(CrossIndexer_TEST indexer vocabulary bsift database ${BOOST_LIBRARIES})
 
 add_test(src/test/algorithm/indexer/InvertedFileIndexer_TEST InvertedFileIndexer_TEST)
 add_test(src/test/algorithm/indexer/BinaryInvertedFileIndexer_TEST BinaryInvertedFileIndexer_TEST)

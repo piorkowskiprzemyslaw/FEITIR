@@ -45,27 +45,6 @@ namespace feitir {
         virtual ~BIFQuery() = default;
     };
 
-    using BIFResultEntry = std::pair<ImageBSIFTPtr, ResultCountT>;
-
-    class BIFResult : public IndexerResult {
-    private:
-        std::vector<BIFResultEntry> resultList;
-    public:
-        BIFResult() { }
-
-        void addResultEntry(BIFResultEntry entry) {
-            resultList.push_back(std::move(entry));
-        }
-
-        const std::vector<BIFResultEntry>& getResultList() const {
-            return resultList;
-        }
-
-        virtual ~BIFResult() = default;
-    };
-
-    using BIFResultPtr = std::shared_ptr<BIFResult>;
-
     using BIFQueryPtr = std::shared_ptr<BIFQuery>;
 
     using BIFParametersPtr = std::shared_ptr<BIFParameters>;

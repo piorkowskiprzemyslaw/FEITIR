@@ -19,6 +19,7 @@ namespace feitir {
      *  - descriptor_voronoi_position
      *  - locality_sensitive_hashing
      *  - vectors_compare
+     *  - no_extractor <- this is special case to indicate situationss when extractor is not needed.
      *
      */
     class BSIFTMethod : public JSONObject {

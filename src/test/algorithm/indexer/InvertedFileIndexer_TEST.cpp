@@ -62,7 +62,7 @@ BOOST_FIXTURE_TEST_SUITE(InvertedFileIndexer_TEST, InvertedFileIndexerFixture)
         InvertedFileIndexer indexer(std::make_shared<IFParameters>(transformedDatabase));
         auto result = indexer.query(std::make_shared<IFQuery>(databaseTranslator.transformImage(vocabulary, image)));
         BOOST_REQUIRE(result != nullptr);
-        BOOST_REQUIRE_EQUAL(result->getImages().size(), 11);
+        BOOST_REQUIRE_EQUAL(result->getResultList().size(), 11);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

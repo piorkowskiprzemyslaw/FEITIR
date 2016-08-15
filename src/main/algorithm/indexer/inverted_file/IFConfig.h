@@ -35,20 +35,6 @@ namespace feitir {
         virtual ~IFQuery() = default;
     };
 
-    typedef std::pair<ImagePtr, ResultCountT> IFResultEntry;
-
-    class IFResult : public IndexerResult {
-    private:
-        std::vector<IFResultEntry> images;
-    public:
-        IFResult();
-        void addResultEntry(IFResultEntry element);
-        const std::vector<IFResultEntry> & getImages() const;
-        virtual ~IFResult() = default;
-    };
-
-    typedef std::shared_ptr<IFResult> IFResultPtr;
-
     typedef std::shared_ptr<IFQuery> IFQueryPtr;
 
     using IFParametersPtr = std::shared_ptr<IFParameters>;

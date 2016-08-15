@@ -66,10 +66,10 @@ int main(int ac, char* av[]) {
                         database, variablesMap["vocabularyK"].as<int>(), variablesMap["vocabularyL"].as<int>()));
                 builder.saveToFile(vocabulary, variablesMap["vocabularyFile"].as<std::string>());
             }
+        } else {
+            BenchmarkScenarioRunner runner;
+            runner.runScenario(getJSONRootObjectFromFile<BenchmarkScenario>(benchmarkScenarioFile, "scenario"));
         }
-
-        BenchmarkScenarioRunner runner;
-        runner.runScenario(getJSONRootObjectFromFile<BenchmarkScenario>(benchmarkScenarioFile, "scenario"));
     } catch(std::exception& e) {
         std::cout << e.what() << "\n";
     }

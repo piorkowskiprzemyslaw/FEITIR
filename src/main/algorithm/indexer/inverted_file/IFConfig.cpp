@@ -17,14 +17,4 @@ namespace feitir {
     const ImagePtr IFQuery::getImg() const {
         return img;
     }
-
-    IFResult::IFResult() { }
-
-    const std::vector<IFResultEntry> &IFResult::getImages() const {
-        return images;
-    }
-
-    void IFResult::addResultEntry(IFResultEntry element) {
-        this->images.push_back(std::move(element));
-    }
 }

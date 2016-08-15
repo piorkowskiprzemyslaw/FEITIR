@@ -43,21 +43,6 @@ namespace feitir {
         virtual ~CrossQuery() = default;
     };
 
-    typedef std::pair<ImagePtr, ResultCountT> CrossResultEntry;
-
-    class CrossResult : public IndexerResult {
-    private:
-        std::vector<CrossResultEntry> images;
-    public:
-        CrossResult() = default;
-        void addResultEntry(CrossResultEntry element);
-        const std::vector<CrossResultEntry> & getImages() const;
-        virtual ~CrossResult() = default;
-    };
-
-
-    typedef std::shared_ptr<CrossResult> CrossResultPtr;
-
     typedef std::shared_ptr<CrossQuery> CrossQueryPtr;
 
     typedef std::shared_ptr<CrossParameters> CrossParametersPtr;

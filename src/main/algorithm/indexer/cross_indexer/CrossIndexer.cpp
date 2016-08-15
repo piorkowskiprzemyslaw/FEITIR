@@ -46,9 +46,9 @@ namespace feitir {
                       });
     }
 
-    CrossResultPtr CrossIndexer::query(CrossQueryPtr query) {
-        CrossResultPtr result = std::make_shared<CrossResult>();
-        std::unordered_map<boost::uuids::uuid, ResultCountT> uuidToResult;
+    IndexerResultPtr CrossIndexer::query(CrossQueryPtr query) {
+        IndexerResultPtr result = std::make_shared<IndexerResult>();
+        std::unordered_map<boost::uuids::uuid, IndexerResultMap> uuidToResult;
 
         for (auto i = 0; i < query->getImg()->getMatches().size(); ++i) {
             std::unordered_set<int> V;
@@ -80,11 +80,12 @@ namespace feitir {
                             std::tie(imageBSIFTPtr, bsift) = it->second;
 
                             if (Util::hammingDistance(bsift, queryBSIFT) <= parameters->getBinaryTreshold()) {
-                                if (uuidToResult.find(imageBSIFTPtr->getUuid()) == uuidToResult.end()) {
-                                    uuidToResult[imageBSIFTPtr->getUuid()] = 0;
-                                }
 
-                                uuidToResult[imageBSIFTPtr->getUuid()] += 1;
+                                if (uuidToResult.find(imageBSIFTPtr->getUuid()) == uuidToResult.end()) {
+                                    uuidToResult[imageBSIFTPtr->getUuid()] = {{v, 1}};
+                                } else {
+                                    uuidToResult[imageBSIFTPtr->getUuid()][v]++;
+                                }
 
                                 Util::customInsert(C, visitedC, generateCodeWord(bsift));
                             }

@@ -20,19 +20,21 @@ namespace feitir {
         }
     }
 
-    IFResultPtr InvertedFileIndexer::query(IFQueryPtr query) {
-        std::unordered_map<boost::uuids::uuid, ResultCountT> uuidToResult;
-
-        IFResultPtr resultPtr = std::make_shared<IFResult>();
+    IndexerResultPtr InvertedFileIndexer::query(IFQueryPtr query) {
+        std::unordered_map<boost::uuids::uuid, IndexerResultMap> uuidToResult;
+        IndexerResultPtr resultPtr = std::make_shared<IndexerResult>();
         ImagePtr img = query->getImg();
+
         for (auto& match : img->getMatches()) {
             auto range = invertedFile.equal_range(match.trainIdx);
             for (auto dbImage = range.first; dbImage != range.second; ++dbImage) {
+
                 if (uuidToResult.find(dbImage->second->getUuid()) == uuidToResult.end()) {
-                    uuidToResult[dbImage->second->getUuid()] = 0;
+                    uuidToResult[dbImage->second->getUuid()] = {{match.trainIdx, 1}};
+                } else {
+                    uuidToResult[dbImage->second->getUuid()][match.trainIdx]++;
                 }
 
-                uuidToResult[dbImage->second->getUuid()] += 1;
             }
         }
 

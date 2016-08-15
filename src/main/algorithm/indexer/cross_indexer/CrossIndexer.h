@@ -29,7 +29,7 @@ namespace feitir {
 
         virtual IndexerResultPtr query(IndexerQueryPtr queryPtr) override;
 
-        virtual CrossResultPtr query(CrossQueryPtr query);
+        virtual IndexerResultPtr query(CrossQueryPtr query);
 
         /**
          * Extracts codeword from binary SIFT descriptor value. Length depends on indexer parameter - codeWordSize.

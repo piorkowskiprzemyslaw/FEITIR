@@ -48,6 +48,37 @@
           }
         }
       }
+    ],
+    "retrieval_benchmarks": [
+      {
+        "test_database_path": "test_database_path",
+        "result_file": "retrieval_result_file",
+        "matching_method": "retrieval_matching_method",
+        "time_measure": "1",
+        "indexer_method": {
+          "method": "retrieval_indexer_method",
+          "vocabulary_path": "retrieval_method_vocabulary_path",
+          "vocabulary_type": "retrieval_method_vocabulary_type",
+          "database_path": "retrieval_method_database_path",
+          "threshold": "13",
+          "K": "14",
+          "N": "15",
+          "R": "16",
+          "P": "17",
+          "code_word_size": "18"
+        },
+        "bsift_algorithm": {
+          "database_path": "retrieval_algorithm_database_path",
+          "vocabulary_path": "retrieval_algorithm_vocabulary_path",
+          "vocabulary_type": "retrieval_algorithm_vocabulary_type",
+          "bsift_method": {
+            "method": "retrieval_algorithm_method",
+            "L": "19",
+            "T": "20",
+            "N": "21"
+          }
+        }
+      }
     ]
   }
 }

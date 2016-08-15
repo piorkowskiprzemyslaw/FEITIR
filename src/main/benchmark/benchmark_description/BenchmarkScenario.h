@@ -11,6 +11,8 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <src/main/benchmark/benchmark_description/bsift/BSIFTBenchmark.h>
 #include <src/main/benchmark/benchmark_description/indexer/IndexerBenchmark.h>
+#include <src/main/benchmark/benchmark_description/retrieval/RetrievalBenchmark.h>
+#include <src/main/algorithm/BSIFT/BSIFTExtractor.h>
 #include "src/main/util/JSON/JSONObject.h"
 
 namespace feitir {
@@ -18,6 +20,7 @@ namespace feitir {
     public:
         const std::vector<BSIFTBenchmarkPtr> & getBsiftBenchmarkDescriptions() const;
         const std::vector<IndexerBenchmarkPtr> & getIndexerBenchmarkDescriptions() const;
+        const std::vector<RetrievalBenchmarkPtr> &getRetrievalBenchmarkDescriptions() const;
 
     protected:
         virtual FieldNames arrayOfObjectsFieldNames() const override;
@@ -28,12 +31,19 @@ namespace feitir {
     private:
         static const std::string BSIFT_BENCHMARKS;
         static const std::string INDEXER_BENCHMARKS;
+        static const std::string RETRIEVAL_BENCHMARKS;
 
         std::vector<BSIFTBenchmarkPtr> bsiftBenchmarkDescriptions;
         std::vector<IndexerBenchmarkPtr> indexerBenchmarkDescriptions;
+        std::vector<RetrievalBenchmarkPtr> retrievalBenchmarkDescriptions;
     };
 
     using BenchmarkScenarioPtr = std::shared_ptr<BenchmarkScenario>;
+
+    VocabularyTypePtr buildVocabulary(const std::string & type, const std::string &path);
+    BSIFTExtractorPtr buildExtractor(const BSIFTAlgorithmPtr description);
+    IndexerPtr buildIndexer(const IndexerMethodPtr description, const BSIFTExtractorPtr extractor);
+    IndexerQueryPtr buildQuery(const ImagePtr img, const BSIFTExtractorPtr extractor, const std::string &method);
 
 }
 

@@ -8,6 +8,7 @@
 #include <src/main/algorithm/indexer/cross_indexer/CrossIndexer.h>
 #include <src/main/algorithm/indexer/binary_inverted_file/BinaryInvertedFileIndexer.h>
 #include <src/main/algorithm/indexer/supporting_words_inverted_file/SupportingWordsInvertedFileIndexer.h>
+#include <src/main/retrieval/BagOfWords.h>
 #include "src/main/algorithm/BSIFT/descriptor_median/DescriptorMedianBSIFTExtractor.h"
 #include "src/main/algorithm/BSIFT/locality_sensitive_hashing/LocalitySensitiveHashingBSIFTExtractor.h"
 #include "src/main/algorithm/BSIFT/vectors_compare/VectorsCompareBSIFTExtractor.h"
@@ -19,7 +20,8 @@ namespace feitir {
     void BenchmarkScenarioRunner::runScenario(BenchmarkScenarioPtr scenario) {
         int globalTestCounter = 0;
         auto allTestNumber = scenario->getBsiftBenchmarkDescriptions().size() +
-                             scenario->getIndexerBenchmarkDescriptions().size();
+                             scenario->getIndexerBenchmarkDescriptions().size() +
+                             scenario->getRetrievalBenchmarkDescriptions().size();
 
         BOOST_LOG_TRIVIAL(info) << "Faculty of Electronics Benchmark Scenario Runner";
         for (int i = 0; i < scenario->getBsiftBenchmarkDescriptions().size(); ++i) {
@@ -31,13 +33,18 @@ namespace feitir {
             BOOST_LOG_TRIVIAL(info) << "Running Indexer benchmark " << ++globalTestCounter << " of " << allTestNumber;
             runIndexerDescription(scenario->getIndexerBenchmarkDescriptions()[i]);
         }
+
+        for (int i = 0; i < scenario->getRetrievalBenchmarkDescriptions().size(); ++i) {
+            BOOST_LOG_TRIVIAL(info) << "Running Retrieval benchmark " << ++globalTestCounter << " of " << allTestNumber;
+            runRetrievalDescription(scenario->getRetrievalBenchmarkDescriptions()[i]);
+        }
     }
 
     void BenchmarkScenarioRunner::runBSIFTDescription(BSIFTBenchmarkPtr description) {
         BOOST_LOG_TRIVIAL(info) << "BSIFT benchmark " << description->getAlgorithm()->getBsiftMethod()->getMethod();
         std::vector<BSIFTBenchmarkSingleResult> resultVector;
         std::chrono::high_resolution_clock::time_point testStart;
-        auto bsiftExtractor = setupExtractor(description->getAlgorithm());
+        auto bsiftExtractor = buildExtractor(description->getAlgorithm());
         auto database = databaseFactory.createDatabase(description->getDatabasePath());
 
         if (description->isMeasureTime()) {
@@ -67,64 +74,6 @@ namespace feitir {
         writeBSIFTResult(description->getResultFile(), resultVector);
     }
 
-    void BenchmarkScenarioRunner::runIndexerDescription(IndexerBenchmarkPtr description) {
-        BOOST_LOG_TRIVIAL(info) << "Indexer benchmark " + description->getMethod()->getMethodName();
-        std::vector<IndexerBenchmarkSingleResult> result;
-        auto testDatabase = databaseFactory.createDatabase(description->getDatabasePath());
-        auto extractor = setupExtractor(description->getBsiftAlgorithm());
-        auto indexer = setupIndexer(description->getMethod());
-        long int descriptorNumber = 1;
-        std::chrono::high_resolution_clock::time_point testStart;
-        std::chrono::high_resolution_clock::time_point testEnd;
-
-        for (auto const & img : *testDatabase) {
-            testStart = std::chrono::high_resolution_clock::now();
-            indexer->query(createQuery(img, description->getMethod()->getMethodName(), extractor));
-            testEnd = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(testEnd - testStart).count();
-            result.emplace_back(descriptorNumber++, duration);
-        }
-
-        writeIndexerResult(description->getResultFile(), result);
-    }
-
-    VocabularyTypePtr BenchmarkScenarioRunner::setupVocabulary(std::string vocabularyType, std::string vocabularyPath) {
-        if (!vocabularyType.compare("kmeans")) {
-            return kMeansVocabularyBuilder.readFromFile(vocabularyPath);
-        } else if (!vocabularyType.compare("hkmeans")) {
-            return hkMeansVocabularyBuilder.readFromFile(vocabularyPath);
-        }
-        throw std::invalid_argument(vocabularyType + " has no meaning as vocabulary type");
-    }
-
-    BSIFTExtractorPtr BenchmarkScenarioRunner::setupExtractor(BSIFTAlgorithmPtr algorithm) {
-        auto database = databaseFactory.createDatabase(algorithm->getDatabasePath());
-        auto vocabulary = setupVocabulary(algorithm->getVocabularyType(), algorithm->getVocabularyPath());
-        return setupExtractor(algorithm->getBsiftMethod(), database, vocabulary);
-    }
-
-    BSIFTExtractorPtr BenchmarkScenarioRunner::setupExtractor(BSIFTMethodPtr method, DatabasePtr database,
-                                                              VocabularyTypePtr vocabularyTypePtr) {
-        std::string methodName = method->getMethod();
-        if (!methodName.compare("comparison_array")) {
-            return std::make_shared<ComparisonArrayBSIFTExtractor<>>(method->getN(), method->getL(), method->getT());
-        } else if (!methodName.compare("descriptor_median")) {
-            return std::make_shared<DescriptorMedianBSIFTExtractor>();
-        } else if (!methodName.compare("descriptor_position_median")) {
-            return std::make_shared<DescriptorPositionMedianBSIFTExtractor>();
-        } else if (!methodName.compare("descriptor_voronoi_position")) {
-            return std::make_shared<DescriptorVoronoiPositionBSIFTExtractor>(
-                    method->getN(), vocabularyTypePtr, database);
-        } else if (!methodName.compare("locality_sensitive_hashing")) {
-            auto hashFunctions = LocalitySensitiveHashingBSIFTExtractor::generateRandomHashFunctions(method->getN());
-            return std::make_shared<LocalitySensitiveHashingBSIFTExtractor>(method->getN(), hashFunctions);
-        } else if (!methodName.compare("vectors_compare")) {
-            return std::make_shared<VectorsCompareBSIFTExtractor>();
-        }
-
-        throw std::invalid_argument(methodName + " has no meaning as bsift extractor method");
-    }
-
     void BenchmarkScenarioRunner::writeBSIFTResult(const std::string &filename,
                                                    const std::vector<BSIFTBenchmarkSingleResult> &result) {
         std::ofstream resultFile;
@@ -137,8 +86,8 @@ namespace feitir {
     }
 
     std::vector<BenchmarkScenarioRunner::DescriptorPair>
-        BenchmarkScenarioRunner::getDescriptorVector(const DatabasePtr database,
-                                                     const std::vector<JSONObject::number> ids) {
+    BenchmarkScenarioRunner::getDescriptorVector(const DatabasePtr database,
+                                                 const std::vector<JSONObject::number> ids) {
         std::vector<BenchmarkScenarioRunner::DescriptorPair> retVec;
         retVec.reserve(ids.size());
         // place for further optimizations - perform concatenation only once for A and B set.
@@ -175,43 +124,25 @@ namespace feitir {
         return concatenated;
     }
 
-    IndexerPtr BenchmarkScenarioRunner::setupIndexer(const IndexerMethodPtr indexerMethod) {
-        auto vocabulary = setupVocabulary(indexerMethod->getVocabularyPath(), indexerMethod->getVocabularyType());
-        auto database = databaseFactory.createDatabase(indexerMethod->getDatabasePath());
-        const auto & methodName = indexerMethod->getMethodName();
+    void BenchmarkScenarioRunner::runIndexerDescription(IndexerBenchmarkPtr description) {
+        BOOST_LOG_TRIVIAL(info) << "Indexer benchmark " << description->getMethod()->getMethodName();
+        std::vector<IndexerBenchmarkSingleResult> result;
+        auto testDatabase = databaseFactory.createDatabase(description->getDatabasePath());
+        auto extractor = buildExtractor(description->getBsiftAlgorithm());
+        auto indexer = buildIndexer(description->getMethod(), extractor);
+        long int descriptorNumber = 1;
+        std::chrono::high_resolution_clock::time_point testStart;
+        std::chrono::high_resolution_clock::time_point testEnd;
 
-        if (!methodName.compare("inverted_file")) {
-            return std::make_shared<InvertedFileIndexer>(std::make_shared<IFParameters>(database));
-        } else if (!methodName.compare("cross_indexer")) {
-            return std::make_shared<CrossIndexer>(database, vocabulary, indexerMethod->getN(),
-                                                  indexerMethod->getThreshold(), indexerMethod->getR(),
-                                                  indexerMethod->getCodeWordSize());
-        } else if (!methodName.compare("binary_inverted_file")) {
-            return std::make_shared<BinaryInvertedFileIndexer>(
-                    std::make_shared<BIFParameters>(database, indexerMethod->getThreshold()));
-        } else if (!methodName.compare("supporting_words_inverted_file")) {
-            return std::make_shared<SupportingWordsInvertedFileIndexer>(
-                    std::make_shared<SWIFParameters>(database, vocabulary, indexerMethod->getR(),
-                                                     indexerMethod->getK(), indexerMethod->getThreshold()));
+        for (auto const & img : *testDatabase) {
+            testStart = std::chrono::high_resolution_clock::now();
+            indexer->query(buildQuery(img, extractor, description->getMethod()->getMethodName()));
+            testEnd = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(testEnd - testStart).count();
+            result.emplace_back(descriptorNumber++, duration);
         }
 
-        throw std::invalid_argument(methodName + " does not cast to any available indexer type");
-    }
-
-    IndexerQueryPtr BenchmarkScenarioRunner::createQuery(const ImagePtr img, const std::string & methodName,
-                                                         const BSIFTExtractorPtr extractor) {
-
-        if (!methodName.compare("inverted_file")) {
-            return std::make_shared<IFQuery>(img);
-        } else if (!methodName.compare("cross_indexer")) {
-            return std::make_shared<CrossQuery>(extractor->extractImageBSIFT(img));
-        } else if (!methodName.compare("binary_inverted_file")) {
-            return std::make_shared<BIFQuery>(extractor->extractImageBSIFT(img));
-        } else if (!methodName.compare("supporting_words_inverted_file")) {
-            return std::make_shared<SWIFQuery>(img, extractor->extractImageBSIFT(img));
-        }
-
-        throw std::invalid_argument(methodName + " does not cast to any available indexer type");
+        writeIndexerResult(description->getResultFile(), result);
     }
 
     void BenchmarkScenarioRunner::writeIndexerResult(const std::string &filename,
@@ -221,6 +152,55 @@ namespace feitir {
         resultFile << "descriptorNo,time" << std::endl;
         for (const auto& r : result) {
             resultFile << r.first << "," << r.second << std::endl;
+        }
+        resultFile.close();
+    }
+
+    void BenchmarkScenarioRunner::runRetrievalDescription(RetrievalBenchmarkPtr description) {
+        BOOST_LOG_TRIVIAL(info) << "Extractor: " << description->getBsiftAlgorithm()->getBsiftMethod()->getMethod();
+        BOOST_LOG_TRIVIAL(info) << "Indexer  : " << description->getIndexerMethod()->getMethodName();
+        BOOST_LOG_TRIVIAL(info) << "TestDB   : " << description->getTestDatabasePath();
+
+        auto extractor = buildExtractor(description->getBsiftAlgorithm());
+        auto queryDatabase = databaseFactory.createDatabase(description->getTestDatabasePath());
+        BagOfWords bow(description, extractor, buildIndexer(description->getIndexerMethod(), extractor));
+        std::chrono::high_resolution_clock::time_point testStart;
+        std::chrono::high_resolution_clock::time_point testEnd;
+        std::vector<RetrievalBenchmarkSingleResult> results;
+
+
+        for (const auto & img : *queryDatabase) {
+            if (description->getTimeMeasure()) {
+                testStart = std::chrono::high_resolution_clock::now();
+            }
+
+            auto result = bow.query(img);
+
+            if (description->getTimeMeasure()) {
+                testEnd = std::chrono::high_resolution_clock::now();
+            }
+
+            if (description->getTimeMeasure()) {
+                testEnd = std::chrono::high_resolution_clock::now();
+                results.emplace_back(result, std::chrono::duration_cast<std::chrono::milliseconds>
+                        (testEnd - testStart).count());
+            } else {
+                results.emplace_back(result);
+            }
+        }
+        writeRetrievalResult(description->getResultFile(), results);
+    }
+
+    void BenchmarkScenarioRunner::writeRetrievalResult(const std::string &filename,
+                                                       const std::vector<ImageRetrievalResult> &result) {
+        std::ofstream resultFile;
+        resultFile.open(filename);
+        resultFile << "precision,recall,average_precision,time" << std::endl;
+        for (const auto& r : result) {
+            resultFile << r.precision << ","
+                       << r.recall << ","
+                       << r.averagePrecision << ","
+                       << r.duration << std::endl;
         }
         resultFile.close();
     }

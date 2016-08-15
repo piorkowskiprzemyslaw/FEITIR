@@ -50,29 +50,9 @@ namespace feitir {
         }
     };
 
-    using SWIFResultEntry = std::pair<ImageBSIFTPtr, ResultCountT>;
-
-    class SWIFResult : public IndexerResult {
-    private:
-        std::vector<SWIFResultEntry> resultList;
-
-    public:
-        SWIFResult() { }
-
-        void addResultEntry(SWIFResultEntry resultEntry) {
-            resultList.emplace_back(std::move(resultEntry));
-        }
-
-        const std::vector<SWIFResultEntry> &getResultList() const {
-            return resultList;
-        }
-    };
-
     using SWIFParametersPtr = std::shared_ptr<SWIFParameters>;
 
     using SWIFQueryPtr = std::shared_ptr<SWIFQuery>;
-
-    using SWIFResultPtr = std::shared_ptr<SWIFResult>;
 }
 
 

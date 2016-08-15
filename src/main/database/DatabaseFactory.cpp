@@ -19,6 +19,7 @@ namespace feitir {
                        [&](const std::string &path) {
                            return categoryFactory.createCategory(rootDir, path, !nestedCategories);
                        });
+        categories.erase(std::remove(categories.begin(), categories.end(), nullptr), categories.end());
 
         std::list<std::string> rootImages = findRootImages(rootDir);
         std::vector<ImagePtr> images;

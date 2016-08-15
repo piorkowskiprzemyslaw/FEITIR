@@ -41,14 +41,6 @@ namespace feitir {
         return img;
     }
 
-    void CrossResult::addResultEntry(CrossResultEntry element) {
-        images.push_back(std::move(element));
-    }
-
-    const std::vector<CrossResultEntry> & CrossResult::getImages() const {
-        return images;
-    }
-
     int CrossParameters::getBinaryTreshold() const {
         return binaryTreshold;
     }

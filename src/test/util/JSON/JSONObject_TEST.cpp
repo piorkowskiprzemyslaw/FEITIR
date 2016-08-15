@@ -8,7 +8,7 @@
 #include <iostream>
 #include "test_global.h"
 #include <boost/test/unit_test.hpp>
-#include "src/main/benchmark/BenchmarkScenario.h"
+#include "src/main/benchmark/benchmark_description/BenchmarkScenario.h"
 
 using namespace feitir;
 
@@ -93,6 +93,40 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE_EQUAL(bsiftMethod->getL(), 9);
         BOOST_REQUIRE_EQUAL(bsiftMethod->getT(), 10);
         BOOST_REQUIRE_EQUAL(bsiftMethod->getN(), 11);
+
+        BOOST_REQUIRE_EQUAL(scenario->getRetrievalBenchmarkDescriptions().size(), 1);
+        auto retrievalDescription = scenario->getRetrievalBenchmarkDescriptions()[0];
+        BOOST_REQUIRE(retrievalDescription != nullptr);
+        BOOST_REQUIRE_EQUAL(retrievalDescription->getTestDatabasePath(), "test_database_path");
+        BOOST_REQUIRE_EQUAL(retrievalDescription->getResultFile(), "retrieval_result_file");
+        BOOST_REQUIRE_EQUAL(retrievalDescription->getMatchingMethod(), "retrieval_matching_method");
+        BOOST_REQUIRE_EQUAL(retrievalDescription->getTimeMeasure(), true);
+
+        auto retrievalIndexerMethod = retrievalDescription->getIndexerMethod();
+        BOOST_REQUIRE(retrievalIndexerMethod != nullptr);
+        BOOST_REQUIRE_EQUAL(retrievalIndexerMethod->getMethodName(), "retrieval_indexer_method");
+        BOOST_REQUIRE_EQUAL(retrievalIndexerMethod->getVocabularyPath(), "retrieval_method_vocabulary_path");
+        BOOST_REQUIRE_EQUAL(retrievalIndexerMethod->getVocabularyType(), "retrieval_method_vocabulary_type");
+        BOOST_REQUIRE_EQUAL(retrievalIndexerMethod->getDatabasePath(), "retrieval_method_database_path");
+        BOOST_REQUIRE_EQUAL(retrievalIndexerMethod->getThreshold(), 13);
+        BOOST_REQUIRE_EQUAL(retrievalIndexerMethod->getK(), 14);
+        BOOST_REQUIRE_EQUAL(retrievalIndexerMethod->getN(), 15);
+        BOOST_REQUIRE_EQUAL(retrievalIndexerMethod->getR(), 16);
+        BOOST_REQUIRE_EQUAL(retrievalIndexerMethod->getP(), 17);
+        BOOST_REQUIRE_EQUAL(retrievalIndexerMethod->getCodeWordSize(), 18);
+
+        auto retrievalBsiftAlgorithm = retrievalDescription->getBsiftAlgorithm();
+        BOOST_REQUIRE(retrievalBsiftAlgorithm != nullptr);
+        BOOST_REQUIRE_EQUAL(retrievalBsiftAlgorithm->getDatabasePath(), "retrieval_algorithm_database_path");
+        BOOST_REQUIRE_EQUAL(retrievalBsiftAlgorithm->getVocabularyPath(), "retrieval_algorithm_vocabulary_path");
+        BOOST_REQUIRE_EQUAL(retrievalBsiftAlgorithm->getVocabularyType(), "retrieval_algorithm_vocabulary_type");
+
+        auto retrievalBsiftMethod = retrievalBsiftAlgorithm->getBsiftMethod();
+        BOOST_REQUIRE(retrievalBsiftMethod != nullptr);
+        BOOST_REQUIRE_EQUAL(retrievalBsiftMethod->getMethod(), "retrieval_algorithm_method");
+        BOOST_REQUIRE_EQUAL(retrievalBsiftMethod->getL(), 19);
+        BOOST_REQUIRE_EQUAL(retrievalBsiftMethod->getT(), 20);
+        BOOST_REQUIRE_EQUAL(retrievalBsiftMethod->getN(), 21);
     }
 
     BOOST_AUTO_TEST_CASE(Sample2JSONTest)
