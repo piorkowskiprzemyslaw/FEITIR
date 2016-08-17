@@ -55,6 +55,7 @@
         "result_file": "retrieval_result_file",
         "matching_method": "retrieval_matching_method",
         "time_measure": "1",
+        "top_query_results": "22",
         "indexer_method": {
           "method": "retrieval_indexer_method",
           "vocabulary_path": "retrieval_method_vocabulary_path",

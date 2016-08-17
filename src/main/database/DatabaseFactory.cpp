@@ -3,6 +3,7 @@
 //
 
 #include "DatabaseFactory.h"
+#include <unordered_map>
 
 namespace feitir {
 
@@ -13,6 +14,7 @@ namespace feitir {
     }
 
     const DatabasePtr DatabaseFactory::createDatabase(const std::string &rootDir, bool nestedCategories) const {
+        // find categories directories and create Category objects
         std::list<std::string> categoriesRoots = findCategoriesRoots(rootDir, nestedCategories);
         std::vector<CategoryPtr> categories;
         std::transform(categoriesRoots.begin(), categoriesRoots.end(), back_inserter(categories),
@@ -21,6 +23,7 @@ namespace feitir {
                        });
         categories.erase(std::remove(categories.begin(), categories.end(), nullptr), categories.end());
 
+        // find root images and create Image objects, images of this type don't have category
         std::list<std::string> rootImages = findRootImages(rootDir);
         std::vector<ImagePtr> images;
         std::transform(rootImages.begin(), rootImages.end(), back_inserter(images),

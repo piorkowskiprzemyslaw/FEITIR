@@ -147,15 +147,19 @@ namespace feitir {
         throw std::invalid_argument(methodName + " does not cast to any available indexer type");
     }
 
-    IndexerQueryPtr buildQuery(const ImagePtr img, const BSIFTExtractorPtr extractor, const std::string &method) {
+    IndexerQueryPtr buildQuery(const ImagePtr img, const BSIFTExtractorPtr extractor,
+                               const VocabularyTypePtr vocabulary, const std::string &method) {
         if (!method.compare("inverted_file")) {
             return std::make_shared<IFQuery>(img);
         } else if (!method.compare("cross_indexer")) {
-            return std::make_shared<CrossQuery>(extractor->extractImageBSIFT(img));
+            return std::make_shared<CrossQuery>(extractor->getDatabaseTranslatorPtr()->transformImage(
+                    vocabulary, extractor->extractImageBSIFT(img)));
         } else if (!method.compare("binary_inverted_file")) {
-            return std::make_shared<BIFQuery>(extractor->extractImageBSIFT(img));
+            return std::make_shared<BIFQuery>(extractor->getDatabaseTranslatorPtr()->transformImage(
+                    vocabulary, extractor->extractImageBSIFT(img)));
         } else if (!method.compare("supporting_words_inverted_file")) {
-            return std::make_shared<SWIFQuery>(img, extractor->extractImageBSIFT(img));
+            return std::make_shared<SWIFQuery>(img, extractor->getDatabaseTranslatorPtr()->transformImage(
+                    vocabulary, extractor->extractImageBSIFT(img)));
         }
 
         throw std::invalid_argument(method + " does not cast to any available indexer type");

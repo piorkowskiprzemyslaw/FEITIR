@@ -34,7 +34,7 @@ namespace feitir {
         const Extension extension;
         // each row of descriptors matrix represents SIFT descriptor value in respectively chosen keyPoint
         const cv::Mat descriptors;
-        // mapping from original descriptor value to mapped
+        // mapping from original descriptor value to visual word id (id is equal to row where one can find this vw)
         const std::vector<cv::DMatch> matches;
 
     protected:

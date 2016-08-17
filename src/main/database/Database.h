@@ -9,6 +9,7 @@
 #include <vector>
 #include <memory>
 #include <src/main/database/category/Category.h>
+#include <unordered_map>
 
 namespace feitir {
 
@@ -20,6 +21,8 @@ namespace feitir {
         const std::string & getRootPath() const;
         const std::vector<CategoryPtr> & getCategories() const;
         const std::vector<ImagePtr> & getImages() const;
+        CategoryPtr getImageCategory(const ImagePtr img) const;
+        CategoryPtr getCategoryByName(const std::string & name) const;
 
         /**
          * Const iterator implementation
@@ -125,6 +128,10 @@ namespace feitir {
         const std::string rootPath;
         const std::vector<CategoryPtr> categories;
         const std::vector<ImagePtr> images;
+        // map which allows fast lookup for image category
+        std::unordered_map<boost::uuids::uuid, CategoryPtr> imageUUIDToCategory;
+        // map which allows fast category lookup by its name
+        std::unordered_map<std::string, CategoryPtr> categoryNameToCategory;
     };
 
     typedef std::shared_ptr<Database> DatabasePtr;

@@ -101,6 +101,7 @@ BOOST_FIXTURE_TEST_SUITE(JSONObject_TEST, JSONObjectFixture)
         BOOST_REQUIRE_EQUAL(retrievalDescription->getResultFile(), "retrieval_result_file");
         BOOST_REQUIRE_EQUAL(retrievalDescription->getMatchingMethod(), "retrieval_matching_method");
         BOOST_REQUIRE_EQUAL(retrievalDescription->getTimeMeasure(), true);
+        BOOST_REQUIRE_EQUAL(retrievalDescription->getTopQueryResults(), 22);
 
         auto retrievalIndexerMethod = retrievalDescription->getIndexerMethod();
         BOOST_REQUIRE(retrievalIndexerMethod != nullptr);

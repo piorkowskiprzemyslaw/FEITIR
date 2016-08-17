@@ -30,4 +30,8 @@ namespace feitir {
     int SWIFParameters::getK() const {
         return K;
     }
+
+    DatabasePtr SWIFParameters::getDatabase() {
+        return transformedDb;
+    }
 }

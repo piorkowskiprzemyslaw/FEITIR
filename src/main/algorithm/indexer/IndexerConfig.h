@@ -6,12 +6,14 @@
 #define FEITIR_INDEXERCONFIG_H
 
 #include <memory>
+#include <src/main/database/Database.h>
 #include <src/main/database/image/Image.h>
 #include <unordered_map>
 
 namespace feitir {
     class IndexerParameters {
     public:
+        virtual DatabasePtr getDatabase() = 0;
         virtual ~IndexerParameters() = 0;
     };
 

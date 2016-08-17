@@ -9,6 +9,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 #include "src/main/database/image/Image.h"
 
 namespace feitir {
@@ -16,6 +18,7 @@ namespace feitir {
     class Category {
     public:
         Category(const std::string &name, const std::string &path, std::vector<ImagePtr> images);
+        const boost::uuids::uuid &getUuid() const;
         const std::string & getName() const;
         const std::string & getPath() const;
         const std::vector<ImagePtr> & getImages() const;
@@ -66,6 +69,7 @@ namespace feitir {
         const_iterator end() const;
 
     private:
+        const boost::uuids::uuid uuid;
         const std::string name;
         const std::string path;
         const std::vector<ImagePtr> images;

@@ -20,7 +20,7 @@ namespace feitir {
 
     public:
         BIFParameters(const DatabasePtr database, const int treshold);
-        const DatabasePtr getDatabase() const;
+        virtual DatabasePtr getDatabase() override;
         const int getTreshold() const;
         virtual ~BIFParameters() = default;
     };

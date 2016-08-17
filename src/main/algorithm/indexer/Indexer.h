@@ -7,13 +7,22 @@
 
 #include <functional>
 #include <boost/uuid/uuid.hpp>
+#include <src/main/database/Database.h>
 #include "IndexerConfig.h"
 
 namespace feitir {
 
     class Indexer {
+    private:
+        DatabasePtr indexedDatabase;
     public:
-        explicit Indexer(const IndexerParametersPtr parameters) { };
+        explicit Indexer(const IndexerParametersPtr parameters) : indexedDatabase{parameters->getDatabase()} {
+        };
+
+        virtual DatabasePtr getIndexedDatabase() {
+            return indexedDatabase;
+        };
+
         virtual IndexerResultPtr query(IndexerQueryPtr query) = 0;
         virtual ~Indexer() = default;
     };

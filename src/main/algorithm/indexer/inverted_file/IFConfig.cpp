@@ -8,7 +8,7 @@ namespace feitir {
 
     IFParameters::IFParameters(const DatabasePtr &database) : database{database} { }
 
-    const DatabasePtr &IFParameters::getDatabase() const {
+    DatabasePtr IFParameters::getDatabase() {
         return database;
     }
 

@@ -130,13 +130,15 @@ namespace feitir {
         auto testDatabase = databaseFactory.createDatabase(description->getDatabasePath());
         auto extractor = buildExtractor(description->getBsiftAlgorithm());
         auto indexer = buildIndexer(description->getMethod(), extractor);
+        auto vocabulary = buildVocabulary(description->getMethod()->getVocabularyType(),
+                                          description->getMethod()->getVocabularyPath());
         long int descriptorNumber = 1;
         std::chrono::high_resolution_clock::time_point testStart;
         std::chrono::high_resolution_clock::time_point testEnd;
 
         for (auto const & img : *testDatabase) {
             testStart = std::chrono::high_resolution_clock::now();
-            indexer->query(buildQuery(img, extractor, description->getMethod()->getMethodName()));
+            indexer->query(buildQuery(img, extractor, vocabulary, description->getMethod()->getMethodName()));
             testEnd = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(testEnd - testStart).count();
             result.emplace_back(descriptorNumber++, duration);
@@ -161,9 +163,8 @@ namespace feitir {
         BOOST_LOG_TRIVIAL(info) << "Indexer  : " << description->getIndexerMethod()->getMethodName();
         BOOST_LOG_TRIVIAL(info) << "TestDB   : " << description->getTestDatabasePath();
 
-        auto extractor = buildExtractor(description->getBsiftAlgorithm());
         auto queryDatabase = databaseFactory.createDatabase(description->getTestDatabasePath());
-        BagOfWords bow(description, extractor, buildIndexer(description->getIndexerMethod(), extractor));
+        BagOfWords bow(description);
         std::chrono::high_resolution_clock::time_point testStart;
         std::chrono::high_resolution_clock::time_point testEnd;
         std::vector<RetrievalBenchmarkSingleResult> results;
@@ -174,18 +175,20 @@ namespace feitir {
                 testStart = std::chrono::high_resolution_clock::now();
             }
 
-            auto result = bow.query(img);
+            auto pq = bow.query(img);
 
             if (description->getTimeMeasure()) {
                 testEnd = std::chrono::high_resolution_clock::now();
             }
 
+            auto stats = bow.computeResult(img, queryDatabase->getImageCategory(img), pq);
+
             if (description->getTimeMeasure()) {
                 testEnd = std::chrono::high_resolution_clock::now();
-                results.emplace_back(result, std::chrono::duration_cast<std::chrono::milliseconds>
+                results.emplace_back(stats, std::chrono::duration_cast<std::chrono::milliseconds>
                         (testEnd - testStart).count());
             } else {
-                results.emplace_back(result);
+                results.emplace_back(stats);
             }
         }
         writeRetrievalResult(description->getResultFile(), results);

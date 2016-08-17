@@ -43,7 +43,8 @@ namespace feitir {
     VocabularyTypePtr buildVocabulary(const std::string & type, const std::string &path);
     BSIFTExtractorPtr buildExtractor(const BSIFTAlgorithmPtr description);
     IndexerPtr buildIndexer(const IndexerMethodPtr description, const BSIFTExtractorPtr extractor);
-    IndexerQueryPtr buildQuery(const ImagePtr img, const BSIFTExtractorPtr extractor, const std::string &method);
+    IndexerQueryPtr buildQuery(const ImagePtr img, const BSIFTExtractorPtr extractor,
+                               const VocabularyTypePtr vocabulary, const std::string &method);
 
 }
 

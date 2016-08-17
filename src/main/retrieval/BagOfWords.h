@@ -8,20 +8,21 @@
 #include <src/main/benchmark/benchmark_description/retrieval/RetrievalBenchmark.h>
 #include <src/main/algorithm/indexer/Indexer.h>
 #include <src/main/algorithm/BSIFT/BSIFTExtractor.h>
+#include <queue>
 
 namespace feitir {
 
     /**
-     * Class which serves as BOW query result
+     * Class which serves as BOW query result statistics
      */
-    struct BOWResult {
+    struct BOWStats {
         const float precision;
         const float recall;
         const float avgPrecision;
 
-        BOWResult(float precision, float recall, float avgPrecision) : precision{precision},
-                                                                       recall{recall},
-                                                                       avgPrecision{avgPrecision} {}
+        BOWStats(float precision, float recall, float avgPrecision) : precision{precision},
+                                                                      recall{recall},
+                                                                      avgPrecision{avgPrecision} {}
     };
 
     /**
@@ -29,15 +30,23 @@ namespace feitir {
      */
     class BagOfWords {
     public:
-        explicit BagOfWords(const RetrievalBenchmarkPtr benchmarkDescription,
-                            const BSIFTExtractorPtr extractor, const IndexerPtr indexer);
-        BOWResult query(const ImagePtr img);
+        using entry = std::pair<ImagePtr, float>;
+        using cmp = std::function<bool(entry, entry)>;
+        using RankedList = std::priority_queue<entry, std::vector<entry>, cmp>;
+
+        explicit BagOfWords(const RetrievalBenchmarkPtr benchmarkDescription);
+        RankedList query(const ImagePtr img);
+        BOWStats computeResult(const ImagePtr query, const CategoryPtr queryCategory, RankedList &rankedList);
 
     private:
+        float computeSimilarity(IndexerResultMap map);
+        RankedList generatePriorityQueue(const IndexerResultPtr indexerResult);
+
         RetrievalBenchmarkPtr description;
         DatabaseFactory databaseFactory;
         BSIFTExtractorPtr extractor;
         IndexerPtr indexer;
+        VocabularyTypePtr vocabularyTypePtr;
         DatabasePtr trainDatabase;
     };
 

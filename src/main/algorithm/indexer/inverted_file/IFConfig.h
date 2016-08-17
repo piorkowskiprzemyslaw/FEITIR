@@ -22,7 +22,7 @@ namespace feitir {
 
     public:
         IFParameters(const DatabasePtr &database);
-        const DatabasePtr & getDatabase() const;
+        virtual DatabasePtr getDatabase() override;
         virtual ~IFParameters() = default;
     };
 

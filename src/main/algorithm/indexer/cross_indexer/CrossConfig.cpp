@@ -15,7 +15,7 @@ namespace feitir {
               codeWordSize{codeWordSize},
               binaryTreshold{binaryTreshold} { }
 
-    const DatabasePtr &CrossParameters::getDatabase() const {
+    DatabasePtr CrossParameters::getDatabase() {
         return database;
     }
 
@@ -39,6 +39,13 @@ namespace feitir {
 
     const ImageBSIFTPtr CrossQuery::getImg() const {
         return img;
+    }
+
+    CrossQuery::CrossQuery(const ImagePtr &img) {
+        this->img = std::dynamic_pointer_cast<ImageBSIFT>(img);
+        if (nullptr == this->img) {
+            throw std::invalid_argument("img");
+        }
     }
 
     int CrossParameters::getBinaryTreshold() const {

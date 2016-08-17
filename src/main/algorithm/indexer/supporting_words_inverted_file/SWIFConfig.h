@@ -30,6 +30,7 @@ namespace feitir {
         const DatabasePtr getTransformedDb() const;
         const VocabularyTypePtr getVocabulary() const;
         int getK() const;
+        virtual DatabasePtr getDatabase() override;
     };
 
     class SWIFQuery : public IndexerQuery {
@@ -40,6 +41,15 @@ namespace feitir {
         SWIFQuery(const ImagePtr originalImage, const ImageBSIFTPtr transformedImage)
                 : originalImage{originalImage},
                   transformedImage{transformedImage} { }
+
+        SWIFQuery(const ImagePtr originalImage, const ImagePtr transformedImage)
+                : originalImage{originalImage} {
+            this->transformedImage = std::dynamic_pointer_cast<ImageBSIFT>(transformedImage);
+            if (nullptr == this->transformedImage) {
+                throw std::invalid_argument("transformed image");
+            }
+        }
+
 
         const ImageBSIFTPtr getTransformedImage() const {
             return transformedImage;

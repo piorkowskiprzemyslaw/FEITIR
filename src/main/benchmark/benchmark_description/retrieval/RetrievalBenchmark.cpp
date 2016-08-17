@@ -10,7 +10,8 @@ namespace feitir {
     const std::vector<std::string> RetrievalBenchmark::FIELD_NAMES = { /* 0 */ "test_database_path",
                                                                        /* 1 */ "result_file",
                                                                        /* 2 */ "matching_method",
-                                                                       /* 3 */ "time_measure"};
+                                                                       /* 3 */ "time_measure",
+                                                                       /* 4 */ "top_query_results"};
 
     const std::vector<std::string> RetrievalBenchmark::OBJECT_NAMES = { /* 0 */"indexer_method",
                                                                         /* 1 */"bsift_algorithm"};
@@ -24,6 +25,7 @@ namespace feitir {
         if (valuesMap.count(FIELD_NAMES[1])) resultFile = valuesMap.at(FIELD_NAMES[1]);
         if (valuesMap.count(FIELD_NAMES[2])) matchingMethod = valuesMap.at(FIELD_NAMES[2]);
         if (valuesMap.count(FIELD_NAMES[3])) timeMeasure = boost::lexical_cast<boolean>(valuesMap.at(FIELD_NAMES[3]));
+        if (valuesMap.count(FIELD_NAMES[4])) topQueryResults = boost::lexical_cast<number>(valuesMap.at(FIELD_NAMES[4]));
     }
 
     JSONObject::FieldNames RetrievalBenchmark::innerObjectFieldNames() const {
@@ -73,6 +75,10 @@ namespace feitir {
 
     const BSIFTAlgorithmPtr &RetrievalBenchmark::getBsiftAlgorithm() const {
         return bsiftAlgorithm;
+    }
+
+    JSONObject::number RetrievalBenchmark::getTopQueryResults() const {
+        return topQueryResults;
     }
 
 }

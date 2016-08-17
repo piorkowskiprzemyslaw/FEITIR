@@ -24,7 +24,7 @@ namespace feitir {
     public:
         CrossParameters(const DatabasePtr &database, const VocabularyTypePtr vocabulary, const int N,
                         const int binaryTreshold, const int R = 1, const int codeWordSize = 32);
-        const DatabasePtr & getDatabase() const;
+        virtual DatabasePtr getDatabase() override;
         int getN() const;
         int getR() const;
         VocabularyTypePtr getVocabulary() const;
@@ -39,6 +39,7 @@ namespace feitir {
 
     public:
         CrossQuery(const ImageBSIFTPtr &img);
+        CrossQuery(const ImagePtr &img);
         const ImageBSIFTPtr getImg() const;
         virtual ~CrossQuery() = default;
     };

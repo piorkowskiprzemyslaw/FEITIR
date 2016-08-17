@@ -9,7 +9,7 @@ namespace feitir {
     BIFParameters::BIFParameters(const DatabasePtr database, const int treshold) : database{database},
                                                                                    treshold{treshold} { }
 
-    const DatabasePtr BIFParameters::getDatabase() const {
+    DatabasePtr BIFParameters::getDatabase() {
         return database;
     }
 

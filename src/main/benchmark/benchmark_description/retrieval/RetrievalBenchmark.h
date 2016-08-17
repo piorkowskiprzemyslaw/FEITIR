@@ -42,6 +42,12 @@ namespace feitir {
         boolean getTimeMeasure() const;
 
         /**
+         * Number best query results taken into account when computing results
+         * @return
+         */
+        number getTopQueryResults() const;
+
+        /**
          * Inner object, indexer description
          * @return
          */
@@ -84,6 +90,11 @@ namespace feitir {
          * flag which indicates if time measurement is enabled
          */
         boolean timeMeasure;
+
+        /**
+         * number of best query results which are taken into account when computing statistics
+         */
+        number topQueryResults;
 
         /**
          * Indexer method description

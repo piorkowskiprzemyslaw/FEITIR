@@ -34,7 +34,7 @@ namespace feitir {
                                                                      recall{recall},
                                                                      averagePrecision{averagePrecision} { }
 
-        ImageRetrievalResult(BOWResult bowRes,
+        ImageRetrievalResult(BOWStats bowRes,
                              long long int duration = 0) : duration{duration},
                                                            precision{bowRes.precision},
                                                            recall{bowRes.recall},

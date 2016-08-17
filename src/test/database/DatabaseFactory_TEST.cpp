@@ -89,6 +89,9 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseFactory_TEST, DatabaseFixture)
             ++counter;
         }
         BOOST_CHECK_EQUAL(counter, 7);
+        BOOST_REQUIRE(database->getCategoryByName("dir2_1") != nullptr);
+        BOOST_REQUIRE(database->getCategoryByName("dir2_2") != nullptr);
+        BOOST_REQUIRE(database->getCategoryByName("dir2_3") == nullptr);
         imagesDataClear(database);
     }
 
