@@ -65,7 +65,6 @@ namespace feitir {
         int relevantImages = 0;
 
         while (numberOfTopElements-- && !rankedList.empty()) {
-            std::cout << "entry" << std::endl;
             auto entry = rankedList.top();
             rankedList.pop();
             auto entryCategory = trainDatabase->getImageCategory(entry.first);
