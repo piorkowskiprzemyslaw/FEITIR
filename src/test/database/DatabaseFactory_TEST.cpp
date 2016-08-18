@@ -25,8 +25,8 @@ struct DatabaseFixture {
     unsigned counter;
 
     DatabaseFixture() : databaseRes{resourcesRootDir() + "database/"},
-                        firstRoot{"dir1"}, secondRoot{"dir2"}, thirdRoot{"dir3"},
-                        fourthRoot{"dir4"}, fifthRoot{"dir5"} {
+                        firstRoot{"dir1/"}, secondRoot{"dir2/"}, thirdRoot{"dir3/"},
+                        fourthRoot{"dir4/"}, fifthRoot{"dir5/"} {
 
     }
 
