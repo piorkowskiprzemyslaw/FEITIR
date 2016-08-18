@@ -14,7 +14,7 @@ namespace feitir {
 
     IFQuery::IFQuery(const ImagePtr &img) : img(img) { }
 
-    const ImagePtr IFQuery::getImg() const {
+    ImagePtr IFQuery::getImg() {
         return img;
     }
 }

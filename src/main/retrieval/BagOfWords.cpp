@@ -20,20 +20,27 @@ namespace feitir {
         auto indexerQuery = buildQuery(img, extractor, vocabularyTypePtr,
                                        description->getIndexerMethod()->getMethodName());
         auto indexerResult = indexer->query(indexerQuery);
-        return generatePriorityQueue(indexerResult);
+        return generatePriorityQueue(indexerResult, indexerQuery->getImg());
     }
 
-    float BagOfWords::computeSimilarity(IndexerResultMap map) {
-        // TODO
-        return 0.0f;
+    float BagOfWords::computeSimilarity(ImagePtr img, IndexerResultMap map, ImagePtr query) {
+        if (!description->getMatchingMethod().compare("tfidf")) {
+            return tfidfSimilarity(img, map, query);
+        } else if (!description->getMatchingMethod().compare("voting")) {
+            return votingSimilarity(img, map);
+        } else if (!description->getMatchingMethod().compare("dot_product")) {
+            return dotProductSimilarity(img, map, query);
+        }
+        throw std::invalid_argument(description->getMatchingMethod()
+                                    + " cannot be recognized as matching method type");
     }
 
-    BagOfWords::RankedList BagOfWords::generatePriorityQueue(const IndexerResultPtr indexerResult) {
-        auto comparator = [](entry a, entry b) { return a.second > b.second; };
-        RankedList result(comparator);
+    BagOfWords::RankedList
+    BagOfWords::generatePriorityQueue(const IndexerResultPtr indexerResult, const ImagePtr query) {
+        RankedList result([](entry a, entry b) { return a.second < b.second; });
 
         for (const auto & resultEntry : indexerResult->getResultList()) {
-            result.push({resultEntry.first, computeSimilarity(resultEntry.second)});
+            result.push({resultEntry.first, computeSimilarity(resultEntry.first, resultEntry.second, query)});
         }
 
         return result;
@@ -52,7 +59,7 @@ namespace feitir {
         auto categoryTrainDb = trainDatabase->getCategoryByName(queryCategory->getName());
 
         /**
-         * in case when in train database there is adequate category, or when the category
+         * in case when train database doesn't include adequate category, or when the category
          * is empty (actually this wont be the case because CategoryFactory prevent creating empty categories)
          */
         if (categoryTrainDb == nullptr || categoryTrainDb->getImages().empty()) {
@@ -68,15 +75,31 @@ namespace feitir {
             auto entry = rankedList.top();
             rankedList.pop();
             auto entryCategory = trainDatabase->getImageCategory(entry.first);
-            // to perform string comparison only one, save result.
-            bool categoriesEqual = entryCategory->getName() == queryCategory->getName();
+            // save result, to perform string comparison once
+            bool categoriesEqual = entryCategory->getName().compare(queryCategory->getName()) == 0;
             relevantImages = categoriesEqual ? relevantImages + 1 : relevantImages;
             averagePrecision += categoriesEqual ?
                 static_cast<float>(relevantImages) / static_cast<float>(description->getTopQueryResults() - numberOfTopElements) : 0;
         }
 
-        return BOWStats(relevantImages / description->getTopQueryResults(),
+        return BOWStats(relevantImages / static_cast<float>(description->getTopQueryResults()),
                         relevantImages / relevantImagesInTrainDatabase,
                         averagePrecision / relevantImagesInTrainDatabase);
+    }
+
+    float BagOfWords::tfidfSimilarity(ImagePtr, IndexerResultMap, ImagePtr) {
+        throw std::runtime_error("tfidfSimilarity is not implemented");
+    }
+
+    float BagOfWords::votingSimilarity(ImagePtr img, IndexerResultMap map) {
+        float result = 0;
+        for (const auto& e : map) {
+            result += static_cast<float>(e.second);
+        }
+        return result / static_cast<float>(img->getMatches().size());
+    }
+
+    float BagOfWords::dotProductSimilarity(ImagePtr, IndexerResultMap , ImagePtr) {
+        throw std::runtime_error("dotProductSimilarity is not implemented");
     }
 }

@@ -23,6 +23,7 @@ namespace feitir {
 
     class IndexerQuery {
     public:
+        virtual ImagePtr getImg() = 0;
         virtual ~IndexerQuery() = 0;
     };
 

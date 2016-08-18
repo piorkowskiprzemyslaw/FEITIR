@@ -50,22 +50,22 @@ namespace feitir {
         IndexerResultPtr result = std::make_shared<IndexerResult>();
         std::unordered_map<boost::uuids::uuid, IndexerResultMap> uuidToResult;
 
-        for (auto i = 0; i < query->getImg()->getMatches().size(); ++i) {
+        for (auto i = 0; i < query->getBSIFTImg()->getMatches().size(); ++i) {
             std::unordered_set<int> V;
             std::unordered_set<int> visitedV;
             std::unordered_set<ImageBSIFT::BSIFT> C;
             std::unordered_set<ImageBSIFT::BSIFT> visitedC;
 
-            const auto queryBSIFT = query->getImg()->getBsift()[query->getImg()->getMatches()[i].queryIdx];
+            const auto queryBSIFT = query->getBSIFTImg()->getBsift()[query->getBSIFTImg()->getMatches()[i].queryIdx];
 
             // add n nearest visual words to V map.
-            std::for_each(nearestVW[query->getImg()->getMatches()[i].trainIdx].begin(),
-                          nearestVW[query->getImg()->getMatches()[i].trainIdx].end(),
+            std::for_each(nearestVW[query->getBSIFTImg()->getMatches()[i].trainIdx].begin(),
+                          nearestVW[query->getBSIFTImg()->getMatches()[i].trainIdx].end(),
                           [&V] (const cv::DMatch &match) {
                               V.insert(match.trainIdx);
                           });
 
-            for (auto & expanded : expandCodeWord(generateCodeWord(query->getImg()->getBsift()[i]))) {
+            for (auto & expanded : expandCodeWord(generateCodeWord(query->getBSIFTImg()->getBsift()[i]))) {
                 C.insert(expanded);
             }
 

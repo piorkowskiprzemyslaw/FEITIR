@@ -39,8 +39,11 @@ namespace feitir {
         BOWStats computeResult(const ImagePtr query, const CategoryPtr queryCategory, RankedList &rankedList);
 
     private:
-        float computeSimilarity(IndexerResultMap map);
-        RankedList generatePriorityQueue(const IndexerResultPtr indexerResult);
+        float computeSimilarity(ImagePtr img, IndexerResultMap map, ImagePtr query);
+        float tfidfSimilarity(ImagePtr img, IndexerResultMap map, ImagePtr query);
+        float votingSimilarity(ImagePtr img, IndexerResultMap map);
+        float dotProductSimilarity(ImagePtr img, IndexerResultMap map, ImagePtr query);
+        BagOfWords::RankedList generatePriorityQueue(const IndexerResultPtr indexerResult, const ImagePtr query);
 
         RetrievalBenchmarkPtr description;
         DatabaseFactory databaseFactory;

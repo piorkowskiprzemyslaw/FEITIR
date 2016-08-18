@@ -40,7 +40,10 @@ namespace feitir {
     public:
         CrossQuery(const ImageBSIFTPtr &img);
         CrossQuery(const ImagePtr &img);
-        const ImageBSIFTPtr getImg() const;
+        virtual ImagePtr getImg() override {
+            return img;
+        }
+        const ImageBSIFTPtr getBSIFTImg() const;
         virtual ~CrossQuery() = default;
     };
 

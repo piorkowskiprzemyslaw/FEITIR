@@ -52,7 +52,7 @@ namespace feitir {
             typename ImageBSIFT::BSIFT bsift;
             ImageBSIFTPtr imgPtr;
 
-            auto img = query->getImg();
+            auto img = query->getBSIFTImg();
             for (auto& match : img->getMatches()) {
                 auto range = binaryInvertedFile.equal_range(match.trainIdx);
                 for (auto dbImage = range.first; dbImage != range.second; ++dbImage) {

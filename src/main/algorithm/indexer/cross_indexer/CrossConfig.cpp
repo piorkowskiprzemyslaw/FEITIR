@@ -37,7 +37,7 @@ namespace feitir {
 
     CrossQuery::CrossQuery(const ImageBSIFTPtr &img) : img{img} { }
 
-    const ImageBSIFTPtr CrossQuery::getImg() const {
+    const ImageBSIFTPtr CrossQuery::getBSIFTImg() const {
         return img;
     }
 

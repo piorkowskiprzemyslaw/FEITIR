@@ -31,7 +31,7 @@ namespace feitir {
         ImagePtr img;
     public:
         IFQuery(const ImagePtr &img);
-        const ImagePtr getImg() const;
+        virtual ImagePtr getImg() override ;
         virtual ~IFQuery() = default;
     };
 

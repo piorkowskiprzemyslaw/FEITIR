@@ -50,6 +50,9 @@ namespace feitir {
             }
         }
 
+        virtual ImagePtr getImg() override {
+            return transformedImage;
+        }
 
         const ImageBSIFTPtr getTransformedImage() const {
             return transformedImage;

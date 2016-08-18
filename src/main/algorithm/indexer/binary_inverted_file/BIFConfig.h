@@ -38,7 +38,11 @@ namespace feitir {
 
         BIFQuery(const ImageBSIFTPtr img) : img{img} { }
 
-        const ImageBSIFTPtr getImg() const {
+        virtual ImagePtr getImg() override {
+            return img;
+        }
+
+        const ImageBSIFTPtr getBSIFTImg() const {
             return img;
         }
 
