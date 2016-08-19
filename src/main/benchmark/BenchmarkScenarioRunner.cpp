@@ -182,8 +182,8 @@ namespace feitir {
                 testEnd = std::chrono::high_resolution_clock::now();
             }
 
-            BOOST_LOG_TRIVIAL(debug) << "RankedList[1]: " << rankedList.empty() ?
-                                     "is EMPTY" : rankedList.top().first->getFileName();
+            BOOST_LOG_TRIVIAL(debug) << "RankedList[1]: " << (rankedList.empty() ?
+                                     "is EMPTY" : rankedList.top().first->getFileName());
 
             auto stats = bow.computeResult(img, queryDatabase->getImageCategory(img), rankedList);
 
