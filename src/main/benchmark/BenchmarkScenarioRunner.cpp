@@ -171,20 +171,23 @@ namespace feitir {
 
 
         for (const auto & img : *queryDatabase) {
+            BOOST_LOG_TRIVIAL(debug) << "Processing query of image: " << img->getFileName();
             if (description->getTimeMeasure()) {
                 testStart = std::chrono::high_resolution_clock::now();
             }
 
-            auto pq = bow.query(img);
+            auto rankedList = bow.query(img);
 
             if (description->getTimeMeasure()) {
                 testEnd = std::chrono::high_resolution_clock::now();
             }
 
-            auto stats = bow.computeResult(img, queryDatabase->getImageCategory(img), pq);
+            BOOST_LOG_TRIVIAL(debug) << "RankedList[1]: " << rankedList.empty() ?
+                                     "is EMPTY" : rankedList.top().first->getFileName();
+
+            auto stats = bow.computeResult(img, queryDatabase->getImageCategory(img), rankedList);
 
             if (description->getTimeMeasure()) {
-                testEnd = std::chrono::high_resolution_clock::now();
                 results.emplace_back(stats, std::chrono::duration_cast<std::chrono::milliseconds>
                         (testEnd - testStart).count());
             } else {
@@ -197,6 +200,7 @@ namespace feitir {
     void BenchmarkScenarioRunner::writeRetrievalResult(const std::string &filename,
                                                        const std::vector<ImageRetrievalResult> &result) {
         std::ofstream resultFile;
+        float mAP = 0;
         resultFile.open(filename);
         resultFile << "precision,recall,average_precision,time" << std::endl;
         for (const auto& r : result) {
@@ -204,7 +208,14 @@ namespace feitir {
                        << r.recall << ","
                        << r.averagePrecision << ","
                        << r.duration << std::endl;
+            mAP += r.averagePrecision;
         }
+
+        mAP /= static_cast<float>(result.size());
+
+        BOOST_LOG_TRIVIAL(info) << "mAP: " << mAP;
+        BOOST_LOG_TRIVIAL(info) << result.size() << " results saved in file " << filename;
+
         resultFile.close();
     }
 
