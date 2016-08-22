@@ -140,7 +140,7 @@ namespace feitir {
                     std::make_shared<BIFParameters>(translatedDatabase, description->getThreshold()));
         } else if (!methodName.compare("supporting_words_inverted_file")) {
             return std::make_shared<SupportingWordsInvertedFileIndexer>(
-                    std::make_shared<SWIFParameters>(database, vocabulary, description->getR(),
+                    std::make_shared<SWIFParameters>(database, vocabulary, description->getP(),
                                                      description->getK(), description->getThreshold()));
         }
 
