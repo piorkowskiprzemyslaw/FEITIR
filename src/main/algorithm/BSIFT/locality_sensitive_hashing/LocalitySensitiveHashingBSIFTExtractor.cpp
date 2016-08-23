@@ -6,11 +6,13 @@
 
 namespace feitir {
 
+    static const int SIFT_SIZE = 128;
+
     std::vector<std::function<std::vector<bool>(cv::Mat row)>>
     LocalitySensitiveHashingBSIFTExtractor::generateRandomHashFunctions(const unsigned N) {
         std::vector<std::function<std::vector<bool>(cv::Mat row)>> hashFunctions;
-        Eigen::VectorXd mean = Eigen::VectorXd::Zero(N);
-        Eigen::MatrixXd cov = Eigen::MatrixXd::Identity(N, N);
+        Eigen::VectorXd mean = Eigen::VectorXd::Zero(SIFT_SIZE);
+        Eigen::MatrixXd cov = Eigen::MatrixXd::Identity(SIFT_SIZE, SIFT_SIZE);
         Eigen::EigenMultivariateNormal<double> normalGenerator(mean, cov);
 
         cv::Mat samples;
@@ -19,6 +21,7 @@ namespace feitir {
 
         auto hashFunction = [] (cv::Mat row, cv::Mat hashVector) {
             assert (row.rows == 1 && hashVector.cols == 1);
+            assert (row.cols == hashVector.rows);
             std::vector<bool> hashResult;
             cv::Mat multiplicationResult = row * hashVector;
             hashResult.push_back(multiplicationResult.at<float>(0,0) > 0);
