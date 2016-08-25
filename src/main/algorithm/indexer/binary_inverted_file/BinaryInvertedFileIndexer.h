@@ -29,7 +29,7 @@ namespace feitir {
 
             uuidToImageMap.emplace(bsiftImg->getUuid(), bsiftImg);
             for (auto& match : bsiftImg->getMatches()) {
-                binaryInvertedFile.emplace(match.trainIdx, std::make_tuple(bsiftImg, bsiftImg->getBsift()[match.imgIdx]));
+                binaryInvertedFile.emplace(match.trainIdx, std::make_tuple(bsiftImg, bsiftImg->getBsift()[match.queryIdx]));
             }
         }
 
@@ -57,7 +57,7 @@ namespace feitir {
                 auto range = binaryInvertedFile.equal_range(match.trainIdx);
                 for (auto dbImage = range.first; dbImage != range.second; ++dbImage) {
                     std::tie(imgPtr, bsift) = dbImage->second;
-                    if (Util::hammingDistance(img->getBsift()[match.imgIdx], bsift) <= treshold) {
+                    if (Util::hammingDistance(img->getBsift()[match.queryIdx], bsift) <= treshold) {
 
                         if (uuidToResult.find(imgPtr->getUuid()) == uuidToResult.end()) {
                             uuidToResult[imgPtr->getUuid()] = {{match.trainIdx, 1}};
