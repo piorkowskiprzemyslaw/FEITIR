@@ -47,11 +47,14 @@ namespace feitir {
         inline bool operator!=(const HKMeansNode& rhs) const {
             return !(*this == rhs);
         }
+        int getOffset() const;
+        void setOffset(int offset);
 
     private:
         cv::Mat nodeWords;
         std::vector<HKMeansNodePtr> childrens;
         HKMeansNodeWeakPtr parent;
+        int offset;
     };
 
     class HKMeansVocabularyType : public VocabularyType {
@@ -72,6 +75,8 @@ namespace feitir {
         std::vector<cv::DMatch> getNearestVisualWordsConcurrent(cv::Mat queryFeatures,
                                                                 unsigned numberOfThreads);
         cv::DMatch getNearestVisualWord(HKMeansNodePtr root, cv::Mat queryFeature);
+        void initializeNode(HKMeansNodePtr node);
+        int computeVisualWordOffset(HKMeansNodePtr leaf);
 
     private:
         cv::BFMatcher matcher;

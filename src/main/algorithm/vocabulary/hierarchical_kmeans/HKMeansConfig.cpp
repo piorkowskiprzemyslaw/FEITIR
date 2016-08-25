@@ -30,6 +30,7 @@ namespace feitir {
     HKMeansVocabularyType::HKMeansVocabularyType(HKMeansNodePtr root, unsigned K, unsigned L)
             : root{root}, K{K}, L{L} {
         vocabularyMatrix = getVocabulary(root);
+        initializeNode(root);
     }
 
     cv::Mat HKMeansVocabularyType::getVocabulary(HKMeansNodePtr root) {
@@ -83,6 +84,14 @@ namespace feitir {
         return true;
     }
 
+    int HKMeansNode::getOffset() const {
+        return offset;
+    }
+
+    void HKMeansNode::setOffset(int offset) {
+        HKMeansNode::offset = offset;
+    }
+
     const HKMeansNodePtr HKMeansVocabularyType::getRoot() const {
         return root;
     }
@@ -123,6 +132,7 @@ namespace feitir {
                            unsigned startIdx, unsigned endIdx) {
             for (auto i = startIdx; i < endIdx; ++i) {
                 resultVec[i] = this->getNearestVisualWord(this->root, features.row(i));
+                resultVec[i].queryIdx = i;
             }
         };
 
@@ -152,10 +162,50 @@ namespace feitir {
         cv::DMatch match = matches[0];
 
         if (root->getChildrens().empty()) {
+            assert (root->getOffset() != -1);
+            match.trainIdx += root->getOffset();
             return match;
         } else {
             return getNearestVisualWord(root->getChildrens()[match.trainIdx], queryFeature);
         }
 
+    }
+
+    int HKMeansVocabularyType::computeVisualWordOffset(HKMeansNodePtr leaf) {
+        if (!leaf->getChildrens().empty()) {
+            return -1;
+        }
+
+        std::vector<int> positions;
+        int result = 0;
+
+        while (auto parentPtr = leaf->getParent().lock()) {
+            int localPos = -1;
+            for (const auto & child : parentPtr->getChildrens()) {
+                ++localPos;
+                if (child.get() == leaf.get() || *child == *leaf) {
+                    break;
+                }
+            }
+            assert (localPos != -1);
+            assert (localPos >= 0 && localPos < K);
+            positions.push_back(localPos);
+            leaf = parentPtr;
+        }
+
+        assert (positions.size() == L);
+
+        for (int i = 0; i < positions.size(); ++i) {
+            result += std::pow(K, i + 1) * positions[i];
+        }
+
+        return result;
+    }
+
+    void HKMeansVocabularyType::initializeNode(HKMeansNodePtr node) {
+        node->setOffset(computeVisualWordOffset(node));
+        for (const auto & child : node->getChildrens()) {
+            initializeNode(child);
+        }
     }
 }

@@ -18,14 +18,18 @@ using namespace feitir;
 struct DatabaseTranslatorFixture {
     const DatabaseFactory databaseFactory;
     const std::string resourcesPath;
+    const std::string vocabularyFile;
     const int means;
     const int K;
     const int L;
 
     DatabaseTranslatorFixture() : resourcesPath{resourcesRootDir() + "database/image/"},
+                                  vocabularyFile{"vocabulary.yml"},
                                   means{5}, K{3}, L{2} { }
 
-    ~DatabaseTranslatorFixture() { }
+    ~DatabaseTranslatorFixture() {
+        boost::filesystem::remove(resourcesPath + vocabularyFile);
+    }
 };
 
 BOOST_FIXTURE_TEST_SUITE(DatabaseTranslator_TEST, DatabaseTranslatorFixture)
@@ -88,6 +92,22 @@ BOOST_FIXTURE_TEST_SUITE(DatabaseTranslator_TEST, DatabaseTranslatorFixture)
         BOOST_REQUIRE(transformedImage != nullptr);
         BOOST_CHECK_GT(transformedImage->getMatches().size(), 0);
         BOOST_CHECK_EQUAL(transformedImage->getDescriptors().rows, 0);
+
+        hkMeansVocabularyBuilder.saveToFile(vocabulary, resourcesPath + vocabularyFile);
+        auto vocabularyFromFile = hkMeansVocabularyBuilder.readFromFile(resourcesPath + vocabularyFile);
+        auto transformedImage1 = databaseTranslator.transformImage(vocabularyFromFile, img);
+
+        BOOST_REQUIRE(transformedImage1 != nullptr);
+        BOOST_CHECK_GT(transformedImage1->getMatches().size(), 0);
+        BOOST_CHECK_EQUAL(transformedImage1->getMatches().size(), transformedImage->getMatches().size());
+        BOOST_CHECK_EQUAL(transformedImage1->getDescriptors().rows, 0);
+
+        for (int i = 0; i < transformedImage1->getMatches().size(); ++i) {
+            BOOST_REQUIRE_EQUAL(transformedImage->getMatches()[i].queryIdx,
+                                transformedImage1->getMatches()[i].queryIdx);
+            BOOST_REQUIRE_EQUAL(transformedImage->getMatches()[i].trainIdx,
+                                transformedImage1->getMatches()[i].trainIdx);
+        }
     }
 
 BOOST_AUTO_TEST_SUITE_END()
