@@ -38,11 +38,15 @@ namespace feitir {
         nearestVW.clear();
         matcher.knnMatch(parameters->getVocabulary()->getVocabularyMatrix(),
                          parameters->getVocabulary()->getVocabularyMatrix(),
+                         // N + 1 because each vw has itself on its nearestVW list
                          nearestVW, parameters->getN() + 1);
 
         std::for_each(nearestVW.begin(), nearestVW.end(),
                       [] (std::vector<cv::DMatch>& matches) {
-                          matches.erase(matches.begin());
+                          matches.erase(std::find_if(matches.begin(), matches.end(),
+                                           [] (const cv::DMatch& match) {
+                                               return match.queryIdx == match.trainIdx;
+                                           }));
                       });
     }
 
