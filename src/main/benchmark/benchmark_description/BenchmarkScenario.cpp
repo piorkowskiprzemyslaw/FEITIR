@@ -132,7 +132,7 @@ namespace feitir {
         if (!methodName.compare("inverted_file")) {
             return std::make_shared<InvertedFileIndexer>(std::make_shared<IFParameters>(database));
         } else if (!methodName.compare("cross_indexer")) {
-            return std::make_shared<CrossIndexer>(database, vocabulary, description->getN(),
+            return std::make_shared<CrossIndexer>(translatedDatabase, vocabulary, description->getN(),
                                                   description->getThreshold(), description->getR(),
                                                   description->getCodeWordSize());
         } else if (!methodName.compare("binary_inverted_file")) {
@@ -140,7 +140,7 @@ namespace feitir {
                     std::make_shared<BIFParameters>(translatedDatabase, description->getThreshold()));
         } else if (!methodName.compare("supporting_words_inverted_file")) {
             return std::make_shared<SupportingWordsInvertedFileIndexer>(
-                    std::make_shared<SWIFParameters>(database, vocabulary, description->getP(),
+                    std::make_shared<SWIFParameters>(translatedDatabase, vocabulary, description->getP(),
                                                      description->getK(), description->getThreshold()));
         }
 

@@ -146,7 +146,7 @@ namespace feitir {
                     auto range = invertedFile.equal_range(vwIdx);
                     for (auto dbImage = range.first; dbImage != range.second; ++ dbImage) {
                         std::tie(imgPtr, bsift) = dbImage->second;
-                        auto distance = Util::hammingDistance(transformedImage->getBsift()[match.imgIdx], bsift);
+                        auto distance = Util::hammingDistance(transformedImage->getBsift()[match.queryIdx], bsift);
                         if (distance <= distanceTreshold) {
 
                             if (uuidToResult.find(imgPtr->getUuid()) == uuidToResult.end()) {
