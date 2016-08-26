@@ -20,7 +20,9 @@ namespace feitir {
         void computeMedianValues(const DatabasePtr database);
 
     public:
-        DescriptorPositionMedianBSIFTExtractor() : BSIFTExtractor{128} { }
+        DescriptorPositionMedianBSIFTExtractor(const DatabasePtr trainDatabase) : BSIFTExtractor{128} {
+            computeMedianValues(trainDatabase);
+        }
         virtual DatabasePtr extractDatabaseBSIFT(const DatabasePtr database) override;
     };
 

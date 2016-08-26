@@ -102,7 +102,7 @@ namespace feitir {
         } else if (!methodName.compare("descriptor_median")) {
             return std::make_shared<DescriptorMedianBSIFTExtractor>();
         } else if (!methodName.compare("descriptor_position_median")) {
-            return std::make_shared<DescriptorPositionMedianBSIFTExtractor>();
+            return std::make_shared<DescriptorPositionMedianBSIFTExtractor>(database);
         } else if (!methodName.compare("descriptor_voronoi_position")) {
             auto vocabulary = buildVocabulary(description->getVocabularyType(), description->getVocabularyPath());
             return std::make_shared<DescriptorVoronoiPositionBSIFTExtractor>(

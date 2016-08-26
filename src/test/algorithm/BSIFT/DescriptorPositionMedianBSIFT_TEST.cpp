@@ -33,28 +33,28 @@ BOOST_FIXTURE_TEST_SUITE(DescriptorPositionMedianBSIFTExtractor_TEST, Descriptor
 
     BOOST_AUTO_TEST_CASE(FirstTestCase)
     {
-        DescriptorPositionMedianBSIFTExtractor extractor;
+        auto database = databaseFactory.createDatabase(resourcePath + imagePath);
+        BOOST_REQUIRE(database != nullptr);
+        DescriptorPositionMedianBSIFTExtractor extractor(database);
 
         auto img = imageFactory.createImage(resourcePath + imagePath + lennaImage);
         BOOST_REQUIRE(img != nullptr);
-        BOOST_CHECK_THROW(extractor.extractImageBSIFT(img), std::logic_error);
+        BOOST_CHECK_NO_THROW(extractor.extractImageBSIFT(img));
     }
 
     BOOST_AUTO_TEST_CASE(SecondTestCase)
     {
-        DescriptorPositionMedianBSIFTExtractor extractor;
-
         auto database = databaseFactory.createDatabase(resourcePath + imagePath);
         BOOST_REQUIRE(database != nullptr);
+        DescriptorPositionMedianBSIFTExtractor extractor(database);
         BOOST_CHECK_NO_THROW(extractor.extractDatabaseBSIFT(database));
     }
 
     BOOST_AUTO_TEST_CASE(ThirdTestCase)
     {
-        DescriptorPositionMedianBSIFTExtractor extractor;
-
         auto database = databaseFactory.createDatabase(resourcePath + databaseDir);
         BOOST_REQUIRE(database != nullptr);
+
         std::vector<ImagePtr> fakeImages;
         int counter = 1;
         for (auto img : *database) {
@@ -64,7 +64,8 @@ BOOST_FIXTURE_TEST_SUITE(DescriptorPositionMedianBSIFTExtractor_TEST, Descriptor
         }
 
         auto fakeDatabase = databaseFactory.createDatabase(database, std::vector<CategoryPtr>(), fakeImages);
-        auto transformedDatabase = extractor.extractDatabaseBSIFT(fakeDatabase);
+        DescriptorPositionMedianBSIFTExtractor fakeDatabaseExtractor(fakeDatabase);
+        auto transformedDatabase = fakeDatabaseExtractor.extractDatabaseBSIFT(fakeDatabase);
 
         BOOST_REQUIRE(transformedDatabase != nullptr);
         BOOST_REQUIRE_EQUAL(transformedDatabase->getImages().size(), fakeImages.size());

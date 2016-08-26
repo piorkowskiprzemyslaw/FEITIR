@@ -34,7 +34,6 @@ namespace feitir {
     }
 
     DatabasePtr DescriptorPositionMedianBSIFTExtractor::extractDatabaseBSIFT(const DatabasePtr database) {
-        computeMedianValues(database);
         return BSIFTExtractor::extractDatabaseBSIFT(database);
     }
 }
