@@ -45,13 +45,13 @@ namespace feitir {
         std::vector<BSIFTBenchmarkSingleResult> resultVector;
         std::chrono::high_resolution_clock::time_point testStart;
         auto bsiftExtractor = buildExtractor(description->getAlgorithm());
-        auto database = databaseFactory.createDatabase(description->getDatabasePath());
+        auto testDatabase = databaseFactory.createDatabase(description->getDatabasePath());
 
         if (description->isMeasureTime()) {
             testStart = std::chrono::high_resolution_clock::now();
         }
 
-        database = bsiftExtractor->extractDatabaseBSIFT(database);
+        testDatabase = bsiftExtractor->extractDatabaseBSIFT(testDatabase);
 
         if (description->isMeasureTime()) {
             std::chrono::high_resolution_clock::time_point testEnd = std::chrono::high_resolution_clock::now();
@@ -60,8 +60,8 @@ namespace feitir {
                                     << " extraction time: " << duration;
         }
 
-        auto aSet = getDescriptorVector(database, description->getASet());
-        auto bSet = getDescriptorVector(database, description->getBSet());
+        auto aSet = getDescriptorVector(testDatabase, description->getASet());
+        auto bSet = getDescriptorVector(testDatabase, description->getBSet());
 
         for (const auto& aImg : aSet) {
             for (const auto& bImg : bSet) {
