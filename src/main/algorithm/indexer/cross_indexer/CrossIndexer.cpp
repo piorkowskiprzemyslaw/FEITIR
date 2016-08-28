@@ -40,14 +40,6 @@ namespace feitir {
                          parameters->getVocabulary()->getVocabularyMatrix(),
                          // N + 1 because each vw has itself on its nearestVW list
                          nearestVW, parameters->getN() + 1);
-
-        std::for_each(nearestVW.begin(), nearestVW.end(),
-                      [] (std::vector<cv::DMatch>& matches) {
-                          matches.erase(std::find_if(matches.begin(), matches.end(),
-                                           [] (const cv::DMatch& match) {
-                                               return match.queryIdx == match.trainIdx;
-                                           }));
-                      });
     }
 
     IndexerResultPtr CrossIndexer::query(CrossQueryPtr query) {
@@ -69,11 +61,11 @@ namespace feitir {
                               V.insert(match.trainIdx);
                           });
 
-            for (auto & expanded : expandCodeWord(generateCodeWord(query->getBSIFTImg()->getBsift()[i]))) {
+            for (auto & expanded : expandCodeWord(generateCodeWord(queryBSIFT))) {
                 C.insert(expanded);
             }
 
-            while (!V.empty() && !C.empty()) {
+            while (V.empty() || C.empty()) {
                 for (const auto &v : V) {
                     // for each unvisited element
                     if (!Util::contains<int>(visitedV, v)) {
@@ -106,12 +98,12 @@ namespace feitir {
                     // for each unvisited element
                     if (!Util::contains<ImageBSIFT::BSIFT>(visitedC, c)) {
                         codeWordCellCheck(queryBSIFT, c, V, visitedV);
+                        visitedC.insert(c);
 
                         for (auto & expanded : expandCodeWord(c, 1)) {
                             codeWordCellCheck(queryBSIFT, expanded, V, visitedV);
+                            visitedC.insert(expanded);
                         }
-
-                        visitedC.insert(c);
                     }
                 }
 

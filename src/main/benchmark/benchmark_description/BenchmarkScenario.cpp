@@ -92,7 +92,6 @@ namespace feitir {
 
     BSIFTExtractorPtr buildExtractor(const BSIFTAlgorithmPtr description) {
         DatabaseFactory databaseFactory;
-        auto trainDatabase = databaseFactory.createDatabase(description->getDatabasePath());
 
         std::string methodName = description->getBsiftMethod()->getMethod();
         if (!methodName.compare("comparison_array")) {
@@ -102,8 +101,10 @@ namespace feitir {
         } else if (!methodName.compare("descriptor_median")) {
             return std::make_shared<DescriptorMedianBSIFTExtractor>();
         } else if (!methodName.compare("descriptor_position_median")) {
+            auto trainDatabase = databaseFactory.createDatabase(description->getDatabasePath());
             return std::make_shared<DescriptorPositionMedianBSIFTExtractor>(trainDatabase);
         } else if (!methodName.compare("descriptor_voronoi_position")) {
+            auto trainDatabase = databaseFactory.createDatabase(description->getDatabasePath());
             auto vocabulary = buildVocabulary(description->getVocabularyType(), description->getVocabularyPath());
             return std::make_shared<DescriptorVoronoiPositionBSIFTExtractor>(
                     description->getBsiftMethod()->getN(), vocabulary, trainDatabase);

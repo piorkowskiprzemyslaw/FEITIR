@@ -44,7 +44,7 @@ namespace feitir {
     class BenchmarkScenarioRunner {
     public:
         BenchmarkScenarioRunner() {
-            boost::log::core::get()->set_filter(boost::log::trivial::severity >= boost::log::trivial::info);
+            boost::log::core::get()->set_filter(boost::log::trivial::severity >= boost::log::trivial::debug);
         };
 
         ~BenchmarkScenarioRunner() = default;
