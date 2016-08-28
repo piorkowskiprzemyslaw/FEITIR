@@ -65,7 +65,7 @@ namespace feitir {
                 C.insert(expanded);
             }
 
-            while (V.empty() || C.empty()) {
+            while (!V.empty() || !C.empty()) {
                 for (const auto &v : V) {
                     // for each unvisited element
                     if (!Util::contains<int>(visitedV, v)) {
