@@ -31,6 +31,8 @@ namespace feitir {
 
         virtual IndexerResultPtr query(CrossQueryPtr query);
 
+        IndexerResultPtr queryConcurrent(CrossQueryPtr query);
+
         /**
          * Extracts codeword from binary SIFT descriptor value. Length depends on indexer parameter - codeWordSize.
          * This method is public onfy for testing purposes.
