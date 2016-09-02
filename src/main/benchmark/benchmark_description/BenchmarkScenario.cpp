@@ -156,7 +156,8 @@ namespace feitir {
     IndexerQueryPtr buildQuery(const ImagePtr img, const BSIFTExtractorPtr extractor,
                                const VocabularyTypePtr vocabulary, const std::string &method) {
         if (!method.compare("inverted_file")) {
-            return std::make_shared<IFQuery>(img);
+            DatabaseTranslator translator;
+            return std::make_shared<IFQuery>(translator.transformImage(vocabulary, img));
         } else if (!method.compare("cross_indexer")) {
             return std::make_shared<CrossQuery>(extractor->getDatabaseTranslatorPtr()->transformImage(
                     vocabulary, extractor->extractImageBSIFT(img)));
