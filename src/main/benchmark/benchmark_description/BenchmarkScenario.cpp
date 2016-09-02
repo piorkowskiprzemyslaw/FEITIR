@@ -124,25 +124,30 @@ namespace feitir {
 
     IndexerPtr buildIndexer(const IndexerMethodPtr description, const BSIFTExtractorPtr extractor) {
         DatabaseFactory databaseFactory;
-        auto vocabulary = buildVocabulary(description->getVocabularyType(), description->getVocabularyPath());
         auto database = databaseFactory.createDatabase(description->getDatabasePath());
-        auto translatedDatabase = extractor->getDatabaseTranslatorPtr()
-                ->transformDatabase(vocabulary, extractor->extractDatabaseBSIFT(database));
+        auto vocabulary = buildVocabulary(description->getVocabularyType(), description->getVocabularyPath());
         const auto & methodName = description->getMethodName();
 
         if (!methodName.compare("inverted_file")) {
-            return std::make_shared<InvertedFileIndexer>(std::make_shared<IFParameters>(database));
-        } else if (!methodName.compare("cross_indexer")) {
-            return std::make_shared<CrossIndexer>(translatedDatabase, vocabulary, description->getN(),
-                                                  description->getThreshold(), description->getR(),
-                                                  description->getCodeWordSize());
-        } else if (!methodName.compare("binary_inverted_file")) {
-            return std::make_shared<BinaryInvertedFileIndexer>(
-                    std::make_shared<BIFParameters>(translatedDatabase, description->getThreshold()));
-        } else if (!methodName.compare("supporting_words_inverted_file")) {
-            return std::make_shared<SupportingWordsInvertedFileIndexer>(
-                    std::make_shared<SWIFParameters>(translatedDatabase, vocabulary, description->getP(),
-                                                     description->getK(), description->getThreshold()));
+            DatabaseTranslator translator;
+            return std::make_shared<InvertedFileIndexer>(std::make_shared<IFParameters>(
+                    translator.transformDatabase(vocabulary, database)));
+        } else {
+            auto translatedDatabase = extractor->getDatabaseTranslatorPtr()
+                    ->transformDatabase(vocabulary, extractor->extractDatabaseBSIFT(database));
+
+            if (!methodName.compare("cross_indexer")) {
+                return std::make_shared<CrossIndexer>(translatedDatabase, vocabulary, description->getN(),
+                                                      description->getThreshold(), description->getR(),
+                                                      description->getCodeWordSize());
+            } else if (!methodName.compare("binary_inverted_file")) {
+                return std::make_shared<BinaryInvertedFileIndexer>(
+                        std::make_shared<BIFParameters>(translatedDatabase, description->getThreshold()));
+            } else if (!methodName.compare("supporting_words_inverted_file")) {
+                return std::make_shared<SupportingWordsInvertedFileIndexer>(
+                        std::make_shared<SWIFParameters>(translatedDatabase, vocabulary, description->getP(),
+                                                         description->getK(), description->getThreshold()));
+            }
         }
 
         throw std::invalid_argument(methodName + " does not cast to any available indexer type");
