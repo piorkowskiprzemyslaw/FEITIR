@@ -51,6 +51,10 @@ namespace feitir {
         Image(const std::shared_ptr<Image> img,
               std::vector<cv::DMatch> matches);
 
+        Image(const std::shared_ptr<Image> img,
+              cv::Mat descriptors,
+              std::vector<cv::DMatch> matches);
+
         virtual ~Image();
 
         const boost::uuids::uuid & getUuid() const;

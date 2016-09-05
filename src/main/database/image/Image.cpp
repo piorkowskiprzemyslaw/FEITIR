@@ -32,6 +32,16 @@ namespace feitir {
                                                     matches{std::move(matches)} {
     }
 
+    Image::Image(const std::shared_ptr<Image> img, cv::Mat descriptors,
+                 std::vector<cv::DMatch> matches) : uuid(img->getUuid()),
+                                                    fullPath{img->getFullPath()},
+                                                    name{img->getFileName()},
+                                                    path{img->getPath()},
+                                                    extension{img->getExtension()},
+                                                    descriptors{descriptors},
+                                                    matches{std::move(matches)} {
+    }
+
     const std::string &Image::getFullPath() const {
         return fullPath;
     }

@@ -14,6 +14,8 @@
 #include <src/main/algorithm/indexer/cross_indexer/CrossIndexer.h>
 #include <src/main/algorithm/indexer/binary_inverted_file/BinaryInvertedFileIndexer.h>
 #include <src/main/algorithm/indexer/supporting_words_inverted_file/SupportingWordsInvertedFileIndexer.h>
+#include <src/main/algorithm/vocabulary/DatabaseTranslatorPreserveOriginal.h>
+#include <src/main/algorithm/indexer/inverted_file_sift/InvertedFileSIFTIndexer.h>
 #include "BenchmarkScenario.h"
 
 namespace feitir {
@@ -132,6 +134,10 @@ namespace feitir {
             DatabaseTranslator translator;
             return std::make_shared<InvertedFileIndexer>(std::make_shared<IFParameters>(
                     translator.transformDatabase(vocabulary, database)));
+        } else if (!methodName.compare("inverted_file_sift")) {
+            DatabaseTranslatorPreserveOriginal translator;
+            return std::make_shared<InvertedFileSIFTIndexer>(std::make_shared<IFSParameters>(
+                    translator.transformDatabase(vocabulary, database), description->getThreshold()));
         } else {
             auto translatedDatabase = extractor->getDatabaseTranslatorPtr()
                     ->transformDatabase(vocabulary, extractor->extractDatabaseBSIFT(database));
@@ -158,6 +164,9 @@ namespace feitir {
         if (!method.compare("inverted_file")) {
             DatabaseTranslator translator;
             return std::make_shared<IFQuery>(translator.transformImage(vocabulary, img));
+        } else if (!method.compare("inverted_file_sift")) {
+            DatabaseTranslatorPreserveOriginal translator;
+            return std::make_shared<IFSQuery>(translator.transformImage(vocabulary, img));
         } else if (!method.compare("cross_indexer")) {
             return std::make_shared<CrossQuery>(extractor->getDatabaseTranslatorPtr()->transformImage(
                     vocabulary, extractor->extractImageBSIFT(img)));

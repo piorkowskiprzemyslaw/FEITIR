@@ -11,7 +11,11 @@ set(INDEXER_SOURCE_FILES
         cross_indexer/CrossConfig.h
         cross_indexer/CrossConfig.cpp
         cross_indexer/CrossIndexer.cpp
-        cross_indexer/CrossIndexer.h)
+        cross_indexer/CrossIndexer.h
+        inverted_file_sift/IFSConfig.cpp
+        inverted_file_sift/IFSConfig.h
+        inverted_file_sift/InvertedFileSIFTIndexer.cpp
+        inverted_file_sift/InvertedFileSIFTIndexer.h)
 
 add_library(indexer STATIC ${INDEXER_SOURCE_FILES})
 

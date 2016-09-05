@@ -45,6 +45,9 @@ namespace feitir {
                                    std::vector<cv::DMatch> matches) const;
         const ImagePtr createImage(const ImagePtr img,
                                    cv::Mat descriptors) const;
+        const ImagePtr createImage(const ImagePtr img,
+                                   cv::Mat descriptors,
+                                   std::vector<cv::DMatch> matches) const;
         void saveImageData(const ImagePtr img) const;
         bool deleteImageData(const ImagePtr img) const;
     };

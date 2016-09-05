@@ -46,6 +46,11 @@ namespace feitir {
                                        img->getPath(), img->getExtension(), descriptors);
     }
 
+    const ImagePtr ImageFactory::createImage(const ImagePtr img, cv::Mat descriptors,
+                                             std::vector<cv::DMatch> matches) const {
+        return std::make_shared<Image>(img, descriptors, std::move(matches));
+    }
+
     void ImageFactory::loadImageData(const std::string& path, const std::string& fileName, cv::Mat& descriptors) const {
         std::vector<cv::KeyPoint> keyPoints;
         std::string imageDataFileName = this->imageDataFile(path, fileName);

@@ -1,6 +1,8 @@
 set(VOCABULARY_SOURCE_FILES
         DatabaseTranslator.cpp
         DatabaseTranslator.h
+        DatabaseTranslatorPreserveOriginal.cpp
+        DatabaseTranslatorPreserveOriginal.h
         VocabularyConfig.h
         VocabularyBuilder.h
         kmeans/KMeansVocabularyBuilder.cpp
