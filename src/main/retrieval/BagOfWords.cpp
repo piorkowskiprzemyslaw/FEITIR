@@ -30,6 +30,8 @@ namespace feitir {
             return votingSimilarity(img, map);
         } else if (!description->getMatchingMethod().compare("dot_product")) {
             return dotProductSimilarity(img, map, query);
+        } else if (!description->getMatchingMethod().compare("histogram_intersection")) {
+            return histogramIntersectionSimilarity(img, map, query);
         }
         throw std::invalid_argument(description->getMatchingMethod()
                                     + " cannot be recognized as matching method type");
@@ -101,5 +103,35 @@ namespace feitir {
 
     float BagOfWords::dotProductSimilarity(ImagePtr, IndexerResultMap , ImagePtr) {
         throw std::runtime_error("dotProductSimilarity is not implemented");
+    }
+
+    float BagOfWords::histogramIntersectionSimilarity(ImagePtr img, IndexerResultMap, ImagePtr query) {
+        auto imgHistogram = prepareHistogram(img);
+        auto queryHistogram = prepareHistogram(query);
+        assert (imgHistogram.size() == queryHistogram.size());
+        float result = 0;
+
+        for (int i = 0; i < imgHistogram.size(); ++i) {
+            result += std::min(imgHistogram[i], queryHistogram[i]);
+        }
+
+        assert (result <= 1);
+
+        return result;
+    }
+
+    std::vector<float> BagOfWords::prepareHistogram(ImagePtr img) {
+        std::vector<float> histogram(vocabularyTypePtr->getVocabularyMatrix().rows, 0.0f);
+        auto numberOfDescriptors = img->getMatches().size();
+
+        for (const auto& match : img->getMatches()) {
+            histogram[match.trainIdx]++;
+        }
+
+        for (int i = 0; i < histogram.size(); ++i) {
+            histogram[i] /= static_cast<float>(numberOfDescriptors);
+        }
+
+        return histogram;
     }
 }

@@ -43,6 +43,8 @@ namespace feitir {
         float tfidfSimilarity(ImagePtr img, IndexerResultMap map, ImagePtr query);
         float votingSimilarity(ImagePtr img, IndexerResultMap map);
         float dotProductSimilarity(ImagePtr img, IndexerResultMap map, ImagePtr query);
+        float histogramIntersectionSimilarity(ImagePtr img, IndexerResultMap map, ImagePtr query);
+        std::vector<float> prepareHistogram(ImagePtr img);
         BagOfWords::RankedList generatePriorityQueue(const IndexerResultPtr indexerResult, const ImagePtr query);
 
         RetrievalBenchmarkPtr description;
