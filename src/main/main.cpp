@@ -29,7 +29,7 @@ inline std::string benchmarkDefaultFile() {
 int main(int ac, char* av[]) {
     try {
         std::string benchmarkScenarioFile;
-        po::options_description commandLineOptions("Faculty of Electronics and Information Technology Image Retrieval tool");
+        po::options_description commandLineOptions("FEITIR Image Retrieval tool");
         commandLineOptions.add_options()
                 ("help", "produce help message")
                 ("benchmarkScenario,b", po::value<std::string>(&benchmarkScenarioFile)
