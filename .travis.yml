@@ -1,0 +1,21 @@
+os: linux
+dist: trusty
+sudo: required
+language: cpp
+compiler:
+  - gcc
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.6
+    packages:
+    - gcc-5
+    - g++-5
+
+# Build steps
+script:
+  - mkdir build
+  - cd build
+  - cmake .. && make
