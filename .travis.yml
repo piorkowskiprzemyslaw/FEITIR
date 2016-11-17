@@ -2,8 +2,7 @@ os: linux
 dist: trusty
 sudo: required
 language: cpp
-compiler:
-  - gcc
+compiler: gcc
 
 addons:
   apt:
@@ -11,8 +10,32 @@ addons:
     - ubuntu-toolchain-r-test
     - llvm-toolchain-precise-3.6
     packages:
+    - libbz2-dev
+    - libssl-dev
     - gcc-5
     - g++-5
+
+cache:
+  directories:
+    - $HOME/boost_1_61_0/boost
+    - $HOME/boost_1_61_0/stage/lib
+
+install:
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+  - sudo apt-get install python-dev python-numpy
+  - chmod +x tools/travis/install_boost.sh
+  - tools/travis/install_boost.sh
+
+before_script:
+  - mkdir build && cd build
+  - cmake .. -DPROJECT_STATIC_RUNTIME=OFF -DBOOST_ROOT=~/boost_1_61_0
+  - git clone https://github.com/Itseez/opencv.git
+  - cd opencv
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make -j4
+  - sudo make -j4 install
 
 # Build steps
 script:
