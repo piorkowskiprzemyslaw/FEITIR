@@ -14,6 +14,7 @@ addons:
     - libssl-dev
     - gcc-5
     - g++-5
+    - libeigen3-dev
 
 cache:
   directories:
@@ -28,7 +29,7 @@ install:
 
 before_script:
   - mkdir build && cd build
-  - cmake .. -DPROJECT_STATIC_RUNTIME=OFF -DBOOST_ROOT=~/boost_1_61_0
+  - cmake .. -DBOOST_ROOT=~/boost_1_61_0
   - git clone https://github.com/Itseez/opencv.git
   - cd opencv
   - mkdir build
