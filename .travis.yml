@@ -28,8 +28,6 @@ install:
   - tools/travis/install_boost.sh
 
 before_script:
-  - mkdir build && cd build
-  - cmake .. -DBOOST_ROOT=~/boost_1_61_0
   - git clone https://github.com/Itseez/opencv.git
   - cd opencv
   - mkdir build
@@ -42,4 +40,6 @@ before_script:
 script:
   - mkdir build
   - cd build
-  - cmake .. && make
+  - cmake .. -DBOOST_ROOT=~/boost_1_61_0
+  - make
+  - ctest --output-on-failure
