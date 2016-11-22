@@ -24,17 +24,10 @@ cache:
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
   - sudo apt-get install python-dev python-numpy
+  - chmod +x tools/travis/install_opencv.sh
+  - tools/travis/install_opencv.sh
   - chmod +x tools/travis/install_boost.sh
   - tools/travis/install_boost.sh
-
-before_script:
-  - git clone https://github.com/Itseez/opencv.git
-  - cd opencv
-  - mkdir build
-  - cd build
-  - cmake ..
-  - make -j4
-  - sudo make -j4 install
 
 # Build steps
 script:
