@@ -8,7 +8,6 @@ ORIG_DIR=`pwd`
 cd ~
 wget --quiet "http://bitbucket.org/eigen/eigen/get/${EIGEN_VERSION}.tar.gz"
 tar xzf ${EIGEN_VERSION}.tar.gz
-cd "~/eigen-eigen-${EIGEN_HASH}/"
 mkdir -p "~/eigen-eigen-${EIGEN_HASH}/_build"
 cd "~/eigen-eigen-${EIGEN_HASH}/_build"
 
