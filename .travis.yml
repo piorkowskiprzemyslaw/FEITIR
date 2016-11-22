@@ -24,6 +24,8 @@ cache:
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
   - sudo apt-get install python-dev python-numpy
+  - chmod +x tools/travis/install_eigen.sh
+  - tools/travis/install_eigen.sh
   - chmod +x tools/travis/install_opencv.sh
   - tools/travis/install_opencv.sh
   - chmod +x tools/travis/install_boost.sh
