@@ -18,5 +18,5 @@ sudo make install
 cd ${ORIG_DIR}
 
 # Check install
-pkg-config --modversion "eigen3 >= ${EIGEN_VERSION}"
-pkg-config --cflags "eigen3 >= ${EIGEN_VERSION}"
+pkg-config --modversion "eigen3 >= 3.2.0"
+pkg-config --cflags "eigen3 >= 3.2.0"
