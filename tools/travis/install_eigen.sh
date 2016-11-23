@@ -14,7 +14,7 @@ cd "eigen-eigen-${EIGEN_HASH}/_build"
 # Build, make and install Eigen
 cmake .. -DCMAKE_INSTALL_PREFIX:STRING="$install_dir"
 make
-make install
+sudo make install
 cd ${ORIG_DIR}
 
 # Check install
