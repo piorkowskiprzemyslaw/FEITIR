@@ -35,6 +35,6 @@ install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -DBOOST_ROOT=~/boost_1_61_0
+  - cmake .. -DBOOST_ROOT=~/boost_1_61_0 -DTRAVIS=YES
   - make
   - ctest --output-on-failure
