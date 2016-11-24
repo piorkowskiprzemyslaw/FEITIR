@@ -12,7 +12,7 @@ mkdir -p "eigen-eigen-${EIGEN_HASH}/_build"
 cd "eigen-eigen-${EIGEN_HASH}/_build"
 
 # Build, make and install Eigen
-cmake .. -DCMAKE_INSTALL_PREFIX:STRING="$install_dir"
+cmake .. -DCMAKE_INSTALL_PREFIX:STRING="${HOME}/eigen_install"
 make
 sudo make install
 cd ${ORIG_DIR}
