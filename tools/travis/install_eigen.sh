@@ -3,20 +3,23 @@
 EIGEN_VERSION=3.2.9
 EIGEN_HASH=dc6cfdf9bcec
 
-ORIG_DIR=`pwd`
+if [ ! -d "${HOME}/eigen_install" ]; then
 
-cd ${HOME}
-wget --quiet "http://bitbucket.org/eigen/eigen/get/${EIGEN_VERSION}.tar.gz"
-tar xzf ${EIGEN_VERSION}.tar.gz
-mkdir -p "eigen-eigen-${EIGEN_HASH}/_build"
-cd "eigen-eigen-${EIGEN_HASH}/_build"
+    cd ${HOME}
+    wget --quiet "http://bitbucket.org/eigen/eigen/get/${EIGEN_VERSION}.tar.gz"
+    tar xzf ${EIGEN_VERSION}.tar.gz
+    mv "eigen-eigen-${EIGEN_HASH}" "${HOME}/eigen"
+    mkdir -p "eigen/_build"
+    cd "eigen/_build"
 
-# Build, make and install Eigen
-cmake .. -DCMAKE_INSTALL_PREFIX:STRING="${HOME}/eigen_install"
-make
-sudo make install
-cd ${ORIG_DIR}
+    # Build, make and install Eigen
+    cmake .. -DCMAKE_INSTALL_PREFIX:STRING="${HOME}/eigen_install"
+    make
+    sudo make install
 
-# Check install
-pkg-config --modversion "eigen3 >= 3.2.0"
-pkg-config --cflags "eigen3 >= 3.2.0"
+    # Check install
+    pkg-config --modversion "eigen3 >= 3.2.0"
+    pkg-config --cflags "eigen3 >= 3.2.0"
+
+fi
+
