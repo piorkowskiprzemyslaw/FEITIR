@@ -15,7 +15,7 @@ if (${TRAVIS})
     find_package(PkgConfig REQUIRED)
 endif (${TRAVIS})
 
-find_package(Eigen3 REQUIRED)
+find_package(Eigen3)
 
 set(PROJECT_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
