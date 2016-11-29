@@ -21,8 +21,8 @@ cache:
     - $HOME/boost_1_61_0/boost
     - $HOME/boost_1_61_0/stage/lib
     - $HOME/eigen_install
-    - $HOME/opencv
-    - $HOME/opencv_contrib
+    - $HOME/opencv_3_1
+    - $HOME/opencv_3_1/stage/lib
 
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
