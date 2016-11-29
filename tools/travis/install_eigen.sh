@@ -3,7 +3,7 @@
 EIGEN_VERSION=3.2.9
 EIGEN_HASH=dc6cfdf9bcec
 
-if [ ! -d "${HOME}/eigen_install" ]; then
+if [ ! -d "${HOME}/eigen_install/_build" ]; then
 
     cd ${HOME}
     wget --quiet "http://bitbucket.org/eigen/eigen/get/${EIGEN_VERSION}.tar.gz"

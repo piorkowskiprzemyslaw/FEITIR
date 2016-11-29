@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-if [ ! -d "${HOME}/opencv" ]; then
+if [ ! -d "${HOME}/opencv/build" ]; then
     cd ${HOME}
     git clone https://github.com/Itseez/opencv.git
     git clone https://github.com/opencv/opencv_contrib.git
