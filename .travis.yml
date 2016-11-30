@@ -20,7 +20,8 @@ cache:
   directories:
     - $HOME/boost_1_61_0/boost
     - $HOME/boost_1_61_0/stage/lib
-    - $HOME/eigen_install
+    - $HOME/eigen_3_2_9
+    - $HOME/eigen_3_2_9/install
     - $HOME/opencv_3_1/opencv
     - $HOME/opencv_3_1/opencv_contrib
     - $HOME/opencv_3_1/stage/lib
@@ -39,6 +40,6 @@ install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -DBOOST_ROOT=~/boost_1_61_0 -DTRAVIS=YES
+  - cmake .. -DBOOST_ROOT=~/boost_1_61_0 -DTRAVIS_EIGEN_DIRECTORY=~/eigen_3_2_9/install/include -DTRAVIS=YES
   - make
   - ctest --output-on-failure

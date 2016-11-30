@@ -17,6 +17,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${Boost_INCLUDE_DIR}
                     ${OpenCV_INCLUDE_DIR})
 
+if (${TRAVIS})
+    include_directories(${TRAVIS_EIGEN_DIRECTORY})
+endif(${TRAVIS})
+
 enable_testing()
 
 add_subdirectory(src)

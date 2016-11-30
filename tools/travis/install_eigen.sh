@@ -2,7 +2,7 @@
 
 EIGEN_BASELINE=eigen_3_2_9
 
-if [ ! -d "${HOME}/${EIGEN_BASELINE}/eigen/_build" ]; then
+if [ ! -d "${HOME}/${EIGEN_BASELINE}/install" ]; then
 
     mkdir -p "${HOME}/${EIGEN_BASELINE}"
     cd "${HOME}/${EIGEN_BASELINE}"
