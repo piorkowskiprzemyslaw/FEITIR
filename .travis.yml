@@ -21,7 +21,8 @@ cache:
     - $HOME/boost_1_61_0/boost
     - $HOME/boost_1_61_0/stage/lib
     - $HOME/eigen_install
-    - $HOME/opencv_3_1
+    - $HOME/opencv_3_1/opencv
+    - $HOME/opencv_3_1/opencv_contrib
     - $HOME/opencv_3_1/stage/lib
 
 install:

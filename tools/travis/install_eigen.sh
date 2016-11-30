@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 
-EIGEN_VERSION=3.2.9
-EIGEN_HASH=dc6cfdf9bcec
+EIGEN_BASELINE=eigen_3_2_9
 
-if [ ! -d "${HOME}/eigen_install/_build" ]; then
+if [ ! -d "${HOME}/${EIGEN_BASELINE}/eigen/_build" ]; then
 
-    cd ${HOME}
-    wget --quiet "http://bitbucket.org/eigen/eigen/get/${EIGEN_VERSION}.tar.gz"
-    tar xzf ${EIGEN_VERSION}.tar.gz
-    mv "eigen-eigen-${EIGEN_HASH}" "${HOME}/eigen"
+    mkdir -p "${HOME}/${EIGEN_BASELINE}"
+    cd "${HOME}/${EIGEN_BASELINE}"
+    wget --quiet "http://bitbucket.org/eigen/eigen/get/3.2.9.tar.gz"
+    tar xzf 3.2.9.tar.gz
+    mv "eigen-eigen-dc6cfdf9bcec" "eigen"
     mkdir -p "eigen/_build"
     cd "eigen/_build"
 
     # Build, make and install Eigen
-    cmake .. -DCMAKE_INSTALL_PREFIX:STRING="${HOME}/eigen_install"
+    cmake .. -DCMAKE_INSTALL_PREFIX:STRING="${HOME}/${EIGEN_BASELINE}/install"
     make
     sudo make install
 
