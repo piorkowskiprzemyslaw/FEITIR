@@ -7,7 +7,6 @@ compiler: gcc
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
     - llvm-toolchain-precise-3.6
     packages:
     - libbz2-dev
